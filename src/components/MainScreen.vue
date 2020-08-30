@@ -8,18 +8,20 @@
         :enemyMana="enemyMana"
       />
     </div>
-    <div class="player">
-      <player-hero
-        :skills="playerSkills"
-        :currentMana="playerMana"
-        :isEnemyDone="doneAttack"
-        @process-indicators="processIndicators"
-      />
+    <div class="gameOver">{{gameOver}}</div>
+    <div v-if="!gameOver">
+      <div class="player">
+        <player-hero
+          :skills="playerSkills"
+          :currentMana="playerMana"
+          :isEnemyDone="doneAttack"
+          @process-indicators="processIndicators"
+        />
+      </div>
+      <div class="enemy">
+        <enemy :message="enemyLog" :isAttacking="isEnemyAttacking" />
+      </div>
     </div>
-    <div class="enemy">
-      <enemy :message="enemyLog" :isAttacking="isEnemyAttacking" />
-    </div>
-    <div />
   </div>
 </template>
 
@@ -38,12 +40,13 @@ export default {
       enemyMana: 100,
       playerSkills: [
         { name: "Shurikenjutsu", damage: 5, mana: 20 },
-        { name: "Suiton No Jutsu", damage: 10, mana: 40 },
-        { name: "Seishin Teki Kyoyo", health: 10, mana: 10 }
+        { name: "Suiton No Jutsu", damage: 20, mana: 30 },
+        { name: "Seishin Teki Kyoyo", health: 20, mana: 10 }
       ],
       enemyLog: "",
       isEnemyAttacking: false,
-      doneAttack: false
+      doneAttack: false,
+      gameOver: ""
     };
   },
   components: {
@@ -68,25 +71,45 @@ export default {
     },
     selectEnemySkill: function() {
       const enemySkills = [
-        { name: "Kick Ass", damage: 10, mana: 10 },
-        { name: "Punch Ass", damage: 10, mana: 15 },
-        { name: "Slash Ass", damage: 15, mana: 20 }
+        { name: "Basic Attack", damage: 10, mana: 0 },
+        { name: "Ice Breath", damage: 10, mana: 10 },
+        { name: "Swirling Wind", damage: 15, mana: 15 },
+        { name: "Molten Eruption", damage: 20, mana: 20 }
       ];
       const randomInt = Math.floor(Math.random() * Math.floor(3));
       const skill = enemySkills[randomInt];
-      console.log("AI skill to use", skill);
-      this.enemyLog = `Viserion is using ${skill.name}`;
       this.isEnemyAttacking = true;
       return skill;
     },
     processAI: function(enemySkill) {
+      this.enemyLog = `Viserion is using ${enemySkill.name}`;
+      if (this.enemyMana <= 20)
+        enemySkill = { name: "Regenerate Mana", damage: 0, mana: 20 };
+      this.enemyLog = `Viserion is using ${enemySkill.name}`;
       setTimeout(() => {
-        this.playerHealth -= enemySkill.damage;
-        this.enemyMana -= enemySkill.mana;
+        if (this.enemyMana <= 20) {
+          this.enemyMana += enemySkill.mana;
+        } else {
+          this.playerHealth -= enemySkill.damage;
+          this.enemyMana -= enemySkill.mana;
+        }
+
         this.doneAttack = true;
         this.isEnemyAttacking = false;
         this.enemyLog = "";
       }, 3000);
+    }
+  },
+  watch: {
+    enemyHealth: function(health) {
+      if (health <= 0) {
+        this.gameOver = "You win!";
+      }
+    },
+    playerHealth: function(health) {
+      if (health <= 0) {
+        this.gameOver = "You lose!";
+      }
     }
   }
 };
@@ -104,5 +127,11 @@ export default {
   position: absolute;
   bottom: 150px;
   right: 150px;
+}
+
+.gameOver {
+  color: white;
+  font-size: 5rem;
+  padding: 2rem;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="manaBar" style="background-color: blue; color: white;" :style="manaBar"></div>
+  <div class="manaBar" style="background-color: #3535d1; color: white;" :style="manaBar"></div>
 </template>
 
 <script>
@@ -28,5 +28,6 @@ export default {
   background-color: rgb(230, 214, 214);
   max-width: 100%;
   transition: width 300ms;
+  border-radius: 20px;
 }
 </style>

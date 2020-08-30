@@ -2,7 +2,7 @@
   <div
     class="healthBar"
     :class="{reverse:isEnemy}"
-    style="background-color: yellow; color: white;"
+    style="background-color: #d5d539;"
     :style="playerHealthBar"
   ></div>
 </template>
@@ -19,7 +19,11 @@ export default {
       var styles = {
         width: this.health + "%"
       };
-      if (this.health <= 20) styles.backgroundColor = "red";
+      if (this.health <= 20) {
+        styles.backgroundColor = "red";
+      } else {
+        styles.backgroundColor = "#d5d539";
+      }
       return styles;
     }
   }
@@ -29,10 +33,10 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .healthBar {
-  height: 20px;
-  background-color: rgb(230, 214, 214);
+  height: 15px;
   max-width: 100%;
   transition: width 300ms;
+  border-radius: 20px;
 }
 .reverse {
   display: flex;

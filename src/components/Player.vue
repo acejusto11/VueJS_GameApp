@@ -1,13 +1,26 @@
 <template>
   <div>
-    HERO
-    <div class="blinking">{{message}}</div>
-    <div>
-      <button @click="basicAttack()" :disabled="disableSkills">Attack</button>
-      <button @click="processSkills(1)" :disabled="disableSkills">Skill 1</button>
-      <button @click="processSkills(2)" :disabled="disableSkills">Skill 2</button>
-      <button @click="processSkills(3)" :disabled="disableSkills">Skill 3</button>
-      <button @click="focus" :disabled="disableFocus">Focus</button>
+    <div class="blinking message">{{message}}</div>
+    <div v-if="isAttacking" class="attackingNinja">
+      <img class="attacking" src="../assets/ninja.gif" />
+    </div>
+    <div v-else class="idleNinja">
+      <img class="idle" src="../assets/nina.png" />
+    </div>
+    <button class="attackButton" @click="basicAttack">
+      <img class="attackIcon" src="../assets/Attack_skill_icon.png" />
+    </button>
+    <button class="skill1Button" @click="processSkills(1)" :disabled="disableSkills">
+      <img class="skillsIcon" src="../assets/shuriken.jpg" />
+    </button>
+    <div class="skill2Button" @click="processSkills(2)" :disabled="disableSkills">
+      <img class="skillsIcon" src="../assets/Fire_Burst_skill_icon.png" />
+    </div>
+    <div class="skill3Button" @click="processSkills(3)" :disabled="disableSkills">
+      <img class="skillsIcon" src="../assets/icon_cler_heal.png" />
+    </div>
+    <div class="focusButton" @click="focus" :disabled="disableSkills">
+      <img class="skillsIcon" src="../assets/Arcane_Cloak_skill_icon.png" />
     </div>
   </div>
 </template>
@@ -36,33 +49,37 @@ export default {
       setTimeout(() => {
         this.$emit("process-indicators", skill);
         this.message = "";
+        this.isAttacking = false;
       }, 3000);
     },
     processSkills: function(id) {
-      this.isAttacking = true;
-      const skill = this.skills[id - 1];
-      this.message = `You're using ${skill.name}`;
-      setTimeout(() => {
-        this.$emit("process-indicators", skill);
-        this.message = "";
-      }, 2000);
+      if (this.currentMana >= 30) {
+        const skill = this.skills[id - 1];
+        this.isAttacking = skill.name === "Seishin Teki Kyoyo" ? false : true;
+        this.message = `You're using ${skill.name}`;
+        setTimeout(() => {
+          this.$emit("process-indicators", skill);
+          this.message = "";
+          this.isAttacking = false;
+        }, 2000);
+      }
     },
     focus: function() {
       const skill = { name: "Focus", damage: 0, mana: 20 };
-      this.isAttacking = true;
       this.message = `You're using ${skill.name}`;
       setTimeout(() => {
         this.$emit("process-indicators", skill);
         this.message = "";
-      }, 2000);
+        this.isAttacking = false;
+      }, 1000);
     }
   },
   computed: {
     disableSkills: function() {
-      return this.currentMana <= 0 || (this.isAttacking && !this.isEnemyDone);
+      return this.currentMana <= 30 || this.isAttacking;
     },
     disableFocus: function() {
-      return this.isAttacking && !this.isEnemyDone;
+      return this.isAttacking;
     }
   }
 };
@@ -70,4 +87,86 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.attackingNinja {
+  position: absolute;
+  bottom: 20px;
+  left: 50px;
+}
+
+.idleNinja {
+  position: absolute;
+  bottom: 40px;
+  left: 80px;
+}
+
+.attacking {
+  width: 450px;
+  height: 400px;
+}
+.idle {
+  width: 200px;
+  height: 300px;
+}
+
+.skills {
+  border-radius: 50%;
+  border: 1px solid #2a2b18;
+  background: rgb(202, 198, 198);
+}
+
+button {
+  border: none;
+  background: none;
+  outline: none;
+}
+
+.attackButton {
+  position: absolute;
+  bottom: -100px;
+  left: -100px;
+}
+
+.skill1Button {
+  position: absolute;
+  bottom: 10px;
+  left: -100px;
+}
+
+.skill2Button {
+  position: absolute;
+  bottom: -30px;
+  left: -10px;
+}
+
+.skill3Button {
+  position: absolute;
+  bottom: -100px;
+  left: 20px;
+}
+
+.focusButton {
+  position: absolute;
+  bottom: 80px;
+  left: -100px;
+}
+
+.skillsIcon {
+  border-radius: 50%;
+  cursor: pointer;
+  width: 60px;
+  height: 60px;
+}
+
+.attackIcon {
+  border-radius: 50%;
+  cursor: pointer;
+  width: 90px;
+  height: 90px;
+}
+
+.message {
+  margin-left: 90px;
+  color: white;
+  font-size: 1.5rem;
+}
 </style>
