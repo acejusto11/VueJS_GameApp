@@ -11,9 +11,15 @@ export default {
   computed: {
     manaBar: function() {
       const mana = this.mana < 0 ? 0 : this.mana;
+
       const styles = {
         width: mana + "%"
       };
+      if (this.mana <= 30) {
+        styles.backgroundColor = "rgb(80 80 238)";
+      } else {
+        styles.backgroundColor = "#3535d1";
+      }
       return styles;
     }
   }

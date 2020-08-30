@@ -100,12 +100,12 @@ export default {
 }
 
 .attacking {
-  width: 450px;
-  height: 400px;
+  width: 350px;
+  height: 300px;
 }
 .idle {
-  width: 200px;
-  height: 300px;
+  width: 150px;
+  height: 200px;
 }
 
 .skills {
