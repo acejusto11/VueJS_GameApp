@@ -163,7 +163,7 @@ import {
   minLength,
   maxLength
 } from 'vuelidate/lib/validators';
-import { saveItem, getCharacterClasses } from '../utils';
+import { saveItemFromLocalStorage, getCharacterClasses } from '../utils';
 
 export default {
   data() {
@@ -208,7 +208,7 @@ export default {
           characterName: this.characterName,
           characterClass: this.characterClass
         };
-        saveItem('currentUser', JSON.stringify(user));
+        saveItemFromLocalStorage('currentUser', JSON.stringify(user));
         this.$emit('account-created', true);
       }
     }

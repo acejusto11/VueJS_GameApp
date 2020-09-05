@@ -1,9 +1,12 @@
-export function saveItem(key, value) {
+export function saveItemFromLocalStorage(key, value) {
   window.localStorage.setItem(key, value);
 }
 
-export function getItem(key) {
+export function getItemFromLocalStorage(key) {
   return window.localStorage.getItem(key);
 }
 
-export default { saveItem, getItem };
+export default {
+  saveItemFromLocalStorage,
+  getItemFromLocalStorage
+};

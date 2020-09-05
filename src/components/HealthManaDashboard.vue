@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="half player">
-      Bulto-kachi
+      {{ playerName }}
       <health-bar :health="playerHealth" />
       <mana-bar :mana="playerMana" />
       <div class="iconContainer left">
@@ -21,19 +21,20 @@
 </template>
 
 <script>
-import HealthBar from "./HealthBar.vue";
-import ManaBar from "./ManaBar.vue";
+import HealthBar from './HealthBar.vue';
+import ManaBar from './ManaBar.vue';
 export default {
-  name: "HealthManaDashboard",
+  name: 'HealthManaDashboard',
   props: {
+    playerName: String,
     playerHealth: Number,
     playerMana: Number,
     enemyHealth: Number,
     enemyMana: Number
   },
   components: {
-    "health-bar": HealthBar,
-    "mana-bar": ManaBar
+    'health-bar': HealthBar,
+    'mana-bar': ManaBar
   }
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div v-if="isAccountCreated">
+    <div v-if="hasCurrentUser || isAccountCreated">
       <game-screen />
     </div>
     <div v-else>
@@ -12,7 +12,7 @@
 <script>
 import GameScreen from '../components/GameScreen.vue';
 import AccountCreationForm from '../components/AccountCreationForm.vue';
-import { getItem } from '../utils/localStorage';
+import { getItemFromLocalStorage } from '../utils/localStorage';
 
 export default {
   name: 'App',
@@ -33,7 +33,7 @@ export default {
   },
   computed: {
     hasCurrentUser() {
-      return getItem('currentUser');
+      return getItemFromLocalStorage('currentUser');
     }
   }
 };

@@ -1,22 +1,34 @@
 <template>
   <div>
-    <div class="blinking message">{{message}}</div>
-    <div v-if="isAttacking" class="attackingNinja">
+    <div class="blinking message">{{ message }}</div>
+    <div v-if="isAttacking" class="attackingPlayer">
       <img class="attacking" src="../assets/ninja.gif" />
     </div>
-    <div v-else class="idleNinja">
+    <div v-else class="idlePlayer">
       <img class="idle" src="../assets/nina.png" />
     </div>
     <button class="attackButton" @click="basicAttack">
       <img class="attackIcon" src="../assets/Attack_skill_icon.png" />
     </button>
-    <button class="skill1Button" @click="processSkills(1)" :disabled="disableSkills">
+    <button
+      class="skill1Button"
+      @click="processSkills(1)"
+      :disabled="disableSkills"
+    >
       <img class="skillsIcon" src="../assets/shuriken.jpg" />
     </button>
-    <div class="skill2Button" @click="processSkills(2)" :disabled="disableSkills">
+    <div
+      class="skill2Button"
+      @click="processSkills(2)"
+      :disabled="disableSkills"
+    >
       <img class="skillsIcon" src="../assets/Fire_Burst_skill_icon.png" />
     </div>
-    <div class="skill3Button" @click="processSkills(3)" :disabled="disableSkills">
+    <div
+      class="skill3Button"
+      @click="processSkills(3)"
+      :disabled="disableSkills"
+    >
       <img class="skillsIcon" src="../assets/icon_cler_heal.png" />
     </div>
     <div class="focusButton" @click="focus" :disabled="disableSkills">
@@ -26,13 +38,13 @@
 </template>
 
 <script>
-import { setTimeout } from "timers";
+import { setTimeout } from 'timers';
 export default {
-  name: "Player",
+  name: 'Player',
   data() {
     return {
       isAttacking: false,
-      message: ""
+      message: ''
     };
   },
   props: {
@@ -43,33 +55,33 @@ export default {
   },
   methods: {
     basicAttack: function() {
-      const skill = { name: "Attack", damage: 3, mana: 0 };
+      const skill = { name: 'Attack', damage: 3, mana: 0 };
       this.isAttacking = true;
       this.message = "You're using Basic Tai Jutsu";
       setTimeout(() => {
-        this.$emit("process-indicators", skill);
-        this.message = "";
+        this.$emit('process-indicators', skill);
+        this.message = '';
         this.isAttacking = false;
       }, 3000);
     },
     processSkills: function(id) {
       if (this.currentMana >= 30) {
         const skill = this.skills[id - 1];
-        this.isAttacking = skill.name === "Seishin Teki Kyoyo" ? false : true;
+        this.isAttacking = skill.name === 'Seishin Teki Kyoyo' ? false : true;
         this.message = `You're using ${skill.name}`;
         setTimeout(() => {
-          this.$emit("process-indicators", skill);
-          this.message = "";
+          this.$emit('process-indicators', skill);
+          this.message = '';
           this.isAttacking = false;
         }, 2000);
       }
     },
     focus: function() {
-      const skill = { name: "Focus", damage: 0, mana: 20 };
+      const skill = { name: 'Focus', damage: 0, mana: 20 };
       this.message = `You're using ${skill.name}`;
       setTimeout(() => {
-        this.$emit("process-indicators", skill);
-        this.message = "";
+        this.$emit('process-indicators', skill);
+        this.message = '';
         this.isAttacking = false;
       }, 1000);
     }
@@ -87,13 +99,13 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.attackingNinja {
+.attackingPlayer {
   position: absolute;
   bottom: 20px;
   left: 50px;
 }
 
-.idleNinja {
+.idlePlayer {
   position: absolute;
   bottom: 40px;
   left: 80px;

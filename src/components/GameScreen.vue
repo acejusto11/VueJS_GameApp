@@ -2,6 +2,7 @@
   <div class="gameScreen">
     <div>
       <health-mana-dashboard
+        :playerName="characterName"
         :playerHealth="playerHealth"
         :enemyHealth="enemyHealth"
         :playerMana="playerMana"
@@ -26,39 +27,45 @@
 </template>
 
 <script>
-import HealthManaDashboard from "./HealthManaDashboard.vue";
-import Player from "./Player";
-import Enemy from "./Enemy";
-import { setTimeout } from "timers";
+import { setTimeout } from 'timers';
+import HealthManaDashboard from './HealthManaDashboard.vue';
+import Player from './Player';
+import Enemy from './Enemy';
+import { getItemFromLocalStorage } from '../utils';
 export default {
-  name: "GameScreen",
+  name: 'GameScreen',
   data() {
     return {
+      characterName: '',
       playerHealth: 100,
       enemyHealth: 100,
       playerMana: 100,
       enemyMana: 100,
       playerSkills: [
-        { name: "Shurikenjutsu", damage: 5, mana: 20 },
-        { name: "Suiton No Jutsu", damage: 20, mana: 30 },
-        { name: "Seishin Teki Kyoyo", health: 20, mana: 10 },
+        { name: 'Shurikenjutsu', damage: 5, mana: 20 },
+        { name: 'Suiton No Jutsu', damage: 20, mana: 30 },
+        { name: 'Seishin Teki Kyoyo', health: 20, mana: 10 }
       ],
-      enemyLog: "",
+      enemyLog: '',
       isEnemyAttacking: false,
       doneAttack: false,
-      gameOver: "",
+      gameOver: ''
     };
   },
+  mounted() {
+    const userDetails = JSON.parse(getItemFromLocalStorage('currentUser'));
+    this.characterName = userDetails.characterName;
+  },
   components: {
-    "health-mana-dashboard": HealthManaDashboard,
-    "player-hero": Player,
-    enemy: Enemy,
+    'health-mana-dashboard': HealthManaDashboard,
+    'player-hero': Player,
+    enemy: Enemy
   },
   methods: {
     processIndicators: function(data) {
-      if (data.name === "Focus") {
+      if (data.name === 'Focus') {
         this.playerMana += data.mana;
-      } else if (data.name === "Seishin Teki Kyoyo") {
+      } else if (data.name === 'Seishin Teki Kyoyo') {
         this.playerHealth += data.health;
         this.playerMana -= data.mana;
       } else {
@@ -71,10 +78,10 @@ export default {
     },
     selectEnemySkill: function() {
       const enemySkills = [
-        { name: "Basic Attack", damage: 10, mana: 0 },
-        { name: "Ice Breath", damage: 10, mana: 10 },
-        { name: "Swirling Wind", damage: 15, mana: 15 },
-        { name: "Molten Eruption", damage: 20, mana: 20 },
+        { name: 'Basic Attack', damage: 10, mana: 0 },
+        { name: 'Ice Breath', damage: 10, mana: 10 },
+        { name: 'Swirling Wind', damage: 15, mana: 15 },
+        { name: 'Molten Eruption', damage: 20, mana: 20 }
       ];
       const randomInt = Math.floor(Math.random() * Math.floor(3));
       const skill = enemySkills[randomInt];
@@ -84,7 +91,7 @@ export default {
     processAI: function(enemySkill) {
       this.enemyLog = `Viserion is using ${enemySkill.name}`;
       if (this.enemyMana <= 20)
-        enemySkill = { name: "Regenerate Mana", damage: 0, mana: 20 };
+        enemySkill = { name: 'Regenerate Mana', damage: 0, mana: 20 };
       this.enemyLog = `Viserion is using ${enemySkill.name}`;
       setTimeout(() => {
         if (this.enemyMana <= 20) {
@@ -96,22 +103,22 @@ export default {
 
         this.doneAttack = true;
         this.isEnemyAttacking = false;
-        this.enemyLog = "";
+        this.enemyLog = '';
       }, 3000);
-    },
+    }
   },
   watch: {
     enemyHealth: function(health) {
       if (health <= 0) {
-        this.gameOver = "You win!";
+        this.gameOver = 'You win!';
       }
     },
     playerHealth: function(health) {
       if (health <= 0) {
-        this.gameOver = "You lose!";
+        this.gameOver = 'You lose!';
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -120,7 +127,7 @@ export default {
 .gameScreen {
   margin: 0px;
   background: rgba(0, 0, 0, 0.1);
-  background-image: url("../assets/forest.jpg");
+  background-image: url('../assets/forest.jpg');
   background-repeat: no-repeat;
   background-size: 100% 100%;
   height: 100vh;
