@@ -1,12 +1,15 @@
 <template>
-  <div class="manaBar" style="background-color: #3535d1; color: white;" :style="manaBar"></div>
+  <div :class="{reverse:isEnemy}">
+    <div class="manaBar" style="background-color: #3535d1; color: white;" :style="manaBar"></div>
+  </div>
 </template>
 
 <script>
 export default {
   name: "ManaBar",
   props: {
-    mana: Number
+    mana: Number,
+    isEnemy: Boolean
   },
   computed: {
     manaBar: function() {
@@ -35,5 +38,9 @@ export default {
   max-width: 100%;
   transition: width 300ms;
   border-radius: 20px;
+}
+.reverse {
+  display: flex;
+  flex-direction: row-reverse;
 }
 </style>

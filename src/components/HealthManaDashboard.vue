@@ -11,7 +11,7 @@
     <div class="half enemy">
       Viserion
       <health-bar :health="enemyHealth" :isEnemy="true" />
-      <mana-bar :mana="enemyMana" />
+      <mana-bar :mana="enemyMana" :isEnemy="true" />
 
       <div class="iconContainer right">
         <img class="icon" src="../assets/dragon2.png" />

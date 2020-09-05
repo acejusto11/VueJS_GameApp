@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="gameScreen">
     <div>
       <health-mana-dashboard
         :playerHealth="playerHealth"
@@ -8,7 +8,7 @@
         :enemyMana="enemyMana"
       />
     </div>
-    <div class="gameOver">{{gameOver}}</div>
+    <div class="gameOver">{{ gameOver }}</div>
     <div v-if="!gameOver">
       <div class="player">
         <player-hero
@@ -31,7 +31,7 @@ import Player from "./Player";
 import Enemy from "./Enemy";
 import { setTimeout } from "timers";
 export default {
-  name: "MainScreen",
+  name: "GameScreen",
   data() {
     return {
       playerHealth: 100,
@@ -41,18 +41,18 @@ export default {
       playerSkills: [
         { name: "Shurikenjutsu", damage: 5, mana: 20 },
         { name: "Suiton No Jutsu", damage: 20, mana: 30 },
-        { name: "Seishin Teki Kyoyo", health: 20, mana: 10 }
+        { name: "Seishin Teki Kyoyo", health: 20, mana: 10 },
       ],
       enemyLog: "",
       isEnemyAttacking: false,
       doneAttack: false,
-      gameOver: ""
+      gameOver: "",
     };
   },
   components: {
     "health-mana-dashboard": HealthManaDashboard,
     "player-hero": Player,
-    enemy: Enemy
+    enemy: Enemy,
   },
   methods: {
     processIndicators: function(data) {
@@ -74,7 +74,7 @@ export default {
         { name: "Basic Attack", damage: 10, mana: 0 },
         { name: "Ice Breath", damage: 10, mana: 10 },
         { name: "Swirling Wind", damage: 15, mana: 15 },
-        { name: "Molten Eruption", damage: 20, mana: 20 }
+        { name: "Molten Eruption", damage: 20, mana: 20 },
       ];
       const randomInt = Math.floor(Math.random() * Math.floor(3));
       const skill = enemySkills[randomInt];
@@ -98,7 +98,7 @@ export default {
         this.isEnemyAttacking = false;
         this.enemyLog = "";
       }, 3000);
-    }
+    },
   },
   watch: {
     enemyHealth: function(health) {
@@ -110,13 +110,23 @@ export default {
       if (health <= 0) {
         this.gameOver = "You lose!";
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.gameScreen {
+  margin: 0px;
+  background: rgba(0, 0, 0, 0.1);
+  background-image: url("../assets/forest.jpg");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  height: 100vh;
+  width: 100%;
+}
+
 .player {
   position: absolute;
   bottom: 150px;

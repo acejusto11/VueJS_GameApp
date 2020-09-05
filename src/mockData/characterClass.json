@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "characterClass": "Saber",
+    "skills": [
+      {
+        "id": 1,
+        "name": "Saber Tooth"
+      },
+      {
+        "id": 2,
+        "name": "Saber Tooth 2"
+      },
+      {
+        "id": 3,
+        "name": "Saber Tooth 3"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "characterClass": "Archer",
+    "skills": [
+      {
+        "id": 1,
+        "name": "Archer 1"
+      },
+      {
+        "id": 2,
+        "name": "Archer 2"
+      },
+      {
+        "id": 3,
+        "name": "Archer 3"
+      }
+    ]
+  }
+]

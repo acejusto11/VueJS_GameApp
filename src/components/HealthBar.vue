@@ -1,10 +1,7 @@
 <template>
-  <div
-    class="healthBar"
-    :class="{reverse:isEnemy}"
-    style="background-color: #d5d539;"
-    :style="playerHealthBar"
-  ></div>
+  <div :class="{reverse:isEnemy}">
+    <div class="healthBar" style="background-color: #d5d539;" :style="playerHealthBar"></div>
+  </div>
 </template>
 
 <script>
