@@ -5,59 +5,48 @@
       <img class="attacking" src="../assets/ninja.gif" />
     </div>
     <div v-else class="idlePlayer">
-      <img class="idle" src="../assets/nina.png" />
+      <img class="idle" src="../assets/idleNinja.png" />
     </div>
     <button class="attackButton" @click="basicAttack">
       <img class="attackIcon" src="../assets/Attack_skill_icon.png" />
     </button>
-    <button
-      class="skill1Button"
-      @click="processSkills(1)"
-      :disabled="disableSkills"
-    >
-      <img class="skillsIcon" src="../assets/shuriken.jpg" />
-    </button>
-    <div
-      class="skill2Button"
-      @click="processSkills(2)"
-      :disabled="disableSkills"
-    >
-      <img class="skillsIcon" src="../assets/Fire_Burst_skill_icon.png" />
-    </div>
-    <div
-      class="skill3Button"
-      @click="processSkills(3)"
-      :disabled="disableSkills"
-    >
-      <img class="skillsIcon" src="../assets/icon_cler_heal.png" />
-    </div>
-    <div class="focusButton" @click="focus" :disabled="disableSkills">
-      <img class="skillsIcon" src="../assets/Arcane_Cloak_skill_icon.png" />
+    <div v-for="skill in skills" :key="skill.id">
+      <button
+        :class="setSkillButtonClass(skill.id)"
+        @click="processSkills(skill.id)"
+        :disabled="disableSkills"
+      >
+        <img class="skillsIcon" :src="setSkillIconPath(skill)" />
+      </button>
     </div>
   </div>
 </template>
 
 <script>
 import { setTimeout } from 'timers';
+import { getCharacterImage } from '../utils';
 export default {
   name: 'Player',
   data() {
     return {
       isAttacking: false,
-      message: ''
+      message: '',
+      characterImages: []
     };
   },
   props: {
     skills: Array,
+    characterClass: Object,
     currentHealth: Number,
     currentMana: Number,
     isEnemyDone: Boolean
   },
+  mounted() {},
   methods: {
     basicAttack: function() {
       const skill = { name: 'Attack', damage: 3, mana: 0 };
       this.isAttacking = true;
-      this.message = "You're using Basic Tai Jutsu";
+      this.message = "You're using Basic Attack";
       setTimeout(() => {
         this.$emit('process-indicators', skill);
         this.message = '';
@@ -65,32 +54,51 @@ export default {
       }, 3000);
     },
     processSkills: function(id) {
-      if (this.currentMana >= 30) {
-        const skill = this.skills[id - 1];
-        this.isAttacking = skill.name === 'Seishin Teki Kyoyo' ? false : true;
-        this.message = `You're using ${skill.name}`;
-        setTimeout(() => {
-          this.$emit('process-indicators', skill);
-          this.message = '';
-          this.isAttacking = false;
-        }, 2000);
+      const skill = this.skills[id - 1];
+      if (this.currentMana >= skill.mana) {
+        if (skill.type === 'damage') {
+          this.isAttacking = skill.type === 'damage' ? true : false;
+          this.message = `You're using ${skill.name}`;
+          setTimeout(() => {
+            this.$emit('process-indicators', skill);
+            this.message = '';
+            this.isAttacking = false;
+          }, 2000);
+        } else {
+          this.message = `You're using ${skill.name}`;
+          setTimeout(() => {
+            this.$emit('process-indicators', skill);
+            this.message = '';
+          }, 2000);
+        }
+      } else {
+        if (skill.type === 'regenerateMana') {
+          this.message = `You're using ${skill.name}`;
+          setTimeout(() => {
+            this.$emit('process-indicators', skill);
+            this.message = '';
+          }, 2000);
+        }
       }
     },
-    focus: function() {
-      const skill = { name: 'Focus', damage: 0, mana: 20 };
-      this.message = `You're using ${skill.name}`;
-      setTimeout(() => {
-        this.$emit('process-indicators', skill);
-        this.message = '';
-        this.isAttacking = false;
-      }, 1000);
+    setSkillButtonClass: function(id) {
+      return `skillButton${id}`;
+    },
+    setSkillIconPath: function(skill) {
+      const defaultSkillIcon = require('../assets/shuriken.jpg');
+      return skill.image && this.characterClass.title
+        ? require(`../assets/${this.characterClass.title}/${skill.image}`)
+        : defaultSkillIcon;
+    },
+    setIdleImage: function() {
+      this.characterImages = getCharacterImage(this.characterClass.code);
+      return this.characterImages
+        ? require(`../assets/${this.characterClass.title}/${this.characterImages[1]}`)
+        : require('../assets/idleNinja.png');
     }
   },
   computed: {
     disableSkills: function() {
-      return this.currentMana <= 30 || this.isAttacking;
-    },
-    disableFocus: function() {
       return this.isAttacking;
     }
   }
@@ -131,6 +139,9 @@ button {
   background: none;
   outline: none;
 }
+button:focus {
+  outline: none;
+}
 
 .attackButton {
   position: absolute;
@@ -138,25 +149,25 @@ button {
   left: -100px;
 }
 
-.skill1Button {
+.skillButton1 {
   position: absolute;
   bottom: 10px;
   left: -100px;
 }
 
-.skill2Button {
+.skillButton2 {
   position: absolute;
   bottom: -30px;
   left: -10px;
 }
 
-.skill3Button {
+.skillButton3 {
   position: absolute;
   bottom: -100px;
   left: 20px;
 }
 
-.focusButton {
+.skillButton4 {
   position: absolute;
   bottom: 80px;
   left: -100px;

@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="containerRow">
     <div class="half player">
       {{ playerName }}
       <health-bar :health="playerHealth" />
@@ -41,7 +41,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.row {
+.containerRow {
   display: flex;
   justify-content: space-around;
   padding-top: 1rem;

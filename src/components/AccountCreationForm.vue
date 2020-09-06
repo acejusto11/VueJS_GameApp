@@ -1,99 +1,101 @@
 <template>
-  <div>
-    <form @submit.prevent="submitForm">
+  <div class="main">
+    <form @submit.prevent="submitForm" class="formContainer">
       <div class="container" v-if="!showNext">
         <h1>Register</h1>
-        <p>Please fill in this form to create an account.</p>
-        <hr />
         <!-- TODO: Create custom components for inputs  -->
-        <label for="fullName">
-          <b>Fullname</b>
-        </label>
-        <input
-          type="text"
-          name="fullName"
-          id="fullName"
-          v-model.lazy.trim="fullName"
-          :class="{ hasErrors: !$v.fullName.required }"
-          @blur="$v.fullName.$touch()"
-        />
-        <p
-          class="error-message"
-          v-if="!$v.fullName.required && $v.fullName.$error"
-        >
-          Fullname is required
-        </p>
-        <label for="email">
-          <b>Email</b>
-        </label>
-        <input
-          type="text"
-          name="email"
-          id="email"
-          v-model.lazy.trim="email"
-          :class="{ hasErrors: !$v.email.required }"
-          @blur="$v.email.$touch()"
-        />
-        <p class="error-message" v-if="!$v.email.required && $v.email.$error">
-          Email is required
-        </p>
-        <p class="error-message" v-if="!$v.email.email && $v.email.$error">
-          Must be a valid email
-        </p>
-        <label for="userName">
-          <b>User Name</b>
-        </label>
-        <input
-          type="text"
-          name="userName"
-          id="userName"
-          v-model.lazy.trim="userName"
-          :class="{ hasErrors: !$v.userName.required }"
-          @blur="$v.userName.$touch()"
-        />
-        <p
-          class="error-message"
-          v-if="!$v.userName.required && $v.userName.$error"
-        >
-          Username is required
-        </p>
-        <p class="error-message" v-if="!$v.userName.minLength">
-          Username must have at least
-          {{ $v.userName.$params.minLength.min }} letters.
-        </p>
-        <p class="error-message" v-if="!$v.userName.maxLength">
-          Username must have at most
-          {{ $v.userName.$params.maxLength.max }} letters.
-        </p>
+        <div>
+          <label for="fullName">
+            <b>Fullname</b>
+          </label>
+          <input
+            type="text"
+            name="fullName"
+            id="fullName"
+            v-model.lazy.trim="fullName"
+            :class="{ hasErrors: !$v.fullName.required }"
+            @blur="$v.fullName.$touch()"
+          />
+          <p
+            class="error-message"
+            v-if="!$v.fullName.required && $v.fullName.$error"
+          >
+            Fullname is required
+          </p>
+          <label for="email">
+            <b>Email</b>
+          </label>
+          <input
+            type="text"
+            name="email"
+            id="email"
+            v-model.lazy.trim="email"
+            :class="{ hasErrors: !$v.email.required }"
+            @blur="$v.email.$touch()"
+          />
+          <p class="error-message" v-if="!$v.email.required && $v.email.$error">
+            Email is required
+          </p>
+          <p class="error-message" v-if="!$v.email.email && $v.email.$error">
+            Must be a valid email
+          </p>
+          <label for="userName">
+            <b>User Name</b>
+          </label>
+          <input
+            type="text"
+            name="userName"
+            id="userName"
+            v-model.lazy.trim="userName"
+            :class="{ hasErrors: !$v.userName.required }"
+            @blur="$v.userName.$touch()"
+          />
+          <p
+            class="error-message"
+            v-if="!$v.userName.required && $v.userName.$error"
+          >
+            Username is required
+          </p>
+          <p class="error-message" v-if="!$v.userName.minLength">
+            Username must have at least
+            {{ $v.userName.$params.minLength.min }} letters.
+          </p>
+          <p class="error-message" v-if="!$v.userName.maxLength">
+            Username must have at most
+            {{ $v.userName.$params.maxLength.max }} letters.
+          </p>
 
-        <label for="password">
-          <b>Password</b>
-        </label>
-        <input
-          type="password"
-          name="password"
-          id="password"
-          v-model.lazy.trim="password"
-          :class="{ hasErrors: !$v.password.required }"
-          @blur="$v.password.$touch()"
-        />
-        <p
-          class="error-message"
-          v-if="!$v.password.required && $v.password.$error"
-        >
-          Password is required
-        </p>
-        <p class="error-message" v-if="!$v.password.minLength">
-          Password must have at least
-          {{ $v.userName.$params.minLength.min }} letters.
-        </p>
-        <p class="error-message" v-if="!$v.password.maxLength">
-          Password must have at most
-          {{ $v.password.$params.maxLength.max }} letters.
-        </p>
-        <button type="button" class="registerbtn" @click="showNextForm">
-          Next
-        </button>
+          <label for="password">
+            <b>Password</b>
+          </label>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            v-model.lazy.trim="password"
+            :class="{ hasErrors: !$v.password.required }"
+            @blur="$v.password.$touch()"
+          />
+          <p
+            class="error-message"
+            v-if="!$v.password.required && $v.password.$error"
+          >
+            Password is required
+          </p>
+          <p class="error-message" v-if="!$v.password.minLength">
+            Password must have at least
+            {{ $v.userName.$params.minLength.min }} letters.
+          </p>
+          <p class="error-message" v-if="!$v.password.maxLength">
+            Password must have at most
+            {{ $v.password.$params.maxLength.max }} letters.
+          </p>
+        </div>
+        <div class="buttons">
+          <button type="button" class="registerbtn" @click="showNextForm">
+            Next
+          </button>
+        </div>
       </div>
       <div class="container" v-else>
         <label for="characterName">
@@ -125,6 +127,7 @@
           <b>Class</b>
         </label>
         <v-select
+          class="style-chooser"
           :options="characterClasses"
           label="title"
           v-model="characterClass"
@@ -148,9 +151,11 @@
         >
           Character class is required
         </p>
-        <button type="submit" class="registerbtn">
-          Create
-        </button>
+        <div class="buttons">
+          <button type="submit" class="registerbtn">
+            Create
+          </button>
+        </div>
       </div>
     </form>
   </div>
@@ -231,18 +236,61 @@ export default {
   box-sizing: border-box;
 }
 
-.container {
-  padding: 16px;
+.main {
+  margin: 0px;
+  background: rgba(0, 0, 0, 0.1);
+  background-image: url('../assets/dragon_slayer_wall2.jpg');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.formContainer {
+  background-color: rgb(3 0 0 / 50%);
+  width: 50%;
+  height: 100%;
+  border: 20px solid rgb(3 2 2 / 50%);
+  padding: 10px;
+}
+
+.buttons {
+  position: fixed;
+  width: 45%;
+  bottom: 20px;
+  margin: 0 auto;
+}
+
+h1 {
+  color: white;
+}
+
+p {
+  color: white;
+  font-weight: 700;
+  font-family: Helvetica, sans-serif;
+  letter-spacing: 1px;
+}
+label {
+  margin-bottom: 0;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  letter-spacing: 1px;
 }
 
 input[type='text'],
 input[type='password'] {
   width: 100%;
-  padding: 15px;
-  margin: 5px 0 22px 0;
+  padding: 5px;
+  margin: 5px 0 15px 0;
   display: inline-block;
   background: #f1f1f1;
-  border: 1px solid lightgray;
+  font-weight: 700;
+  font-family: Arial, Helvetica, sans-serif;
+  letter-spacing: 1px;
 }
 
 input[type='text']:focus,
@@ -264,6 +312,8 @@ hr {
   cursor: pointer;
   width: 100%;
   opacity: 0.9;
+  border-radius: 4px;
+  font-size: 1.25rem;
 }
 .registerbtn:hover {
   opacity: 1;
@@ -272,6 +322,27 @@ hr {
   border: 1px solid red;
 }
 .error-message {
-  color: red;
+  color: white;
+}
+
+.style-chooser .vs__dropdown-toggle {
+  background-color: white !important;
+}
+.vs__dropdown-toggle,
+.vs--unsearchable {
+  background-color: white !important;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+.style-chooser .vs__search::placeholder,
+.style-chooser .vs__dropdown-menu {
+  border: none;
+  font-family: Arial, Helvetica, sans-serif;
+  letter-spacing: 1px;
+}
+
+.style-chooser .vs__clear,
+.style-chooser .vs__open-indicator {
+  fill: #394066;
 }
 </style>

@@ -5,15 +5,35 @@
     "skills": [
       {
         "id": 1,
-        "name": "Saber Tooth"
+        "name": "Saber Tooth Skill 1",
+        "type": "damage",
+        "damage": 10,
+        "mana": 10,
+        "image": "skill1.png"
       },
       {
         "id": 2,
-        "name": "Saber Tooth 2"
+        "name": "Saber Tooth Skill 2",
+        "type": "damage",
+        "damage": 20,
+        "mana": 20,
+        "image": "skill2.png"
       },
       {
         "id": 3,
-        "name": "Saber Tooth 3"
+        "name": "Heal",
+        "type": "regenerateHealth",
+        "health": 20,
+        "mana": 20,
+        "image": "skill3.png"
+      },
+      {
+        "id": 4,
+        "name": "Focus",
+        "type": "regenerateMana",
+        "damage": 20,
+        "mana": 20,
+        "image": "skill4.png"
       }
     ]
   },
@@ -23,15 +43,149 @@
     "skills": [
       {
         "id": 1,
-        "name": "Archer 1"
+        "name": "Archer Skill 1",
+        "type": "damage",
+        "damage": 5,
+        "mana": 10,
+        "image": "skill1.png"
       },
       {
         "id": 2,
-        "name": "Archer 2"
+        "name": "Archer Skill 2",
+        "type": "damage",
+        "damage": 10,
+        "mana": 10,
+        "image": "skill2.png"
       },
       {
         "id": 3,
-        "name": "Archer 3"
+        "name": "Archer Skill 3",
+        "type": "damage",
+        "damage": 25,
+        "mana": 25,
+        "image": "skill3.png"
+      },
+      {
+        "id": 4,
+        "name": "Focus",
+        "type": "regenerateMana",
+        "damage": 20,
+        "mana": 20,
+        "image": "skill4.png"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "characterClass": "Lancer",
+    "skills": [
+      {
+        "id": 1,
+        "name": "Lancer Skill 1",
+        "type": "damage",
+        "damage": 5,
+        "mana": 10,
+        "image": "skill1.png"
+      },
+      {
+        "id": 2,
+        "name": "Lancer Skill 2",
+        "type": "damage",
+        "damage": 10,
+        "mana": 10,
+        "image": "skill2.png"
+      },
+      {
+        "id": 3,
+        "name": "Lancer Skill 3",
+        "type": "damage",
+        "damage": 25,
+        "mana": 25,
+        "image": "skill3.png"
+      },
+      {
+        "id": 4,
+        "name": "Focus",
+        "type": "regenerateMana",
+        "damage": 20,
+        "mana": 20,
+        "image": "skill4.png"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "characterClass": "Berserker",
+    "skills": [
+      {
+        "id": 1,
+        "name": "Berserker Skill 1",
+        "type": "damage",
+        "damage": 10,
+        "mana": 10,
+        "image": "skill1.png"
+      },
+      {
+        "id": 2,
+        "name": "Berserker Skill 2",
+        "type": "damage",
+        "damage": 20,
+        "mana": 10,
+        "image": "skill2.png"
+      },
+      {
+        "id": 3,
+        "name": "Heal",
+        "type": "regenerateHealth",
+        "health": 20,
+        "mana": 20,
+        "image": "skill3.png"
+      },
+      {
+        "id": 4,
+        "name": "Focus",
+        "type": "regenerateMana",
+        "damage": 20,
+        "mana": 20,
+        "image": "skill4.png"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "characterClass": "Caster",
+    "skills": [
+      {
+        "id": 1,
+        "name": "Caster Skill 1",
+        "type": "damage",
+        "damage": 20,
+        "mana": 30,
+        "image": "skill1.png"
+      },
+      {
+        "id": 2,
+        "name": "Caster Skill 2",
+        "type": "damage",
+        "damage": 25,
+        "mana": 35,
+        "image": "skill2.png"
+      },
+      {
+        "id": 3,
+        "name": "Heal",
+        "type": "regenerateHealth",
+        "health": 20,
+        "mana": 20,
+        "image": "skill3.png"
+      },
+      {
+        "id": 4,
+        "name": "Focus",
+        "type": "regenerateMana",
+        "damage": 20,
+        "mana": 20,
+        "image": "skill4.png"
       }
     ]
   }

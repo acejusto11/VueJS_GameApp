@@ -1,14 +1,13 @@
 <template>
-  <div class="gameScreen">
-    <div>
-      <health-mana-dashboard
-        :playerName="characterName"
-        :playerHealth="playerHealth"
-        :enemyHealth="enemyHealth"
-        :playerMana="playerMana"
-        :enemyMana="enemyMana"
-      />
-    </div>
+  <div>
+    <health-mana-dashboard
+      :playerName="characterName"
+      :playerHealth="playerHealth"
+      :enemyHealth="enemyHealth"
+      :playerMana="playerMana"
+      :enemyMana="enemyMana"
+    />
+
     <div class="gameOver">{{ gameOver }}</div>
     <div v-if="!gameOver">
       <div class="player">
@@ -16,6 +15,7 @@
           :skills="playerSkills"
           :currentMana="playerMana"
           :isEnemyDone="doneAttack"
+          :characterClass="characterClass"
           @process-indicators="processIndicators"
         />
       </div>
@@ -31,21 +31,18 @@ import { setTimeout } from 'timers';
 import HealthManaDashboard from './HealthManaDashboard.vue';
 import Player from './Player';
 import Enemy from './Enemy';
-import { getItemFromLocalStorage } from '../utils';
+import { getItemFromLocalStorage, getCharacterSkills } from '../utils';
 export default {
   name: 'GameScreen',
   data() {
     return {
       characterName: '',
+      characterClass: {},
       playerHealth: 100,
       enemyHealth: 100,
       playerMana: 100,
       enemyMana: 100,
-      playerSkills: [
-        { name: 'Shurikenjutsu', damage: 5, mana: 20 },
-        { name: 'Suiton No Jutsu', damage: 20, mana: 30 },
-        { name: 'Seishin Teki Kyoyo', health: 20, mana: 10 }
-      ],
+      playerSkills: undefined,
       enemyLog: '',
       isEnemyAttacking: false,
       doneAttack: false,
@@ -54,7 +51,10 @@ export default {
   },
   mounted() {
     const userDetails = JSON.parse(getItemFromLocalStorage('currentUser'));
-    this.characterName = userDetails.characterName;
+    const { characterName, characterClass } = userDetails;
+    this.characterName = characterName;
+    this.characterClass = characterClass;
+    this.playerSkills = getCharacterSkills(characterClass.code);
   },
   components: {
     'health-mana-dashboard': HealthManaDashboard,
@@ -63,9 +63,10 @@ export default {
   },
   methods: {
     processIndicators: function(data) {
-      if (data.name === 'Focus') {
+      console.log('emitted', data);
+      if (data.type === 'regenerateMana') {
         this.playerMana += data.mana;
-      } else if (data.name === 'Seishin Teki Kyoyo') {
+      } else if (data.type === 'regenerateHealth') {
         this.playerHealth += data.health;
         this.playerMana -= data.mana;
       } else {
@@ -124,7 +125,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.gameScreen {
+body {
   margin: 0px;
   background: rgba(0, 0, 0, 0.1);
   background-image: url('../assets/forest.jpg');
