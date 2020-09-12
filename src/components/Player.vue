@@ -1,37 +1,26 @@
 <template>
   <div>
     <div class="blinking message">{{ message }}</div>
-    <div v-if="isAttacking" class="attackingPlayer">
-      <img class="attacking" src="../assets/ninja.gif" />
+    <div v-if="playerAttacking" class="attackingPlayer">
+      <img class="attacking" src="../assets/Saber/attack.png" />
     </div>
     <div v-else class="idlePlayer">
-      <img class="idle" src="../assets/idleNinja.png" />
-    </div>
-    <button class="attackButton" @click="basicAttack">
-      <img class="attackIcon" src="../assets/Attack_skill_icon.png" />
-    </button>
-    <div v-for="skill in skills" :key="skill.id">
-      <button
-        :class="setSkillButtonClass(skill.id)"
-        @click="processSkills(skill.id)"
-        :disabled="disableSkills"
-      >
-        <img class="skillsIcon" :src="setSkillIconPath(skill)" />
-      </button>
+      <img class="idle" src="../assets/Saber/idle.png" />
     </div>
   </div>
 </template>
 
 <script>
 import { setTimeout } from 'timers';
+import { EventBus } from '../main';
 import { getCharacterImage } from '../utils';
 export default {
   name: 'Player',
   data() {
     return {
-      isAttacking: false,
       message: '',
-      characterImages: []
+      characterImages: [],
+      playerAttacking: false
     };
   },
   props: {
@@ -41,46 +30,16 @@ export default {
     currentMana: Number,
     isEnemyDone: Boolean
   },
-  mounted() {},
+  created() {
+    EventBus.$on('player-attacks', data => {
+      this.playerAttacking = data;
+      setTimeout(() => (this.playerAttacking = false), 2000);
+    });
+  },
+  destroyed() {
+    EventBus.$off('player-attacks');
+  },
   methods: {
-    basicAttack: function() {
-      const skill = { name: 'Attack', damage: 3, mana: 0 };
-      this.isAttacking = true;
-      this.message = "You're using Basic Attack";
-      setTimeout(() => {
-        this.$emit('process-indicators', skill);
-        this.message = '';
-        this.isAttacking = false;
-      }, 3000);
-    },
-    processSkills: function(id) {
-      const skill = this.skills[id - 1];
-      if (this.currentMana >= skill.mana) {
-        if (skill.type === 'damage') {
-          this.isAttacking = skill.type === 'damage' ? true : false;
-          this.message = `You're using ${skill.name}`;
-          setTimeout(() => {
-            this.$emit('process-indicators', skill);
-            this.message = '';
-            this.isAttacking = false;
-          }, 2000);
-        } else {
-          this.message = `You're using ${skill.name}`;
-          setTimeout(() => {
-            this.$emit('process-indicators', skill);
-            this.message = '';
-          }, 2000);
-        }
-      } else {
-        if (skill.type === 'regenerateMana') {
-          this.message = `You're using ${skill.name}`;
-          setTimeout(() => {
-            this.$emit('process-indicators', skill);
-            this.message = '';
-          }, 2000);
-        }
-      }
-    },
     setSkillButtonClass: function(id) {
       return `skillButton${id}`;
     },
@@ -95,11 +54,6 @@ export default {
       return this.characterImages
         ? require(`../assets/${this.characterClass.title}/${this.characterImages[1]}`)
         : require('../assets/idleNinja.png');
-    }
-  },
-  computed: {
-    disableSkills: function() {
-      return this.isAttacking;
     }
   }
 };

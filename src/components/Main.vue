@@ -1,41 +1,37 @@
 <template>
   <div id="app">
-    <div v-if="hasCurrentUser || isAccountCreated">
-      <game-screen />
+    <div v-if="isAuthenticated">
+      <game-screen :accountId="accountId" />
     </div>
     <div v-else>
-      <account-creation-form @account-created="setAccountCreatedFlag" />
+      <login-form @set-authentication="setAccount" />
     </div>
   </div>
 </template>
 
 <script>
 import GameScreen from '../components/GameScreen.vue';
-import AccountCreationForm from '../components/AccountCreationForm.vue';
-import { getItemFromLocalStorage } from '../utils/localStorage';
+import LoginForm from '../components/Forms/LoginForm';
 
 export default {
   name: 'App',
   data() {
     return {
-      showForm: true,
-      isAccountCreated: false
+      accountId: undefined,
+      isAuthenticated: false
     };
   },
   components: {
-    'game-screen': GameScreen,
-    'account-creation-form': AccountCreationForm
+    'login-form': LoginForm,
+    'game-screen': GameScreen
   },
   methods: {
-    setAccountCreatedFlag(isAccountCreated) {
-      this.isAccountCreated = isAccountCreated;
+    setAccount(id) {
+      this.accountId = id;
+      this.isAuthenticated = true;
     }
   },
-  computed: {
-    hasCurrentUser() {
-      return getItemFromLocalStorage('currentUser');
-    }
-  }
+  computed: {}
 };
 </script>
 

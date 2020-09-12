@@ -1,25 +1,30 @@
 <template>
-  <div :class="{reverse:isEnemy}">
-    <div class="healthBar" style="background-color: #d5d539;" :style="playerHealthBar"></div>
+  <div :class="{ reverse: isReverse }">
+    <div
+      class="healthBar"
+      style="background-color: #d5d539;"
+      :style="playerHealthBar"
+    ></div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "HealthBar",
+  name: 'HealthBar',
   props: {
     health: Number,
-    isEnemy: Boolean
+    isReverse: Boolean
   },
   computed: {
     playerHealthBar: function() {
+      console.log('healthBar', this.health);
       var styles = {
-        width: this.health + "%"
+        width: this.health + '%'
       };
       if (this.health <= 20) {
-        styles.backgroundColor = "red";
+        styles.backgroundColor = 'red';
       } else {
-        styles.backgroundColor = "#d5d539";
+        styles.backgroundColor = '#d5d539';
       }
       return styles;
     }

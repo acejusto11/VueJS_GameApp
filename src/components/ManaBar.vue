@@ -1,27 +1,31 @@
 <template>
-  <div :class="{reverse:isEnemy}">
-    <div class="manaBar" style="background-color: #3535d1; color: white;" :style="manaBar"></div>
+  <div :class="{ reverse: isReverse }">
+    <div
+      class="manaBar"
+      style="background-color: #3535d1; color: white;"
+      :style="manaBar"
+    ></div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "ManaBar",
+  name: 'ManaBar',
   props: {
     mana: Number,
-    isEnemy: Boolean
+    isReverse: Boolean
   },
   computed: {
     manaBar: function() {
       const mana = this.mana < 0 ? 0 : this.mana;
 
       const styles = {
-        width: mana + "%"
+        width: mana + '%'
       };
       if (this.mana <= 30) {
-        styles.backgroundColor = "rgb(80 80 238)";
+        styles.backgroundColor = 'rgb(80 80 238)';
       } else {
-        styles.backgroundColor = "#3535d1";
+        styles.backgroundColor = '#3535d1';
       }
       return styles;
     }

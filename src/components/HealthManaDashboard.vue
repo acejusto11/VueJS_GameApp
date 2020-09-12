@@ -1,7 +1,7 @@
 <template>
   <div class="containerRow">
     <div class="half player">
-      {{ playerName }}
+      <div class="name">{{ `${playerHealth} (Level ${playerLevel})` }}</div>
       <health-bar :health="playerHealth" />
       <mana-bar :mana="playerMana" />
       <div class="iconContainer left">
@@ -9,9 +9,9 @@
       </div>
     </div>
     <div class="half enemy">
-      Viserion
-      <health-bar :health="enemyHealth" :isEnemy="true" />
-      <mana-bar :mana="enemyMana" :isEnemy="true" />
+      <div class="name">{{ enemyHealth }}</div>
+      <health-bar :health="enemyHealth" :isReverse="true" />
+      <mana-bar :mana="enemyMana" :isReverse="true" />
 
       <div class="iconContainer right">
         <img class="icon" src="../assets/dragon2.png" />
@@ -27,6 +27,7 @@ export default {
   name: 'HealthManaDashboard',
   props: {
     playerName: String,
+    playerLevel: Number,
     playerHealth: Number,
     playerMana: Number,
     enemyHealth: Number,
@@ -61,6 +62,10 @@ export default {
 
 .enemy {
   padding: 0 140px 0 100px;
+}
+
+.name {
+  min-height: 48px;
 }
 
 .iconContainer {

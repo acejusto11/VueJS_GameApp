@@ -1,17 +1,17 @@
 <template>
   <div>
-    <main-screen />
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import Main from './components/Main.vue';
+// import Main from './components/Main.vue';
 
 export default {
-  name: 'Main',
-  components: {
-    'main-screen': Main
-  }
+  name: 'Main'
+  // components: {
+  //   'main-screen': Main
+  // }
 };
 </script>
 

@@ -12,13 +12,16 @@
             type="text"
             name="fullName"
             id="fullName"
-            v-model.lazy.trim="fullName"
-            :class="{ hasErrors: !$v.fullName.required }"
-            @blur="$v.fullName.$touch()"
+            v-model.lazy.trim="accountData.fullName"
+            :class="{ hasErrors: !$v.accountData.fullName.required }"
+            @blur="$v.accountData.fullName.$touch()"
           />
           <p
             class="error-message"
-            v-if="!$v.fullName.required && $v.fullName.$error"
+            v-if="
+              !$v.accountData.fullName.required &&
+                $v.accountData.fullName.$error
+            "
           >
             Fullname is required
           </p>
@@ -29,40 +32,49 @@
             type="text"
             name="email"
             id="email"
-            v-model.lazy.trim="email"
-            :class="{ hasErrors: !$v.email.required }"
-            @blur="$v.email.$touch()"
+            v-model.lazy.trim="accountData.email"
+            :class="{ hasErrors: !$v.accountData.email.required }"
+            @blur="$v.accountData.email.$touch()"
           />
-          <p class="error-message" v-if="!$v.email.required && $v.email.$error">
+          <p
+            class="error-message"
+            v-if="!$v.accountData.email.required && $v.accountData.email.$error"
+          >
             Email is required
           </p>
-          <p class="error-message" v-if="!$v.email.email && $v.email.$error">
+          <p
+            class="error-message"
+            v-if="!$v.accountData.email.email && $v.accountData.email.$error"
+          >
             Must be a valid email
           </p>
-          <label for="userName">
+          <label for="username">
             <b>User Name</b>
           </label>
           <input
             type="text"
-            name="userName"
-            id="userName"
-            v-model.lazy.trim="userName"
-            :class="{ hasErrors: !$v.userName.required }"
-            @blur="$v.userName.$touch()"
+            name="username"
+            id="username"
+            v-model.lazy.trim="accountData.username"
+            :class="{ hasErrors: !$v.accountData.username.required }"
+            @blur="$v.accountData.username.$touch()"
           />
           <p
             class="error-message"
-            v-if="!$v.userName.required && $v.userName.$error"
+            v-if="
+              !$v.accountData.username.required &&
+                $v.accountData.username.$error
+            "
           >
             Username is required
           </p>
-          <p class="error-message" v-if="!$v.userName.minLength">
+          <p class="error-message" v-if="!$v.accountData.username.minLength">
             Username must have at least
-            {{ $v.userName.$params.minLength.min }} letters.
+            {{ $v.accountData.username.$params.minLength.min }} letters.
           </p>
-          <p class="error-message" v-if="!$v.userName.maxLength">
+          <p class="error-message" v-if="!$v.accountData.username.maxLength">
             Username must have at most
-            {{ $v.userName.$params.maxLength.max }} letters.
+            {{ $v.accountData.username.$params.maxLength.max }} letters.
           </p>
 
           <label for="password">
@@ -72,23 +84,26 @@
             type="password"
             name="password"
             id="password"
-            v-model.lazy.trim="password"
-            :class="{ hasErrors: !$v.password.required }"
-            @blur="$v.password.$touch()"
+            v-model.lazy.trim="accountData.password"
+            :class="{ hasErrors: !$v.accountData.password.required }"
+            @blur="$v.accountData.password.$touch()"
           />
           <p
             class="error-message"
-            v-if="!$v.password.required && $v.password.$error"
+            v-if="
+              !$v.accountData.password.required &&
+                $v.accountData.password.$error
+            "
           >
             Password is required
           </p>
-          <p class="error-message" v-if="!$v.password.minLength">
+          <p class="error-message" v-if="!$v.accountData.password.minLength">
             Password must have at least
-            {{ $v.userName.$params.minLength.min }} letters.
+            {{ $v.accountData.password.$params.minLength.min }} letters.
           </p>
-          <p class="error-message" v-if="!$v.password.maxLength">
+          <p class="error-message" v-if="!$v.accountData.password.maxLength">
             Password must have at most
-            {{ $v.password.$params.maxLength.max }} letters.
+            {{ $v.accountData.password.$params.maxLength.max }} letters.
           </p>
         </div>
         <div class="buttons">
@@ -105,23 +120,26 @@
           type="text"
           name="characterName"
           id="characterName"
-          v-model.lazy.trim="characterName"
-          :class="{ hasErrors: !$v.characterName.required }"
-          @blur="$v.characterName.$touch()"
+          v-model.lazy.trim="accountData.characterName"
+          :class="{ hasErrors: !$v.accountData.characterName.required }"
+          @blur="$v.accountData.characterName.$touch()"
         />
         <p
           class="error-message"
-          v-if="!$v.characterName.required && $v.characterName.$error"
+          v-if="
+            !$v.accountData.characterName.required &&
+              $v.accountData.characterName.$error
+          "
         >
           Character name is required
         </p>
-        <p class="error-message" v-if="!$v.characterName.minLength">
+        <p class="error-message" v-if="!$v.accountData.characterName.minLength">
           Character name must have at least
-          {{ $v.characterName.$params.minLength.min }} letters.
+          {{ $v.accountData.characterName.$params.minLength.min }} letters.
         </p>
-        <p class="error-message" v-if="!$v.characterName.maxLength">
+        <p class="error-message" v-if="!$v.accountData.characterName.maxLength">
           Character name must have at most
-          {{ $v.characterName.$params.maxLength.max }} letters
+          {{ $v.accountData.characterName.$params.maxLength.max }} letters
         </p>
         <label for="characterClass">
           <b>Class</b>
@@ -130,24 +148,27 @@
           class="style-chooser"
           :options="characterClasses"
           label="title"
-          v-model="characterClass"
+          v-model="accountData.classType"
           placeholder="Please select..."
           :searchable="false"
-          @blur="$v.characterClass.$touch()"
+          @blur="$v.accountData.classType.$touch()"
         >
           <template #search="{attributes, events}">
             <input
               class="vs__search"
               v-bind="attributes"
               v-on="events"
-              @blur="$v.characterClass.$touch()"
-              :required="!characterClass"
+              @blur="$v.accountData.classType.$touch()"
+              :required="!accountData.classType"
             />
           </template>
         </v-select>
         <p
           class="error-message"
-          v-if="!$v.characterClass.required && $v.characterClass.$error"
+          v-if="
+            !$v.accountData.classType.required &&
+              $v.accountData.classType.$error
+          "
         >
           Character class is required
         </p>
@@ -168,19 +189,23 @@ import {
   minLength,
   maxLength
 } from 'vuelidate/lib/validators';
-import { saveItemFromLocalStorage, getCharacterClasses } from '../utils';
+import { getCharacterClasses } from '../../utils';
+import AccountMixin from '../../shared/mixins/AccountMixin';
 
 export default {
+  name: 'AccountCreationForm',
+  mixins: [AccountMixin],
   data() {
     return {
-      fullName: '',
-      userName: '',
-      email: '',
-      password: '',
-      characterName: '',
-      characterClass: '',
+      accountData: {
+        fullName: '',
+        email: '',
+        username: '',
+        password: '',
+        characterName: '',
+        classType: undefined
+      },
       showNext: false,
-      options: ['1', '2'],
       characterClasses: []
     };
   },
@@ -188,16 +213,18 @@ export default {
     this.characterClasses = getCharacterClasses();
   },
   validations: {
-    fullName: { required },
-    userName: { required, minLength: minLength(6), maxLength: maxLength(20) },
-    email: { required, email },
-    password: { required, minLength: minLength(6), maxLength: maxLength(20) },
-    characterName: {
-      required,
-      minLength: minLength(6),
-      maxLength: maxLength(20)
-    },
-    characterClass: { required }
+    accountData: {
+      fullName: { required },
+      username: { required, minLength: minLength(6), maxLength: maxLength(20) },
+      email: { required, email },
+      password: { required, minLength: minLength(6), maxLength: maxLength(20) },
+      characterName: {
+        required,
+        minLength: minLength(6),
+        maxLength: maxLength(20)
+      },
+      classType: { required }
+    }
   },
   methods: {
     showNextForm() {
@@ -206,25 +233,31 @@ export default {
       }
     },
     submitForm() {
-      if (!this.$v.$invalid) {
+      if (!this.$v.accountData.$invalid) {
         this.$v.$touch();
         const user = {
-          userName: this.userName,
-          characterName: this.characterName,
-          characterClass: this.characterClass
+          fullName: this.accountData.fullName,
+          email: this.accountData.email,
+          username: this.accountData.username,
+          password: this.accountData.password,
+          characterName: this.accountData.characterName,
+          classType: this.accountData.classType.code
         };
-        saveItemFromLocalStorage('currentUser', JSON.stringify(user));
-        this.$emit('account-created', true);
+        this.createAccount(user)
+          .then(this.$router.push('/'))
+          .catch(error => {
+            console.log(error, 'error');
+          });
       }
     }
   },
   computed: {
     isFirstFormInvalid() {
       return (
-        this.$v.fullName.$invalid ||
-        this.$v.email.$invalid ||
-        this.$v.userName.$invalid ||
-        this.$v.password.$invalid
+        this.$v.accountData.fullName.$invalid ||
+        this.$v.accountData.email.$invalid ||
+        this.$v.accountData.username.$invalid ||
+        this.$v.accountData.password.$invalid
       );
     }
   }
@@ -239,7 +272,7 @@ export default {
 .main {
   margin: 0px;
   background: rgba(0, 0, 0, 0.1);
-  background-image: url('../assets/dragon_slayer_wall2.jpg');
+  background-image: url('../../assets/dragon_slayer_wall2.jpg');
   background-repeat: no-repeat;
   background-size: 100% 100%;
   height: 100vh;
@@ -271,13 +304,13 @@ h1 {
 p {
   color: white;
   font-weight: 700;
-  font-family: Helvetica, sans-serif;
+  font-family: Rubik, Helvetica, sans-serif;
   letter-spacing: 1px;
 }
 label {
   margin-bottom: 0;
   color: white;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Rubik, Arial, Helvetica, sans-serif;
   letter-spacing: 1px;
 }
 
@@ -289,7 +322,7 @@ input[type='password'] {
   display: inline-block;
   background: #f1f1f1;
   font-weight: 700;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Rubik, Arial, Helvetica, sans-serif;
   letter-spacing: 1px;
 }
 
@@ -337,7 +370,7 @@ hr {
 .style-chooser .vs__search::placeholder,
 .style-chooser .vs__dropdown-menu {
   border: none;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Rubik, Arial, Helvetica, sans-serif;
   letter-spacing: 1px;
 }
 
