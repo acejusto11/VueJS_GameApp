@@ -1,37 +1,47 @@
 <template>
   <div class="dungeon">
     <health-mana-dashboard
+      :characterStats="characterStats"
+      :characterData="characterData"
+      :monsterStats="monsterStats"
+      :enemyData="enemyData"
       :playerName="characterData.name"
       :playerLevel="characterData.level"
-      :playerHealth="characterData.health"
-      :playerMana="characterData.mana"
-      :enemyHealth="enemyHealth"
-      :enemyMana="enemyMana"
+      :currentPlayerHealth="characterData.health"
+      :currentPlayerMana="characterData.mana"
+      :currentEnemyHealth="enemyData.health"
+      :currentEnemyMana="enemyData.mana"
     />
     <div class="gameOver">{{ gameOver }}</div>
     <div v-if="!gameOver">
       <div class="player">
         <player-hero
+          :type="characterData.type"
           :currentMana="playerMana"
           :isEnemyDone="doneAttack"
-          :characterClass="characterClass"
         />
       </div>
       <div class="enemy">
-        <enemy :message="enemyLog" :isAttacking="isEnemyAttacking" />
+        <enemy :isAttacking="isEnemyAttacking" />
       </div>
-      <skills-dashboard
-        :skills="characterData.skills"
-        :currentPlayerMana="characterData.mana"
-        @process-indicators="processIndicators"
-      />
-      <notication-message />
+      <div class="bottom">
+        <div class="skillsDashboard">
+          <skills-dashboard
+            :skills="characterData.skills"
+            :currentPlayerMana="characterData.mana"
+            @process-indicators="processIndicators"
+          />
+        </div>
+        <div class="notification">
+          <notication-message />
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-// import { setTimeout } from 'timers';
+import { EventBus } from '../main';
 import AccountMixin from '../shared/mixins/AccountMixin';
 import HealthManaDashboard from './HealthManaDashboard.vue';
 import SkillsDashboard from './SkillsDashboard.vue';
@@ -48,12 +58,26 @@ export default {
         level: 0,
         health: 100,
         mana: 100,
+        type: 1,
         skills: []
       },
-      characterClass: {},
-      enemyHealth: 400,
-      enemyMana: 100,
-      enemyLog: '',
+      characterStats: {},
+      monsterStats: {
+        health: 400,
+        mana: 400
+      },
+      enemyData: {
+        name: 'Viserion',
+        level: 1,
+        health: 400,
+        mana: 400,
+        skills: [
+          { name: 'Basic Attack', damage: 35, mana: 0 },
+          { name: 'Ice Breath', damage: 40, mana: 10 },
+          { name: 'Swirling Wind', damage: 45, mana: 15 },
+          { name: 'Molten Eruption', damage: 50, mana: 20 }
+        ]
+      },
       isEnemyAttacking: false,
       doneAttack: false,
       gameOver: '',
@@ -67,12 +91,20 @@ export default {
     this.getAccountCharacter(this.accountId)
       .then(accountCharacterResp => {
         console.log(accountCharacterResp, 'accountCharacterResp');
-        const { name, stats, level, skills } = accountCharacterResp.body;
+        const {
+          classType,
+          name,
+          stats,
+          level,
+          skills
+        } = accountCharacterResp.body;
         this.characterData.name = name;
         this.characterData.level = level;
+        this.characterData.type = classType;
         this.characterData.health = stats.health;
         this.characterData.mana = stats.mana;
         this.characterData.skills = skills;
+        this.characterStats = stats;
       })
       .catch(accountCharacterError => {
         console.log(accountCharacterError, 'accountCharacterError');
@@ -87,52 +119,46 @@ export default {
   },
   methods: {
     processIndicators: function(data) {
-      if (data.type === 'R') {
-        this.characterData.mana += data.cost;
-      } else if (data.type === 'M') {
-        this.characterData.health -= data.damage;
+      if (data.target === 'enemy') {
+        this.enemyData.health -= data.damage;
         this.characterData.mana -= data.cost;
-      } else {
-        this.enemyHealth -= data.damage;
-        this.characterData.mana -= data.cost;
+      } else if (data.target === 'self') {
+        if (data.type === 'M') {
+          this.characterData.health -= data.damage;
+          this.characterData.mana -= data.cost;
+        } else if (data.type === 'R') {
+          this.characterData.mana += data.cost;
+        }
       }
-
       const enemySkill = this.selectEnemySkill();
       this.processAI(enemySkill);
     },
     selectEnemySkill: function() {
-      const enemySkills = [
-        { name: 'Basic Attack', damage: 35, mana: 0 },
-        { name: 'Ice Breath', damage: 40, mana: 10 },
-        { name: 'Swirling Wind', damage: 45, mana: 15 },
-        { name: 'Molten Eruption', damage: 50, mana: 20 }
-      ];
       const randomInt = Math.floor(Math.random() * Math.floor(3));
-      const skill = enemySkills[randomInt];
+      const skill = this.enemyData.skills[randomInt];
       this.isEnemyAttacking = true;
       return skill;
     },
     processAI: function(enemySkill) {
-      this.enemyLog = `Viserion is using ${enemySkill.name}`;
-      if (this.enemyMana <= 20)
-        enemySkill = { name: 'Regenerate Mana', damage: 0, mana: 20 };
-      this.enemyLog = `Viserion is using ${enemySkill.name}`;
+      if (this.enemyData.mana <= 20)
+        enemySkill = { name: 'Rejuvenate', damage: 0, mana: 20 };
+      const message = `Viserion is using ${enemySkill.name}`;
+      EventBus.$emit('notify', message);
 
       setTimeout(() => {
-        if (this.enemyMana <= 20) {
-          this.enemyMana += enemySkill.mana;
+        if (this.enemyData.mana <= 20) {
+          this.enemyData.mana += enemySkill.mana;
         } else {
           this.characterData.health -= enemySkill.damage;
-          this.enemyMana -= enemySkill.mana;
+          this.enemyData.mana -= enemySkill.mana;
         }
         this.doneAttack = true;
         this.isEnemyAttacking = false;
-        this.enemyLog = '';
       }, 3000);
     }
   },
   watch: {
-    enemyHealth: function(health) {
+    'enemyData.health': function(health) {
       if (health <= 0) {
         this.gameOver = 'You win!';
       }
@@ -168,6 +194,12 @@ export default {
   position: absolute;
   bottom: 150px;
   right: 150px;
+}
+
+.bottom {
+  display: flex;
+  position: absolute;
+  bottom: 0px;
 }
 
 .gameOver {

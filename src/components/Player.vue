@@ -1,11 +1,10 @@
 <template>
   <div>
-    <div class="blinking message">{{ message }}</div>
     <div v-if="playerAttacking" class="attackingPlayer">
-      <img class="attacking" src="../assets/Saber/attack.png" />
+      <img class="attacking" :src="getImage(type, 'attack')" />
     </div>
     <div v-else class="idlePlayer">
-      <img class="idle" src="../assets/Saber/idle.png" />
+      <img class="idle" :src="getImage(type, 'idle')" />
     </div>
   </div>
 </template>
@@ -18,13 +17,12 @@ export default {
   name: 'Player',
   data() {
     return {
-      message: '',
       characterImages: [],
       playerAttacking: false
     };
   },
   props: {
-    skills: Array,
+    type: String,
     characterClass: Object,
     currentHealth: Number,
     currentMana: Number,
@@ -49,11 +47,15 @@ export default {
         ? require(`../assets/${this.characterClass.title}/${skill.image}`)
         : defaultSkillIcon;
     },
-    setIdleImage: function() {
-      this.characterImages = getCharacterImage(this.characterClass.code);
+    getImage: function(type, action) {
+      this.characterImages = getCharacterImage(this.type || 1);
+      const image =
+        action == 'attack' ? this.characterImages[1] : this.characterImages[0];
+      console.log(this.type, 'type');
+      console.log(image, 'iamge');
       return this.characterImages
-        ? require(`../assets/${this.characterClass.title}/${this.characterImages[1]}`)
-        : require('../assets/idleNinja.png');
+        ? require(`../assets/${type}/${image}`)
+        : require('../assets/1/0.png');
     }
   }
 };
@@ -78,8 +80,8 @@ export default {
   height: 300px;
 }
 .idle {
-  width: 150px;
-  height: 200px;
+  width: 250px;
+  height: 250px;
 }
 
 .skills {

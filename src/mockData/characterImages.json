@@ -1,27 +1,22 @@
 [
   {
-    "id": 1,
     "characterId": 1,
-    "characterImages": ["idleNinja.jpg", "ninja.gif"]
+    "characterImages": ["0.png", "1.png"]
   },
   {
-    "id": 2,
     "characterId": 2,
-    "characterImages": ["idleNinja.jpg", "ninja.gif"]
+    "characterImages": ["0.png", "1.png"]
   },
   {
-    "id": 3,
     "characterId": 3,
-    "characterImages": ["idleNinja.jpg", "ninja.gif"]
+    "characterImages": ["0.png", "1.png"]
   },
   {
-    "id": 4,
     "characterId": 4,
-    "characterImages": ["idleNinja.jpg", "ninja.gif"]
+    "characterImages": ["0.png", "1.png"]
   },
   {
-    "id": 5,
     "characterId": 5,
-    "characterImages": ["idleNinja.jpg", "ninja.gif"]
+    "characterImages": ["0.png", "1.png"]
   }
 ]

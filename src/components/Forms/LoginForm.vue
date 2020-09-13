@@ -1,15 +1,14 @@
 <template>
   <div class="main">
     <form @submit.prevent="submitForm" class="formContainer">
+      <h1>Login</h1>
       <div class="container">
         <div>
-          <label for="Username">
-            <b>Username</b>
-          </label>
           <input
             type="text"
             name="username"
             id="username"
+            placeholder="Username"
             v-model.lazy.trim="username"
             :class="{ hasErrors: !$v.username.required }"
             @blur="$v.username.$touch()"
@@ -17,16 +16,13 @@
           <p
             class="error-message"
             v-if="!$v.username.required && $v.username.$error"
-          >
-            Username is required
-          </p>
-          <label for="password">
-            <b>Password</b>
-          </label>
+          >* Username is required</p>
+
           <input
             type="password"
             name="password"
             id="password"
+            placeholder="Password"
             v-model.lazy.trim="password"
             :class="{ hasErrors: !$v.password.required }"
             @blur="$v.password.$touch()"
@@ -34,19 +30,12 @@
           <p
             class="error-message"
             v-if="!$v.password.required && $v.password.$error"
-          >
-            Password is required
-          </p>
+          >* Password is required</p>
         </div>
-        <div>
-          {{ errorMessage }}
-        </div>
-        <button type="submit" class="button" @click="submitForm">
-          Login
-        </button>
-        <button type="buttton" class="button" @click="goToAccountCreation">
-          Register
-        </button>
+        <span>{{ errorMessage }}</span>
+        <button type="submit" class="button" @click="submitForm">Login</button>
+        <span>OR</span>
+        <button type="buttton" class="button" @click="goToAccountCreation">Register New Account</button>
       </div>
     </form>
   </div>
@@ -87,7 +76,7 @@ export default {
             const { body } = loginError;
             if (body.code === 404) {
               this.errorMessage =
-                'Your username or password might be incorrect';
+                'Login failed: Your username or password might be incorrect';
             } else {
               this.errorMessage =
                 'An error has occured. Please contact the system administrator.';
@@ -121,19 +110,21 @@ export default {
   justify-content: center;
 }
 
+h1 {
+  margin-bottom: 2rem;
+}
+
+span {
+  color: white;
+  font-family: Rubik, Arial, Helvetica, sans-serif;
+}
+
 .formContainer {
   background-color: rgb(3 0 0 / 70%);
   width: 50%;
   height: 60%;
   border: 20px solid rgb(3 2 2 / 50%);
-  padding: 10px;
-}
-
-.buttons {
-  position: fixed;
-  width: 45%;
-  bottom: 20px;
-  margin: 0 auto;
+  padding: 2rem 6rem 6rem 6rem;
 }
 
 h1 {

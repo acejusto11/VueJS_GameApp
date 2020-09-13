@@ -1,21 +1,25 @@
 <template>
   <div class="containerRow">
     <div class="half player">
-      <div class="name">{{ `${playerHealth} (Level ${playerLevel})` }}</div>
-      <health-bar :health="playerHealth" />
-      <mana-bar :mana="playerMana" />
+      <div class="name">{{ `${characterData.name} - Level ${characterData.level}` }}</div>
+      <health-bar :health="characterData.health" />
+      <mana-bar :mana="characterData.mana" />
       <div class="iconContainer left">
         <img class="icon" src="../assets/ninja.png" />
       </div>
+      <span>HP : {{ characterData.health }} / {{characterStats.health}}</span>&nbsp;
+      <span>Mana : {{ characterData.mana }} / {{characterStats.mana}}</span>
     </div>
     <div class="half enemy">
-      <div class="name">{{ enemyHealth }}</div>
-      <health-bar :health="enemyHealth" :isReverse="true" />
-      <mana-bar :mana="enemyMana" :isReverse="true" />
+      <div class="name">Viserion</div>
+      <health-bar :health="enemyData.health" :isReverse="true" />
+      <mana-bar :mana="enemyData.mana" :isReverse="true" />
 
       <div class="iconContainer right">
         <img class="icon" src="../assets/dragon2.png" />
       </div>
+      <span>HP : {{ enemyData.health }} / {{monsterStats.health}}</span>&nbsp;
+      <span>Mana : {{ enemyData.mana }} / {{monsterStats.mana}}</span>
     </div>
   </div>
 </template>
@@ -26,12 +30,10 @@ import ManaBar from './ManaBar.vue';
 export default {
   name: 'HealthManaDashboard',
   props: {
-    playerName: String,
-    playerLevel: Number,
-    playerHealth: Number,
-    playerMana: Number,
-    enemyHealth: Number,
-    enemyMana: Number
+    characterStats: Object,
+    characterData: Object,
+    monsterStats: Object,
+    enemyData: Object
   },
   components: {
     'health-bar': HealthBar,
@@ -47,7 +49,9 @@ export default {
   justify-content: space-around;
   padding-top: 1rem;
 }
+
 .half {
+  border-radius: 8px;
   flex: 1 0 auto;
   width: 50px;
   padding: 0 100px;
@@ -94,5 +98,9 @@ export default {
 .dragonIcon {
   width: 150px;
   height: 150px;
+}
+span {
+  font-family: Rubik, Arial, Helvetica, sans-serif;
+  font-size: 1rem;
 }
 </style>

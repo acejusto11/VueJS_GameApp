@@ -22,9 +22,7 @@
               !$v.accountData.fullName.required &&
                 $v.accountData.fullName.$error
             "
-          >
-            Fullname is required
-          </p>
+          >* Fullname is required</p>
           <label for="email">
             <b>Email</b>
           </label>
@@ -39,15 +37,11 @@
           <p
             class="error-message"
             v-if="!$v.accountData.email.required && $v.accountData.email.$error"
-          >
-            Email is required
-          </p>
+          >* Email is required</p>
           <p
             class="error-message"
             v-if="!$v.accountData.email.email && $v.accountData.email.$error"
-          >
-            Must be a valid email
-          </p>
+          >* Must be a valid email</p>
           <label for="username">
             <b>User Name</b>
           </label>
@@ -65,9 +59,7 @@
               !$v.accountData.username.required &&
                 $v.accountData.username.$error
             "
-          >
-            Username is required
-          </p>
+          >* Username is required</p>
           <p class="error-message" v-if="!$v.accountData.username.minLength">
             Username must have at least
             {{ $v.accountData.username.$params.minLength.min }} letters.
@@ -94,9 +86,7 @@
               !$v.accountData.password.required &&
                 $v.accountData.password.$error
             "
-          >
-            Password is required
-          </p>
+          >Password is required</p>
           <p class="error-message" v-if="!$v.accountData.password.minLength">
             Password must have at least
             {{ $v.accountData.password.$params.minLength.min }} letters.
@@ -107,9 +97,7 @@
           </p>
         </div>
         <div class="buttons">
-          <button type="button" class="registerbtn" @click="showNextForm">
-            Next
-          </button>
+          <button type="button" class="registerbtn" @click="showNextForm">Next</button>
         </div>
       </div>
       <div class="container" v-else>
@@ -130,9 +118,7 @@
             !$v.accountData.characterName.required &&
               $v.accountData.characterName.$error
           "
-        >
-          Character name is required
-        </p>
+        >* Character name is required</p>
         <p class="error-message" v-if="!$v.accountData.characterName.minLength">
           Character name must have at least
           {{ $v.accountData.characterName.$params.minLength.min }} letters.
@@ -169,13 +155,9 @@
             !$v.accountData.classType.required &&
               $v.accountData.classType.$error
           "
-        >
-          Character class is required
-        </p>
+        >* Character class is required</p>
         <div class="buttons">
-          <button type="submit" class="registerbtn">
-            Create
-          </button>
+          <button type="submit" class="registerbtn">Create</button>
         </div>
       </div>
     </form>
@@ -283,6 +265,8 @@ export default {
 }
 
 .formContainer {
+  padding-left: 3rem;
+  padding-right: 3rem;
   background-color: rgb(3 0 0 / 50%);
   width: 50%;
   height: 100%;
