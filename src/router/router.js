@@ -9,12 +9,12 @@ export default new Router({
     {
       path: '/',
       name: 'main',
-      component: () => import('./components/Main.vue')
+      component: () => import('../views/Main.vue')
     },
     {
-      path: '/createaccount',
-      name: 'createAccount',
-      component: () => import('./components/Forms/AccountCreationForm.vue')
+      path: '/register',
+      name: 'register',
+      component: () => import('../views/AccountCreationForm.vue')
     }
   ]
 });

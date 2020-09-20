@@ -171,8 +171,9 @@ import {
   minLength,
   maxLength
 } from 'vuelidate/lib/validators';
-import { getCharacterClasses } from '../../utils';
-import AccountMixin from '../../shared/mixins/AccountMixin';
+import { REGISTER } from '../store/actions.type';
+import AccountMixin from '../shared/mixins/AccountMixin';
+import { getCharacterClasses } from '../utils';
 
 export default {
   name: 'AccountCreationForm',
@@ -225,10 +226,11 @@ export default {
           characterName: this.accountData.characterName,
           classType: this.accountData.classType.code
         };
-        this.createAccount(user)
+        this.$store
+          .dispatch(REGISTER, user)
           .then(this.$router.push('/'))
-          .catch(error => {
-            console.log(error, 'error');
+          .error(response => {
+            console.log(response, 'error');
           });
       }
     }
@@ -254,7 +256,7 @@ export default {
 .main {
   margin: 0px;
   background: rgba(0, 0, 0, 0.1);
-  background-image: url('../../assets/dragon_slayer_wall2.jpg');
+  background-image: url('../assets/dragon_slayer_wall2.jpg');
   background-repeat: no-repeat;
   background-size: 100% 100%;
   height: 100vh;

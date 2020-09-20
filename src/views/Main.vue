@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div>
     <div v-if="isAuthenticated">
       <game-screen :accountId="accountId" />
     </div>
@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import GameScreen from '../components/GameScreen.vue';
-import LoginForm from '../components/Forms/LoginForm';
+import GameScreen from '../views/GameScreen';
+import LoginForm from '../views/LoginForm';
 
 export default {
   name: 'App',

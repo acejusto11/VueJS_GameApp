@@ -32,7 +32,7 @@
             v-if="!$v.password.required && $v.password.$error"
           >* Password is required</p>
         </div>
-        <span>{{ errorMessage }}</span>
+        <span>{{ error }}</span>
         <button type="submit" class="button" @click="submitForm">Login</button>
         <span>OR</span>
         <button type="buttton" class="button" @click="goToAccountCreation">Register New Account</button>
@@ -43,16 +43,14 @@
 
 <script>
 import { required } from 'vuelidate/lib/validators';
-import AccountMixin from '../../shared/mixins/AccountMixin';
+import { LOGIN } from '../store/actions.type';
 
 export default {
   name: 'LoginForm',
-  mixins: [AccountMixin],
   data() {
     return {
       username: '',
-      password: '',
-      errorMessage: ''
+      password: ''
     };
   },
   mounted() {},
@@ -68,25 +66,19 @@ export default {
           username: this.username,
           password: this.password
         };
-        this.login(loginData)
-          .then(loginResponse => {
-            this.$emit('set-authentication', loginResponse.body.accountId);
-          })
-          .catch(loginError => {
-            const { body } = loginError;
-            if (body.code === 404) {
-              this.errorMessage =
-                'Login failed: Your username or password might be incorrect';
-            } else {
-              this.errorMessage =
-                'An error has occured. Please contact the system administrator.';
-            }
-            console.log(loginError, 'loginError');
-          });
+        this.$store.dispatch(LOGIN, loginData);
       }
     },
     goToAccountCreation() {
-      this.$router.push('createaccount');
+      this.$router.push('register');
+    }
+  },
+  computed: {
+    error() {
+      return (
+        this.$store.state.authentication.errors &&
+        this.$store.state.authentication.errors.error
+      );
     }
   }
 };
@@ -100,7 +92,7 @@ export default {
 .main {
   margin: 0px;
   background: rgba(0, 0, 0, 0.1);
-  background-image: url('../../assets/dragon_slayer_wall2.jpg');
+  background-image: url('../assets/dragon_slayer_wall2.jpg');
   background-repeat: no-repeat;
   background-size: 100% 100%;
   height: 100vh;
@@ -112,6 +104,7 @@ export default {
 
 h1 {
   margin-bottom: 2rem;
+  color: white;
 }
 
 span {
@@ -120,15 +113,12 @@ span {
 }
 
 .formContainer {
+  display: flex;
+  flex-direction: column;
   background-color: rgb(3 0 0 / 70%);
   width: 50%;
-  height: 60%;
   border: 20px solid rgb(3 2 2 / 50%);
   padding: 2rem 6rem 6rem 6rem;
-}
-
-h1 {
-  color: white;
 }
 
 p {

@@ -1,9 +1,10 @@
 import Vue from 'vue';
 import App from './App.vue';
 import 'bootstrap';
-import router from './router';
+import router from './router/router';
+import store from './store';
 import Vuelidate from 'vuelidate';
-import VueResource from 'vue-resource';
+
 import vSelect from 'vue-select';
 
 import './main.css';
@@ -17,10 +18,10 @@ Vue.component('v-select', vSelect);
 Vue.config.productionTip = false;
 
 Vue.use(Vuelidate);
-Vue.use(VueResource);
 
 new Vue({
   el: '#app',
   router,
+  store,
   render: h => h(App)
 });
