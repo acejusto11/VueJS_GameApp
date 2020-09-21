@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="main flex">
     <form @submit.prevent="submitForm" class="formContainer">
       <h1>Login</h1>
       <div class="container">
@@ -66,7 +66,11 @@ export default {
           username: this.username,
           password: this.password
         };
-        this.$store.dispatch(LOGIN, loginData);
+        this.$store
+          .dispatch(LOGIN, loginData)
+          .then(
+            response => response && this.$router.push({ name: 'character' })
+          );
       }
     },
     goToAccountCreation() {
@@ -89,14 +93,8 @@ export default {
   box-sizing: border-box;
 }
 
-.main {
+.flex {
   margin: 0px;
-  background: rgba(0, 0, 0, 0.1);
-  background-image: url('../assets/dragon_slayer_wall2.jpg');
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  height: 100vh;
-  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;

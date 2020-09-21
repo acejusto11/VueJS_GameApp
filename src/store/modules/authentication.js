@@ -10,13 +10,17 @@ const state = {
 
 const actions = {
   [LOGIN](context, credentials) {
-    GameService.login(credentials)
-      .then(({ body }) => {
-        context.commit(SET_AUTH, body.accountId);
-      })
-      .catch(({ body }) => {
-        context.commit(SET_ERROR, body);
-      });
+    return new Promise((resolve, reject) => {
+      GameService.login(credentials)
+        .then(({ body }) => {
+          context.commit(SET_AUTH, body.accountId);
+          resolve(body);
+        })
+        .catch(({ body }) => {
+          context.commit(SET_ERROR, body);
+          reject(body);
+        });
+    });
   },
   [REGISTER](context, userDetails) {
     return new Promise((resolve, reject) => {

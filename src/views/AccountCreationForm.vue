@@ -269,7 +269,7 @@ export default {
 .formContainer {
   padding-left: 3rem;
   padding-right: 3rem;
-  background-color: rgb(3 0 0 / 50%);
+  background-color: rgb(3 0 0 / 75%);
   width: 50%;
   height: 100%;
   border: 20px solid rgb(3 2 2 / 50%);

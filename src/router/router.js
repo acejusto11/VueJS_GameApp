@@ -15,6 +15,11 @@ export default new Router({
       path: '/register',
       name: 'register',
       component: () => import('../views/AccountCreationForm.vue')
+    },
+    {
+      path: '/character',
+      name: 'character',
+      component: () => import('../views/CharacterDetails.vue')
     }
   ]
 });
