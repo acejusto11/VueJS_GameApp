@@ -36,14 +36,8 @@ export default {
 </script>
 
 <style>
-@font-face {
-  font-family: 'NinjaGarden';
-  src: local('NinjaGarden'),
-    url('../fonts/ninja-garden/NinjaGarden-1gAL.otf') format('truetype');
-}
-
 #app {
-  font-family: NinjaGarden, Avenir, Helvetica, Arial, sans-serif;
+  font-family: Galiver-Sans, Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

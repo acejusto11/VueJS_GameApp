@@ -2,51 +2,55 @@
   <div class="container">
     <div class="row nowrap">
       <div class="col-md-5"></div>
-      <div class="col-md-3">Record</div>
+      <div class="col-md-3 bold title">Record</div>
       <div class="col-md-4"></div>
     </div>
     <div class="row nowrap container-1">
-      <div class="col-md-5">
-        Character Stats
+      <div class="col-md-5 pad">
+        <span class="bold title">Character Stats</span>
         <div class="row nowrap">
-          <div class="col-sm-3">Attrib</div>
-          <div class="col-sm-3">Base</div>
-          <div class="col-sm-3">Bonus</div>
-          <div class="col-sm-3">Total</div>
+          <div class="col-sm-3 bold">Attrib</div>
+          <div class="col-sm-3 bold">Base</div>
+          <div class="col-sm-3 bold">Bonus</div>
+          <div class="col-sm-3 bold">Total</div>
         </div>
-        <div class="row nowrap" v-for="stat in Object.keys(details.stats)" :key="stat">
-          <div class="col-sm-3">{{stat}}</div>
-          <div class="col-sm-3">0</div>
-          <div class="col-sm-3">0</div>
-          <div class="col-sm-3">0</div>
-        </div>
-      </div>
-      <div class="col-md-3 container-3">
-        <img class="imgCharacter" src="../assets/1/0.png" />
 
-        <div>{{details.name}}</div>
-        <div>Level {{details.level}}</div>
-        <div>Type {{details.classType}}</div>
-        <div>{{details.totalExp}}</div>
+        <div class="row nowrap" v-for="stat in Object.keys(details.stats)" :key="stat">
+          <div class="col-sm-3 bold uppercase">{{stat}}</div>
+          <div class="col-sm-3">{{details.stats[stat]["base"]}}</div>
+          <div class="col-sm-3">{{details.stats[stat]["bonus"]}}</div>
+          <div class="col-sm-3">{{details.stats[stat]["total"]}}</div>
+        </div>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-3 container-3 bold">
+        <img class="imgCharacter" src="../assets/1/0.png" />
+        <div class="title bold">{{details.name}}</div>
+        <div>Level: {{details.level}}</div>
+        <div>Type: {{details.classType}}</div>
+        <div>Exp: {{details.totalExp}}</div>
+      </div>
+      <div class="col-md-4 pad">
+        <div class="row bold title">Skills</div>
         <div class="row">
-          Skills
           <div class="col-sm-4" v-for="skill in details.skills" :key="skill._id">{{ skill.name }}</div>
         </div>
+        <div class="row bold title">Weapon</div>
         <div class="row">
-          Weapons
-          <div class="col-sm-4" v-for="skill in details.skills" :key="skill._id">{{ skill.name }}</div>
+          <div class="col-sm-4">{{ details.equipment.weapon.name}}</div>
+        </div>
+        <div class="row bold title">Armor</div>
+        <div class="row">
+          <div class="col-sm-4">{{ details.equipment.armor.name}}</div>
         </div>
       </div>
     </div>
     <div class="row nowrap container-2">
-      <div class="col-md-5">
-        Dungeon Access
+      <div class="col-md-5 pad">
+        <span class="bold title">Dungeon Access</span>
         <div v-for="dungeon in details.dungeonAccess" :key="dungeon._id">{{ dungeon.name }}</div>
       </div>
       <div class="col-md-3"></div>
-      <div class="col-md-4">
+      <div class="col-md-4 pad">
         <div>
           <button>Character</button>
         </div>
@@ -59,6 +63,9 @@
         <div>
           <button>Skills</button>
         </div>
+        <div>
+          <button>Logout</button>
+        </div>
       </div>
     </div>
   </div>
@@ -69,9 +76,6 @@ export default {
   name: 'CharacterDashboard',
   props: {
     details: Object
-  },
-  mounted() {
-    console.log(this.details.stats, 'stat details');
   }
 };
 </script>
@@ -102,17 +106,19 @@ export default {
 .nowrap {
   flex-wrap: nowrap;
 }
-
 .container-1 {
-  border: 1px solid green;
+  border: 5px solid #d39e0033;
 }
 .container-2 {
-  border: 1px solid green;
+  border: 5px solid #d39e0033;
   border-top: 0;
 }
 .container-3 {
-  border-left: 1px solid green;
-  border-right: 1px solid green;
+  border-left: 5px solid #d39e0033;
+  border-right: 5px solid #d39e0033;
+}
+.pad {
+  padding: 1em;
 }
 
 button {
@@ -124,7 +130,7 @@ button {
   display: inline-block;
   cursor: pointer;
   color: black;
-  font-family: Rubik;
+  font-family: Galiver-Sans;
   font-size: 1rem;
   font-weight: bold;
   padding: 9px 47px;
@@ -140,8 +146,4 @@ button:active {
   position: relative;
   top: 1px;
 }
-
-/* div {
-  border: 0.5px solid gray;
-} */
 </style>

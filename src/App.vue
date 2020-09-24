@@ -12,9 +12,9 @@ export default {
 
 <style>
 @font-face {
-  font-family: 'NinjaGarden';
-  src: local('NinjaGarden'),
-    url('./fonts/ninja-garden/NinjaGarden-1gAL.otf') format('truetype');
+  font-family: 'Galiver-Sans';
+  src: local('Galiver-Sans'),
+    url('./assets/fonts/galiver-sans/GALS.ttf') format('truetype');
 }
 body {
   margin: 0px;

@@ -27,3 +27,14 @@
   height: 100vh;
   width: 100%;
 }
+
+.bold {
+  font-weight: bold;
+}
+.uppercase {
+  text-transform: uppercase;
+}
+.title {
+  font-size: 1.5rem;
+  font-family: Galiver-Sans, Arial, Helvetica, sans-serif !important;
+}
