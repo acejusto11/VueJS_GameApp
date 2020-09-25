@@ -4,7 +4,7 @@ import Router from 'vue-router';
 Vue.use(Router);
 
 export default new Router({
-  mode: 'hash',
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -20,6 +20,11 @@ export default new Router({
       path: '/character',
       name: 'character',
       component: () => import('../views/CharacterDetails.vue')
+    },
+    {
+      path: '/character/skills',
+      name: 'skills',
+      component: () => import('../views/CharacterSkills.vue')
     }
   ]
 });

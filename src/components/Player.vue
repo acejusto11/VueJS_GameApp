@@ -53,9 +53,7 @@ export default {
         action == 'attack' ? this.characterImages[1] : this.characterImages[0];
       console.log(this.type, 'type');
       console.log(image, 'iamge');
-      return this.characterImages
-        ? require(`../assets/${type}/${image}`)
-        : require('../assets/1/0.png');
+      return require(`../assets/${type}/${action}.png`);
     }
   }
 };

@@ -38,3 +38,15 @@
   font-size: 1.5rem;
   font-family: Galiver-Sans, Arial, Helvetica, sans-serif !important;
 }
+
+.left-text {
+  text-align: left;
+}
+
+.no-margin {
+  margin: 0px !important;
+}
+
+.pad-1 {
+  padding: 1em;
+}

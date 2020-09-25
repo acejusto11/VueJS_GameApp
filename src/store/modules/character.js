@@ -1,9 +1,10 @@
 import { GameService } from '../../shared/apiService';
-import { GET_CHARACTER } from '../actions.type';
-import { SET_CHARACTER, SET_ERROR } from '../mutations.type';
+import { GET_CHARACTER, GET_SKILLS } from '../actions.type';
+import { SET_CHARACTER, SET_SKILLS, SET_ERROR } from '../mutations.type';
 
 const state = {
-  details: {}
+  details: {},
+  skills: []
 };
 
 const actions = {
@@ -19,12 +20,28 @@ const actions = {
           reject(body);
         });
     });
+  },
+  [GET_SKILLS](context, id) {
+    return new Promise((resolve, reject) => {
+      GameService.getCharacterSkills(id)
+        .then(({ body }) => {
+          context.commit(SET_SKILLS, body);
+          resolve(body);
+        })
+        .catch(({ body }) => {
+          context.commit(SET_ERROR, body);
+          reject(body);
+        });
+    });
   }
 };
 
 const mutations = {
   [SET_CHARACTER](state, characterDetails) {
     state.details = characterDetails;
+  },
+  [SET_SKILLS](state, skills) {
+    state.skills = skills;
   },
   [SET_ERROR](state, error) {
     state.errors = error;

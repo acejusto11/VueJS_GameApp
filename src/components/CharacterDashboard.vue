@@ -6,7 +6,7 @@
       <div class="col-md-4"></div>
     </div>
     <div class="row nowrap container-1">
-      <div class="col-md-5 pad">
+      <div class="col-md-5 pad-1">
         <span class="bold title">Character Stats</span>
         <div class="row nowrap">
           <div class="col-sm-3 bold">Attrib</div>
@@ -23,45 +23,42 @@
         </div>
       </div>
       <div class="col-md-3 container-3 bold">
-        <img class="imgCharacter" src="../assets/1/0.png" />
+        <img class="imgCharacter" :src="getImage(details.classType, 'idle')" />
         <div class="title bold">{{details.name}}</div>
         <div>Level: {{details.level}}</div>
         <div>Type: {{details.classType}}</div>
         <div>Exp: {{details.totalExp}}</div>
       </div>
-      <div class="col-md-4 pad">
-        <div class="row bold title">Skills</div>
+      <div class="col-md-4 pad-1">
+        <div class="row bold title no-margin">Skills</div>
         <div class="row">
           <div class="col-sm-4" v-for="skill in details.skills" :key="skill._id">{{ skill.name }}</div>
         </div>
-        <div class="row bold title">Weapon</div>
+        <div class="row bold title no-margin">Weapon</div>
         <div class="row">
-          <div class="col-sm-4">{{ details.equipment.weapon.name}}</div>
+          <div class="col-sm-4" v-if="details.equipment">{{ details.equipment.weapon.name}}</div>
         </div>
-        <div class="row bold title">Armor</div>
+        <div class="row bold title no-margin">Armor</div>
         <div class="row">
-          <div class="col-sm-4">{{ details.equipment.armor.name}}</div>
+          <div class="col-sm-4" v-if="details.equipment">{{ details.equipment.armor.name}}</div>
         </div>
       </div>
     </div>
     <div class="row nowrap container-2">
-      <div class="col-md-5 pad">
+      <div class="col-md-5 pad-1">
         <span class="bold title">Dungeon Access</span>
         <div v-for="dungeon in details.dungeonAccess" :key="dungeon._id">{{ dungeon.name }}</div>
       </div>
       <div class="col-md-3"></div>
-      <div class="col-md-4 pad">
+      <div class="col-md-4 pad-1">
         <div>
-          <button>Character</button>
+          <button @click="$router.push('/dungeons')">Dungeons</button>
         </div>
         <div>
-          <button>Dungeons</button>
+          <button @click="$router.push('/character/inventory')">Inventory</button>
         </div>
         <div>
-          <button>Inventory</button>
-        </div>
-        <div>
-          <button>Skills</button>
+          <button @click="$router.push('/character/skills')">Skills</button>
         </div>
         <div>
           <button>Logout</button>
@@ -75,7 +72,17 @@
 export default {
   name: 'CharacterDashboard',
   props: {
-    details: Object
+    details: {
+      type: Object,
+      default: function() {
+        return { skills: [], equipment: {} };
+      }
+    }
+  },
+  methods: {
+    getImage: function(type = 1, action = 'idle') {
+      return require(`../assets/${type}/${action}.png`);
+    }
   }
 };
 </script>
@@ -90,17 +97,16 @@ export default {
 .container {
   min-width: 80%;
   min-height: 80%;
-  margin: auto;
+  margin-left: auto;
+  margin-right: auto;
   color: white;
   background-color: rgb(3 0 0 / 85%);
   border: 20px solid rgb(3 2 2 / 50%);
-  padding: 2rem 6rem 6rem 6rem;
+  padding: 1rem;
 }
 .imgCharacter {
-  max-width: 100%;
-  max-height: 100%;
-  min-width: 300px;
-  min-height: 300px;
+  min-width: 200px;
+  min-height: 200px;
 }
 
 .nowrap {
@@ -116,9 +122,6 @@ export default {
 .container-3 {
   border-left: 5px solid #d39e0033;
   border-right: 5px solid #d39e0033;
-}
-.pad {
-  padding: 1em;
 }
 
 button {

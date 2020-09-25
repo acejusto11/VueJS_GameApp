@@ -10,31 +10,25 @@ import CharacterDashboard from '../components/CharacterDashboard.vue';
 import { normalizeStats } from '../utils';
 export default {
   name: 'CharacterDetails',
-  data() {
-    return {
-      stats: {}
-    };
-  },
+
   components: {
     'character-dashboard': CharacterDashboard
   },
-  mounted() {
+  created() {
     const accountId = this.$store.state.authentication.accountId;
-    const stats = this.$store.state.character.details.stats;
-    const equipment = this.$store.state.character.details.equipment;
-    this.stats = normalizeStats(stats, equipment);
-    console.log(this.stats, 'stats');
     if (accountId) {
       this.$store.dispatch(GET_CHARACTER, accountId);
     }
   },
   computed: {
     details() {
+      const { stats, equipment } = this.$store.state.character.details;
+      const normalizedStats = normalizeStats(stats, equipment);
       const data = {
         ...this.$store.state.character.details,
-        stats: { ...this.stats }
+        stats: { ...normalizedStats }
       };
-      return data;
+      return data || {};
     }
   }
 };

@@ -12,5 +12,8 @@ export const GameService = {
   },
   getAccountCharacter(accountId) {
     return Vue.http.get(`${apiUrl}/accounts/${accountId}/character`);
+  },
+  getCharacterSkills(accountId) {
+    return Vue.http.get(`${apiUrl}/character/${accountId}/skills`);
   }
 };
