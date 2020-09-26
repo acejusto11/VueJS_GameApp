@@ -6,7 +6,7 @@
           <div class="row bold title no-margin">Skills</div>
           <div class="row">
             <div
-              class="col-sm-4 skill-tile no-margin"
+              class="col-sm-12 skill-tile no-margin"
               v-for="skill in skills"
               :key="skill._id"
               @click="getSkill(skill._id)"
@@ -17,17 +17,17 @@
           <div class="row details-tile">
             <div class="col-sm-12">
               <div class="row bold title no-margin">Details</div>
-              <div v-if="skill">
+              <div v-if="currentSkill">
                 <div class="row">
-                  <div class="col-sm-12">{{ skill.name }}</div>
+                  <div class="col-sm-12">{{ currentSkill.name }}</div>
                 </div>
                 <div class="row">
                   <div class="col-sm-4 bold">Level</div>
-                  <div class="col-sm-8 left-text">{{ skill.lvlReq }}</div>
+                  <div class="col-sm-8 left-text">{{ currentSkill.lvlReq }}</div>
                 </div>
                 <div class="row">
                   <div class="col-sm-4 bold">Target</div>
-                  <div class="col-sm-8 left-text">{{ skill.target }}</div>
+                  <div class="col-sm-8 left-text">{{ currentSkill.target }}</div>
                 </div>
                 <div class="row">
                   <div class="col-sm-4 bold">Type</div>
@@ -35,7 +35,7 @@
                 </div>
                 <div class="row">
                   <div class="col-sm-4 bold">Cost</div>
-                  <div class="col-sm-8 left-text">{{ skill.cost }}</div>
+                  <div class="col-sm-8 left-text">{{ currentSkill.cost }}</div>
                 </div>
                 <div class="row">
                   <div class="col-sm-4 bold">{{ damageLabel }}</div>
@@ -47,14 +47,23 @@
           <div class="row current-skill-tile">
             <div class="col-sm-12">
               <div class="row bold title no-margin">Current Skills</div>
+              <div class="row" v-for="skill in currentSkills" :key="skill._id">
+                <div class="col-sm-8">{{skill.name}}</div>
+                <div
+                  class="col-sm-4"
+                  style="cursor: pointer"
+                  v-if="currentSkills.length > 1"
+                  @click="removeSkill(skill._id)"
+                >X</div>
+              </div>
             </div>
           </div>
           <div class="row action-tile">
             <div class="col-sm-6 pad-1">
-              <button disabled>Equip</button>
+              <button :disabled="isSkillEquipped(currentSkill)" @click="addCurrentSkill()">Equip</button>
             </div>
             <div class="col-sm-6 pad-1">
-              <button disabled>Save</button>
+              <button :disabled="!hasChanges" @click="save">Save</button>
             </div>
           </div>
         </div>
@@ -64,57 +73,98 @@
 </template>
 
 <script>
-import { GET_SKILLS } from '../store/actions.type';
+import { GET_SKILLS, SAVE_SKILLS } from '../store/actions.type';
 export default {
   name: 'CharacterSkills',
   data() {
     return {
-      skill: null
+      currentSkill: undefined,
+      previousSkills: [],
+      currentSkills: [],
+      hasChanges: false
     };
-  },
-  methods: {
-    getSkill(id) {
-      const skills = this.$store.state.character.skills;
-      this.skill =
-        skills &&
-        skills.find(function(skill) {
-          return skill._id == id;
-        });
-    }
   },
   created() {
     const characterId = this.$store.state.character.details._id;
     if (characterId) {
       this.$store.dispatch(GET_SKILLS, characterId);
     }
+    this.currentSkills = this.$store.state.character.details && [
+      ...this.$store.state.character.details.skills
+    ];
+    this.previousSkills = this.currentSkills;
+  },
+  methods: {
+    getSkill(id) {
+      this.currentSkill =
+        this.skills &&
+        this.skills.find(function(skill) {
+          return skill._id == id;
+        });
+    },
+    addCurrentSkill() {
+      this.previousSkills = [...this.currentSkills];
+      this.currentSkills.push(this.currentSkill);
+      this.hasChanges = true;
+    },
+    removeSkill(id) {
+      this.previousSkills = [...this.currentSkills];
+      this.currentSkills = this.currentSkills.filter(function(skill) {
+        return skill._id !== id;
+      });
+      this.hasChanges = true;
+    },
+    isSkillEquipped(currentSkill) {
+      let isEquipped = true;
+      if (!currentSkill) return true;
+      isEquipped = !!this.currentSkills.find(function(skill) {
+        return skill._id === currentSkill._id;
+      });
+      return isEquipped;
+    },
+    save() {
+      const ids = this.currentSkills.map(function(item) {
+        return item._id;
+      });
+      const data = { characterId: this.characterId, ids };
+      this.$store.dispatch(SAVE_SKILLS, data).then((this.hasChanges = false));
+    }
   },
   computed: {
+    characterId() {
+      return this.$store.state.character.details._id;
+    },
     skills() {
       return this.$store.state.character.skills;
     },
     type() {
-      const type = this.skill && this.skill.type;
+      const type = this.currentSkill && this.currentSkill.type;
       if (type == 'P') return 'Physical';
       if (type == 'M') return 'Magical';
       return type;
     },
     cost() {
-      return this.skill && `${this.skill.cost} mana`;
+      return this.currentSkill && `${this.currentSkill.cost} mana`;
     },
     damageLabel() {
-      const type = this.skill && this.skill.type;
-      if (type == 'P') return 'Damage';
-      if (type == 'M') return 'Heal';
+      const target = this.currentSkill && this.currentSkill.target;
+      if (target == 'enemy') return 'Damage';
+      if (target == 'self') return 'Heal';
       return 'Damage';
     },
     damageValue() {
-      const type = this.skill && this.skill.type;
-      const damage = this.skill && this.skill.damage;
-      if (type == 'P') {
-        return `${damage}% Offense`;
-      }
-      if (type == 'M') {
-        return `${damage * -1}% Heal`;
+      const type = this.currentSkill && this.currentSkill.type;
+      const damage = this.currentSkill && this.currentSkill.damage;
+      const target = this.currentSkill && this.currentSkill.target;
+      if (target == 'self') {
+        return `${damage * -1}% Intelligence`;
+      } else {
+        if (type == 'P') {
+          return `${damage}% Offense`;
+        }
+        if (type == 'M') {
+          return `${damage}% Intelligence`;
+        }
       }
       return '';
     }
@@ -140,6 +190,9 @@ export default {
   display: flex;
   border: 5px solid #d39e0033;
   min-height: 600px;
+}
+.skill-tile {
+  font-size: 1.5rem;
 }
 
 .skill-tile:hover,

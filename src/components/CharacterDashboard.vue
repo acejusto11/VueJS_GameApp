@@ -80,6 +80,7 @@ export default {
     }
   },
   methods: {
+    //TODO: Move to mixin
     getImage: function(type = 1, action = 'idle') {
       return require(`../assets/${type}/${action}.png`);
     }
@@ -105,8 +106,8 @@ export default {
   padding: 1rem;
 }
 .imgCharacter {
-  min-width: 200px;
-  min-height: 200px;
+  width: 250px;
+  height: 280px;
 }
 
 .nowrap {

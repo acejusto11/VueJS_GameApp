@@ -13,7 +13,10 @@ export const GameService = {
   getAccountCharacter(accountId) {
     return Vue.http.get(`${apiUrl}/accounts/${accountId}/character`);
   },
-  getCharacterSkills(accountId) {
-    return Vue.http.get(`${apiUrl}/character/${accountId}/skills`);
+  getCharacterSkills(charId) {
+    return Vue.http.get(`${apiUrl}/character/${charId}/skills`);
+  },
+  saveCharacterSkills(charId, data) {
+    return Vue.http.put(`${apiUrl}/character/${charId}/skills`, data);
   }
 };

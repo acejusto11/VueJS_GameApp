@@ -1,5 +1,5 @@
 import { GameService } from '../../shared/apiService';
-import { GET_CHARACTER, GET_SKILLS } from '../actions.type';
+import { GET_CHARACTER, GET_SKILLS, SAVE_SKILLS } from '../actions.type';
 import { SET_CHARACTER, SET_SKILLS, SET_ERROR } from '../mutations.type';
 
 const state = {
@@ -27,6 +27,18 @@ const actions = {
         .then(({ body }) => {
           context.commit(SET_SKILLS, body);
           resolve(body);
+        })
+        .catch(({ body }) => {
+          context.commit(SET_ERROR, body);
+          reject(body);
+        });
+    });
+  },
+  [SAVE_SKILLS](context, data) {
+    return new Promise((resolve, reject) => {
+      GameService.saveCharacterSkills(data?.characterId, data?.ids)
+        .then(() => {
+          resolve('saved');
         })
         .catch(({ body }) => {
           context.commit(SET_ERROR, body);
