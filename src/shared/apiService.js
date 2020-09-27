@@ -16,6 +16,9 @@ export const GameService = {
   getCharacterSkills(charId) {
     return Vue.http.get(`${apiUrl}/character/${charId}/skills`);
   },
+  getDungeons(charId) {
+    return Vue.http.get(`${apiUrl}/character/${charId}/dungeons`);
+  },
   saveCharacterSkills(charId, data) {
     return Vue.http.put(`${apiUrl}/character/${charId}/skills`, data);
   }

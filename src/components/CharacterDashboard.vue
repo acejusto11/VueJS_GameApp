@@ -52,7 +52,7 @@
       <div class="col-md-3"></div>
       <div class="col-md-4 pad-1">
         <div>
-          <button @click="$router.push('/dungeons')">Dungeons</button>
+          <button @click="$router.push('/character/dungeons')">Dungeons</button>
         </div>
         <div>
           <button @click="$router.push('/character/inventory')">Inventory</button>

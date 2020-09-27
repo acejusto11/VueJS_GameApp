@@ -25,6 +25,11 @@ export default new Router({
       path: '/character/skills',
       name: 'skills',
       component: () => import('../views/CharacterSkills.vue')
+    },
+    {
+      path: '/character/dungeons',
+      name: 'dungeons',
+      component: () => import('../views/Dungeons.vue')
     }
   ]
 });

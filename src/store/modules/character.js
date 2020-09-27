@@ -1,10 +1,21 @@
 import { GameService } from '../../shared/apiService';
-import { GET_CHARACTER, GET_SKILLS, SAVE_SKILLS } from '../actions.type';
-import { SET_CHARACTER, SET_SKILLS, SET_ERROR } from '../mutations.type';
+import {
+  GET_CHARACTER,
+  GET_SKILLS,
+  SAVE_SKILLS,
+  GET_DUNGEONS
+} from '../actions.type';
+import {
+  SET_CHARACTER,
+  SET_SKILLS,
+  SET_ERROR,
+  SET_DUNGEONS
+} from '../mutations.type';
 
 const state = {
   details: {},
-  skills: []
+  skills: [],
+  dungeons: []
 };
 
 const actions = {
@@ -45,6 +56,19 @@ const actions = {
           reject(body);
         });
     });
+  },
+  [GET_DUNGEONS](context, characterId) {
+    return new Promise((resolve, reject) => {
+      GameService.getDungeons(characterId)
+        .then(({ body }) => {
+          context.commit(SET_DUNGEONS, body);
+          resolve(body);
+        })
+        .catch(({ body }) => {
+          context.commit(SET_ERROR, body);
+          reject(body);
+        });
+    });
   }
 };
 
@@ -54,6 +78,9 @@ const mutations = {
   },
   [SET_SKILLS](state, skills) {
     state.skills = skills;
+  },
+  [SET_DUNGEONS](state, dungeons) {
+    state.dungeons = dungeons;
   },
   [SET_ERROR](state, error) {
     state.errors = error;
