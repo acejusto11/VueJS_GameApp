@@ -26,7 +26,7 @@
         <img class="imgCharacter" :src="getImage(details.classType, 'idle')" />
         <div class="title bold">{{details.name}}</div>
         <div>Level: {{details.level}}</div>
-        <div>Type: {{details.classType}}</div>
+        <div>Type: {{getType(details.classType)}}</div>
         <div>Exp: {{details.totalExp}}</div>
       </div>
       <div class="col-md-4 pad-1">
@@ -69,6 +69,7 @@
 </template>
 
 <script>
+import { getCharacterClasses } from '../utils/getCharacterClasses.js';
 export default {
   name: 'CharacterDashboard',
   props: {
@@ -81,8 +82,14 @@ export default {
   },
   methods: {
     //TODO: Move to mixin
-    getImage: function(type = 1, action = 'idle') {
+    getImage(type = 1, action = 'idle') {
       return require(`../assets/${type}/${action}.png`);
+    },
+    getType(type) {
+      const charClass = getCharacterClasses().find(item => {
+        return item.code === type;
+      });
+      return charClass ? charClass.title : '';
     }
   }
 };
