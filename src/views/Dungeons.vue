@@ -43,7 +43,10 @@
             </div>
             <div class="row">
               <div class="col-sm-12">
-                <button :disabled="selectedDungeon.recommendedLevel > level">Enter Dungeon</button>
+                <button
+                  :disabled="selectedDungeon.recommendedLevel > level"
+                  @click="goToGameScreen"
+                >Enter Dungeon</button>
               </div>
             </div>
           </div>
@@ -87,8 +90,14 @@ export default {
           return dungeon._id === id;
         });
     },
-    getImage: function(image) {
+    getImage(image) {
       return require(`../assets/dungeons/${image}.jpg`);
+    },
+    goToGameScreen() {
+      this.$router.push({
+        name: 'dungeon',
+        params: { id: this.selectedDungeon._id }
+      });
     }
   }
 };

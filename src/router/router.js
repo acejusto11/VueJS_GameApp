@@ -30,6 +30,12 @@ export default new Router({
       path: '/character/dungeons',
       name: 'dungeons',
       component: () => import('../views/Dungeons.vue')
-    }
+    },
+    {
+      path: '/dungeon/:id',
+      name: 'dungeon',
+      component: () => import('../views/GameScreen.vue')
+    },
+
   ]
 });
