@@ -21,5 +21,11 @@ export const GameService = {
   },
   saveCharacterSkills(charId, data) {
     return Vue.http.put(`${apiUrl}/character/${charId}/skills`, data);
+  },
+  getInventory(charId) {
+    return Vue.http.get(`${apiUrl}/character/${charId}/inventory`);
+  },
+  updateEquipment(charId, data) {
+    return Vue.http.put(`${apiUrl}/character/${charId}/equipment`, data);
   }
 };

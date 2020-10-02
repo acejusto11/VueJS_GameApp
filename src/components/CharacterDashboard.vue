@@ -2,12 +2,12 @@
   <div class="container">
     <div class="row nowrap">
       <div class="col-md-5"></div>
-      <div class="col-md-3 bold title">Record</div>
+      <div class="col-md-3 title">Record</div>
       <div class="col-md-4"></div>
     </div>
     <div class="row nowrap container-1">
       <div class="col-md-5 pad-1">
-        <span class="bold title">Character Stats</span>
+        <span class="title">Character Stats</span>
         <div class="row nowrap">
           <div class="col-sm-3 bold">Attrib</div>
           <div class="col-sm-3 bold">Base</div>
@@ -30,15 +30,15 @@
         <div>Exp: {{details.totalExp}}</div>
       </div>
       <div class="col-md-4 pad-1">
-        <div class="row bold title no-margin">Skills</div>
+        <div class="row title no-margin">Skills</div>
         <div class="row">
           <div class="col-sm-4" v-for="skill in details.skills" :key="skill._id">{{ skill.name }}</div>
         </div>
-        <div class="row bold title no-margin">Weapon</div>
+        <div class="row title no-margin">Weapon</div>
         <div class="row">
           <div class="col-sm-4" v-if="details.equipment">{{ details.equipment.weapon.name}}</div>
         </div>
-        <div class="row bold title no-margin">Armor</div>
+        <div class="row title no-margin">Armor</div>
         <div class="row">
           <div class="col-sm-4" v-if="details.equipment">{{ details.equipment.armor.name}}</div>
         </div>
@@ -46,7 +46,7 @@
     </div>
     <div class="row nowrap container-2">
       <div class="col-md-5 pad-1">
-        <span class="bold title">Dungeon Access</span>
+        <span class="title">Dungeon Access</span>
         <div v-for="dungeon in details.dungeonAccess" :key="dungeon._id">{{ dungeon.name }}</div>
       </div>
       <div class="col-md-3"></div>

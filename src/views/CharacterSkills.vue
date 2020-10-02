@@ -1,9 +1,9 @@
 <template>
   <div class="main">
     <div class="container">
+      <div class="row title flex-center">Skills</div>
       <div class="row nowrap skills-section">
         <div class="col-md-7 pad-1 border-1">
-          <div class="row bold title no-margin">Skills</div>
           <div class="row">
             <div
               class="col-sm-12 skill-tile no-margin"
@@ -16,7 +16,7 @@
         <div class="col-md-5 pad-1">
           <div class="row details-tile">
             <div class="col-sm-12">
-              <div class="row bold title no-margin">Details</div>
+              <div class="row title no-margin">Details</div>
               <div v-if="currentSkill">
                 <div class="row">
                   <div class="col-sm-12">{{ currentSkill.name }}</div>
@@ -46,7 +46,7 @@
           </div>
           <div class="row current-skill-tile">
             <div class="col-sm-12">
-              <div class="row bold title no-margin">Current Skills</div>
+              <div class="row title no-margin">Current Skills</div>
               <div class="row" v-for="skill in currentSkills" :key="skill._id">
                 <div class="col-sm-8">{{skill.name}}</div>
                 <div

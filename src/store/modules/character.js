@@ -3,19 +3,22 @@ import {
   GET_CHARACTER,
   GET_SKILLS,
   SAVE_SKILLS,
-  GET_DUNGEONS
+  GET_DUNGEONS,
+  GET_INVENTORY
 } from '../actions.type';
 import {
   SET_CHARACTER,
   SET_SKILLS,
   SET_ERROR,
-  SET_DUNGEONS
+  SET_DUNGEONS,
+  SET_INVENTORY
 } from '../mutations.type';
 
 const state = {
   details: {},
   skills: [],
-  dungeons: []
+  dungeons: [],
+  inventory: []
 };
 
 const actions = {
@@ -69,6 +72,19 @@ const actions = {
           reject(body);
         });
     });
+  },
+  [GET_INVENTORY](context, characterId) {
+    return new Promise((resolve, reject) => {
+      GameService.getInventory(characterId)
+        .then(({ body }) => {
+          context.commit(SET_INVENTORY, body);
+          resolve(body);
+        })
+        .catch(({ body }) => {
+          context.commit(SET_ERROR, body);
+          reject(body);
+        });
+    });
   }
 };
 
@@ -81,6 +97,9 @@ const mutations = {
   },
   [SET_DUNGEONS](state, dungeons) {
     state.dungeons = dungeons;
+  },
+  [SET_INVENTORY](state, inventory) {
+    state.inventory = inventory;
   },
   [SET_ERROR](state, error) {
     state.errors = error;

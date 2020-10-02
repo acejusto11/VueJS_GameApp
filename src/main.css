@@ -37,6 +37,7 @@
 .title {
   font-size: 1.5rem;
   font-family: Galiver-Sans, Arial, Helvetica, sans-serif !important;
+  font-weight: bold;
 }
 
 .left-text {
@@ -49,4 +50,8 @@
 
 .pad-1 {
   padding: 1em;
+}
+
+.flex-center {
+  justify-content: center;
 }
