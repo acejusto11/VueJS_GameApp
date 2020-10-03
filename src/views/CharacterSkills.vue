@@ -1,5 +1,6 @@
 <template>
   <div class="main">
+    <game-menu />
     <div class="container">
       <div class="row title flex-center">Skills</div>
       <div class="row nowrap skills-section">
@@ -74,8 +75,12 @@
 
 <script>
 import { GET_SKILLS, SAVE_SKILLS } from '../store/actions.type';
+import Menu from '../components/Menu';
 export default {
   name: 'CharacterSkills',
+  components: {
+    'game-menu': Menu
+  },
   data() {
     return {
       currentSkill: undefined,

@@ -1,5 +1,6 @@
 <template>
   <div class="main">
+    <game-menu />
     <div class="container">
       <div class="row nowrap dungeons-section">
         <div class="col-sm-6 dungeon-list">
@@ -30,8 +31,11 @@
             </div>
             <div v-for="enemy in selectedDungeon.enemies" :key="enemy._id">
               <div class="row">
-                <div class="col-sm-6 bold" v-if="enemy.boss">{{enemy.name}} (boss)</div>
-                <div class="col-sm-6 bold" v-else>{{enemy.name}}</div>
+                <div
+                  class="col-sm-6 bold left-text padding-1"
+                  v-if="enemy.boss"
+                >{{enemy.name}} (boss)</div>
+                <div class="col-sm-6 bold left-text padding-1" v-else>{{enemy.name}}</div>
               </div>
               <div class="row">
                 <div class="col-sm-4"></div>
@@ -41,13 +45,13 @@
                 <div v-else class="col-sm-8 text-left">-----</div>
               </div>
             </div>
-            <div class="row bottom">
-              <div class="col-sm-12">
-                <button
-                  :disabled="selectedDungeon.recommendedLevel > level"
-                  @click="goToGameScreen"
-                >Enter Dungeon</button>
-              </div>
+          </div>
+          <div class="row bottom" v-if="selectedDungeon">
+            <div class="col-sm-12">
+              <button
+                :disabled="selectedDungeon.recommendedLevel > level"
+                @click="goToGameScreen"
+              >Enter Dungeon</button>
             </div>
           </div>
         </div>
@@ -57,8 +61,12 @@
 </template>
 <script>
 import { GET_DUNGEONS } from '../store/actions.type';
+import Menu from '../components/Menu';
 export default {
   name: 'Dungeons',
+  components: {
+    'game-menu': Menu
+  },
   data() {
     return {
       selectedDungeon: undefined
@@ -108,12 +116,11 @@ export default {
 }
 .container {
   min-width: 50%;
-  min-height: 80%;
+  min-height: 75%;
   margin: auto;
   color: white;
   background-color: rgb(3 0 0 / 85%);
   border: 20px solid rgb(3 2 2 / 50%);
-  padding: 1em;
 }
 
 .dungeons-section {

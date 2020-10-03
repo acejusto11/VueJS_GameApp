@@ -43,13 +43,13 @@
 <script>
 import { EventBus } from '../main';
 import AccountMixin from '../shared/mixins/AccountMixin';
-import HealthManaDashboard from './HealthManaDashboard.vue';
-import SkillsDashboard from './SkillsDashboard.vue';
-import NotificationMessage from './NotificationMessage.vue';
-import Player from './Player';
-import Enemy from './Enemy';
+import HealthManaDashboard from '../components/HealthManaDashboard.vue';
+import SkillsDashboard from '../components/SkillsDashboard.vue';
+import NotificationMessage from '../components/NotificationMessage.vue';
+import Player from '../components/Player';
+import Enemy from '../components/Enemy';
 export default {
-  name: 'GameScreen',
+  name: 'GameScreen2',
   mixins: [AccountMixin],
   data() {
     return {

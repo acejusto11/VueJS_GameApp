@@ -27,5 +27,8 @@ export const GameService = {
   },
   updateEquipment(charId, data) {
     return Vue.http.put(`${apiUrl}/character/${charId}/equipment`, data);
+  },
+  enterDungeon(data) {
+    return Vue.http.post(`${apiUrl}/dungeons/enter`, data);
   }
 };

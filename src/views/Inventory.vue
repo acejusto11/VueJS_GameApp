@@ -1,5 +1,6 @@
 <template>
   <div class="main">
+    <game-menu />
     <div class="container">
       <div class="row title flex-center">Inventory</div>
       <div class="row nowrap inventory-section">
@@ -83,8 +84,12 @@
 
 <script>
 import { GET_INVENTORY, SAVE_EQUIPMENT } from '../store/actions.type';
+import Menu from '../components/Menu';
 export default {
   name: 'Inventory',
+  components: {
+    'game-menu': Menu
+  },
   data() {
     return {
       selectedInventory: undefined,

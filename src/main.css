@@ -43,6 +43,9 @@
 .left-text {
   text-align: left;
 }
+.right-text {
+  text-align: right;
+}
 
 .no-margin {
   margin: 0px !important;
