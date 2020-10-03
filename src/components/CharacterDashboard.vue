@@ -36,11 +36,11 @@
         </div>
         <div class="row title no-margin">Weapon</div>
         <div class="row">
-          <div class="col-sm-4" v-if="details.equipment">{{ details.equipment.weapon.name}}</div>
+          <div class="col-sm-6" v-if="details.equipment">{{ details.equipment.weapon.name}}</div>
         </div>
         <div class="row title no-margin">Armor</div>
         <div class="row">
-          <div class="col-sm-4" v-if="details.equipment">{{ details.equipment.armor.name}}</div>
+          <div class="col-sm-6" v-if="details.equipment">{{ details.equipment.armor.name}}</div>
         </div>
       </div>
     </div>

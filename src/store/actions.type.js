@@ -6,3 +6,4 @@ export const GET_SKILLS = 'getSkills';
 export const SAVE_SKILLS = 'saveSkills';
 export const GET_DUNGEONS = 'getDungeons';
 export const GET_INVENTORY = 'getInventory';
+export const SAVE_EQUIPMENT = 'saveEquipment';

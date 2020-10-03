@@ -41,7 +41,7 @@
                 <div v-else class="col-sm-8 text-left">-----</div>
               </div>
             </div>
-            <div class="row">
+            <div class="row bottom">
               <div class="col-sm-12">
                 <button
                   :disabled="selectedDungeon.recommendedLevel > level"
@@ -159,6 +159,11 @@ img {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+.bottom {
+  position: relative;
+  bottom: -100px;
 }
 
 button {

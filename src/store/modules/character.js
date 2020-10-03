@@ -4,7 +4,8 @@ import {
   GET_SKILLS,
   SAVE_SKILLS,
   GET_DUNGEONS,
-  GET_INVENTORY
+  GET_INVENTORY,
+  SAVE_EQUIPMENT
 } from '../actions.type';
 import {
   SET_CHARACTER,
@@ -84,6 +85,18 @@ const actions = {
           context.commit(SET_ERROR, body);
           reject(body);
         });
+    });
+  },
+  [SAVE_EQUIPMENT](context, data) {
+    return new Promise((resolve, reject) => {
+      GameService.updateEquipment(data.characterId, data.equipment)
+      .then(() => {
+        resolve('saved');
+      })
+      .catch(({ body }) => {
+        context.commit(SET_ERROR, body);
+        reject(body);
+      });
     });
   }
 };
