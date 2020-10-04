@@ -1,25 +1,18 @@
 <template>
   <div class="containerRow">
     <div class="half player">
-      <div class="name">{{ `${characterData.name} - Level ${characterData.level}` }}</div>
-      <health-bar :health="characterData.health" />
-      <mana-bar :mana="characterData.mana" />
-      <div class="iconContainer left">
-        <img class="icon" src="../assets/ninja.png" />
-      </div>
-      <span>HP : {{ characterData.health }} / {{characterStats.health}}</span>&nbsp;
-      <span>Mana : {{ characterData.mana }} / {{characterStats.mana}}</span>
+      <div class="name">{{ `${characterDetails.name} - Level ${characterDetails.level}` }}</div>
+      <health-bar :max="characterDetails.stats.health.total" :value="currentPlayerStats.health" />
+      <mana-bar :max="characterDetails.stats.mana.total" :value="currentPlayerStats.mana" />
+      <span>HP : {{ currentPlayerStats.health }} / {{characterDetails.stats.health.total}}</span>&nbsp;
+      <span>Mana : {{ currentPlayerStats.mana }} / {{characterDetails.stats.mana.total}}</span>
     </div>
     <div class="half enemy">
-      <div class="name">Viserion</div>
-      <health-bar :health="enemyData.health" :isReverse="true" />
-      <mana-bar :mana="enemyData.mana" :isReverse="true" />
-
-      <div class="iconContainer right">
-        <img class="icon" src="../assets/dragon2.png" />
-      </div>
-      <span>HP : {{ enemyData.health }} / {{monsterStats.health}}</span>&nbsp;
-      <span>Mana : {{ enemyData.mana }} / {{monsterStats.mana}}</span>
+      <div class="name">{{ `${enemyDetails.name} - Level ${enemyDetails.level}` }}</div>
+      <health-bar :max="enemyDetails.stats.health" :value="currentEnemyHealth" isReverse />
+      <mana-bar :max="enemyDetails.stats.mana" :value="currentEnemyStats.mana" isReverse />
+      <span>HP : {{ currentEnemyHealth }} / {{enemyDetails.stats.health}}</span>&nbsp;
+      <span>Mana : {{ currentEnemyStats.mana }} / {{enemyDetails.stats.mana}}</span>
     </div>
   </div>
 </template>
@@ -30,14 +23,25 @@ import ManaBar from './ManaBar.vue';
 export default {
   name: 'HealthManaDashboard',
   props: {
-    characterStats: Object,
-    characterData: Object,
-    monsterStats: Object,
-    enemyData: Object
+    characterDetails: Object,
+    enemyDetails: Object,
+    currentPlayerStats: Object,
+    currentEnemyStats: Object
   },
   components: {
     'health-bar': HealthBar,
     'mana-bar': ManaBar
+  },
+  computed: {
+    currentEnemyHealth() {
+      return this.currentEnemyStats.health > 0
+        ? this.currentEnemyStats.health
+        : 0;
+    }
+  },
+  updated() {
+    console.log(this.currentPlayerStats, 'currentPlayerStats');
+    console.log(this.currentEnemyStats, 'currentEnemyStats');
   }
 };
 </script>

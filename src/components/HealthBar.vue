@@ -1,10 +1,6 @@
 <template>
   <div :class="{ reverse: isReverse }">
-    <div
-      class="healthBar"
-      style="background-color: #d5d539;"
-      :style="playerHealthBar"
-    ></div>
+    <div class="healthBar" style="background-color: #d5d539;" :style="playerHealthBar"></div>
   </div>
 </template>
 
@@ -12,16 +8,17 @@
 export default {
   name: 'HealthBar',
   props: {
-    health: Number,
+    value: Number,
+    max: Number,
     isReverse: Boolean
   },
   computed: {
     playerHealthBar: function() {
-      console.log('healthBar', this.health);
+      const percentage = Math.round((this.value / this.max) * 100);
       var styles = {
-        width: this.health + '%'
+        width: percentage + '%'
       };
-      if (this.health <= 20) {
+      if (percentage <= 20) {
         styles.backgroundColor = 'red';
       } else {
         styles.backgroundColor = '#d5d539';

@@ -1,23 +1,28 @@
 <template>
   <div>
-    <div class="blinking message">{{message}}</div>
-    <div v-if="isAttacking" class="attackingDragon">
-      <img class="attacking" src="../assets/dragonAttack.gif" />
+    <div v-if="isAttacking" class="enemy-container">
+      <img class="attacking" :src="getImage()" />
     </div>
-    <div v-else class="idleDragon">
-      <img class="idle" src="../assets/dragonAttack-1.png" />
+    <div v-else class="enemy-container">
+      <img class="idle" :src="getImage()" />
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "Enemy",
+  name: 'Enemy',
   props: {
-    message: String,
+    enemyDetails: Object,
     isAttacking: Boolean
   },
-  methods: {},
+  methods: {
+    getImage() {
+      return this.enemyDetails
+        ? require(`../assets/enemies/${this.enemyDetails.image}.png`)
+        : '';
+    }
+  },
   computed: {}
 };
 </script>
@@ -28,30 +33,20 @@ div {
   color: white;
 }
 
-.attackingDragon {
+.enemy-container {
   position: absolute;
   bottom: 100px;
   right: 80px;
-  width: 500px;
-  height: 500px;
-}
-
-.idleDragon {
-  position: absolute;
-  bottom: 40px;
-  right: 80px;
-  width: 400px;
-  height: 400px;
 }
 
 .idle {
-  width: 400px;
-  height: 400px;
+  width: 300px;
+  height: 300px;
 }
 
 .attacking {
-  width: 600px;
-  height: 600px;
+  width: 350px;
+  height: 350px;
 }
 
 .message {

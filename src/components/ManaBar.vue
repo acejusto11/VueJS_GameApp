@@ -1,10 +1,6 @@
 <template>
   <div :class="{ reverse: isReverse }">
-    <div
-      class="manaBar"
-      style="background-color: #3535d1; color: white;"
-      :style="manaBar"
-    ></div>
+    <div class="manaBar" style="background-color: #3535d1; color: white;" :style="manaBar"></div>
   </div>
 </template>
 
@@ -12,15 +8,15 @@
 export default {
   name: 'ManaBar',
   props: {
-    mana: Number,
+    value: Number,
+    max: Number,
     isReverse: Boolean
   },
   computed: {
     manaBar: function() {
-      const mana = this.mana < 0 ? 0 : this.mana;
-
+      const percentage = (this.value / this.max) * 100;
       const styles = {
-        width: mana + '%'
+        width: percentage + '%'
       };
       if (this.mana <= 30) {
         styles.backgroundColor = 'rgb(80 80 238)';

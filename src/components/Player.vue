@@ -12,7 +12,6 @@
 <script>
 import { setTimeout } from 'timers';
 import { EventBus } from '../main';
-import { getCharacterImage } from '../utils';
 export default {
   name: 'Player',
   data() {
@@ -22,11 +21,7 @@ export default {
     };
   },
   props: {
-    type: String,
-    characterClass: Object,
-    currentHealth: Number,
-    currentMana: Number,
-    isEnemyDone: Boolean
+    type: Number
   },
   created() {
     EventBus.$on('player-attacks', data => {
@@ -38,21 +33,7 @@ export default {
     EventBus.$off('player-attacks');
   },
   methods: {
-    setSkillButtonClass: function(id) {
-      return `skillButton${id}`;
-    },
-    setSkillIconPath: function(skill) {
-      const defaultSkillIcon = require('../assets/shuriken.jpg');
-      return skill.image && this.characterClass.title
-        ? require(`../assets/${this.characterClass.title}/${skill.image}`)
-        : defaultSkillIcon;
-    },
     getImage: function(type, action) {
-      this.characterImages = getCharacterImage(this.type || 1);
-      const image =
-        action == 'attack' ? this.characterImages[1] : this.characterImages[0];
-      console.log(this.type, 'type');
-      console.log(image, 'iamge');
       return require(`../assets/${type}/${action}.png`);
     }
   }
@@ -63,23 +44,23 @@ export default {
 <style scoped>
 .attackingPlayer {
   position: absolute;
-  bottom: 20px;
-  left: 50px;
+  bottom: 40px;
+  left: 250px;
 }
 
 .idlePlayer {
   position: absolute;
   bottom: 40px;
-  left: 80px;
+  left: 200px;
 }
 
 .attacking {
-  width: 350px;
-  height: 300px;
+  width: 220px;
+  height: 250px;
 }
 .idle {
-  width: 250px;
-  height: 250px;
+  width: 220px;
+  height: 220px;
 }
 
 .skills {

@@ -2,14 +2,14 @@
   <div class="container">
     <button @click="processAttack()">Attack</button>
     <button @click="processFocus()">Focus</button>
-    <div v-for="skill in skills" :key="skill._id">
+    <div v-for="skill in characterDetails.skills" :key="skill._id">
       <button @click="processSkills(skill._id)">{{ skill.name }}</button>
     </div>
+    <button>Run Away</button>
   </div>
 </template>
 <script>
 import { EventBus } from '../main';
-import { setTimeout } from 'timers';
 export default {
   name: 'SkillsDashboard',
   data() {
@@ -19,6 +19,7 @@ export default {
   },
   props: {
     skills: Array,
+    characterDetails: Object,
     currentPlayerMana: Number
   },
   methods: {
@@ -31,11 +32,7 @@ export default {
         type: 'P'
       };
       EventBus.$emit('player-attacks', this.currentSkill.type === 'P');
-      this.processNotification();
-      setTimeout(
-        () => this.$emit('process-indicators', this.currentSkill),
-        2000
-      );
+      this.$emit('process-skill', this.currentSkill);
     },
     processFocus: function() {
       this.currentSkill = {
@@ -45,34 +42,25 @@ export default {
         cost: 50,
         type: 'R'
       };
-      this.processNotification();
-      setTimeout(
-        () => this.$emit('process-indicators', this.currentSkill),
-        2000
-      );
+      this.$emit('process-skill', this.currentSkill);
     },
     processSkills: function(id) {
       this.currentSkill =
-        this.skills &&
-        this.skills.find(function(skill) {
+        this.characterDetails.skills &&
+        this.characterDetails.skills.find(function(skill) {
           return skill._id == id;
         });
       const { cost, target } = this.currentSkill;
       if (this.currentPlayerMana >= cost) {
         EventBus.$emit('player-attacks', target === 'enemy');
-
-        this.processNotification();
-        setTimeout(
-          () => this.$emit('process-indicators', this.currentSkill),
-          2000
-        );
+        this.$emit('process-skill', this.currentSkill);
       }
-    },
-    processNotification: function() {
-      const { name } = this.currentSkill;
-      const message = `You are using ${name}`;
-      EventBus.$emit('notify', message);
     }
+    // processNotification: function() {
+    //   const { name } = this.currentSkill;
+    //   const message = `You are using ${name}`;
+    //   EventBus.$emit('notify', message);
+    // }
   }
 };
 </script>
@@ -92,7 +80,7 @@ button {
   text-decoration: none;
   text-shadow: 0px 1px 0px #2f6627;
   margin: 2px;
-  min-width: 150px;
+  width: 180px;
 }
 button:hover {
   background-color: #5cbf2a;

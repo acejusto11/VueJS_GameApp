@@ -1,13 +1,10 @@
 <template>
   <div class="container">
-    <img class="blondeImg" src="../assets/blonde-7.png" />
+    <img class="blondeImg" src="../assets/blonde_2.png" />
     <div class="callOut">
-      <img
-        class="calloutImg"
-        src="../assets/speech-balloon-callout-graphics-quote-box-png-clip-art.png"
-      />
+      <img class="calloutImg" src="../assets/callout.png" />
+      <div class="notification left-text blinking">{{message}}</div>
     </div>
-    <div class="notification blinking">{{message}}</div>
   </div>
 </template>
 
@@ -35,16 +32,20 @@ export default {
 <style scoped>
 .container {
   padding: 0px;
+  position: absolute;
+  bottom: 0px;
+  width: 200px;
 }
 
 .blondeImg {
   width: 200px;
+  bottom: 0px;
 }
 
 .callOut {
   position: absolute;
   bottom: 0px;
-  left: 95%;
+  left: 100%;
 }
 
 .calloutImg {
@@ -54,12 +55,13 @@ export default {
 
 .notification {
   font-family: Rubik;
-  font-size: 1rem;
+  font-size: 1.25rem;
   font-weight: 700;
-  color: black;
+  color: white;
   position: absolute;
-  bottom: 70%;
-  left: 100%;
-  width: 500px;
+  bottom: 20%;
+  left: 30%;
+  width: 400px;
+  height: 150px;
 }
 </style>
