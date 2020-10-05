@@ -3,7 +3,10 @@
     <button @click="processAttack()">Attack</button>
     <button @click="processFocus()">Focus</button>
     <div v-for="skill in characterDetails.skills" :key="skill._id">
-      <button @click="processSkills(skill._id)">{{ skill.name }}</button>
+      <button
+        @click="processSkills(skill._id)"
+        :disabled="isSkillDisabled(skill.cost)"
+      >{{ skill.name }}</button>
     </div>
     <button>Run Away</button>
   </div>
@@ -22,11 +25,12 @@ export default {
     characterDetails: Object,
     currentPlayerMana: Number
   },
+  computed: {},
   methods: {
     processAttack: function() {
       this.currentSkill = {
         name: 'Attack',
-        damage: 20,
+        damage: 90, // % Offense
         target: 'enemy',
         cost: 0,
         type: 'P'
@@ -37,7 +41,7 @@ export default {
     processFocus: function() {
       this.currentSkill = {
         name: 'Focus',
-        damage: 0,
+        damage: 120,
         target: 'self',
         cost: 50,
         type: 'R'
@@ -55,12 +59,10 @@ export default {
         EventBus.$emit('player-attacks', target === 'enemy');
         this.$emit('process-skill', this.currentSkill);
       }
+    },
+    isSkillDisabled(cost) {
+      return cost > this.currentPlayerMana;
     }
-    // processNotification: function() {
-    //   const { name } = this.currentSkill;
-    //   const message = `You are using ${name}`;
-    //   EventBus.$emit('notify', message);
-    // }
   }
 };
 </script>
@@ -88,6 +90,10 @@ button:hover {
 button:active {
   position: relative;
   top: 1px;
+}
+button:disabled {
+  background: gray;
+  cursor: not-allowed;
 }
 
 .container {

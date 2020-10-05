@@ -44,13 +44,13 @@ export default {
 <style scoped>
 .attackingPlayer {
   position: absolute;
-  bottom: 40px;
+  bottom: 100px;
   left: 250px;
 }
 
 .idlePlayer {
   position: absolute;
-  bottom: 40px;
+  bottom: 100px;
   left: 200px;
 }
 

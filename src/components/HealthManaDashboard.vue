@@ -2,17 +2,17 @@
   <div class="containerRow">
     <div class="half player">
       <div class="name">{{ `${characterDetails.name} - Level ${characterDetails.level}` }}</div>
-      <health-bar :max="characterDetails.stats.health.total" :value="currentPlayerStats.health" />
-      <mana-bar :max="characterDetails.stats.mana.total" :value="currentPlayerStats.mana" />
-      <span>HP : {{ currentPlayerStats.health }} / {{characterDetails.stats.health.total}}</span>&nbsp;
-      <span>Mana : {{ currentPlayerStats.mana }} / {{characterDetails.stats.mana.total}}</span>
+      <health-bar :max="characterDetails.stats.health.total" :value="currentPlayerHealth" />
+      <mana-bar :max="characterDetails.stats.mana.total" :value="currentPlayerMana" />
+      <span>HP : {{ currentPlayerHealth }} / {{characterDetails.stats.health.total}}</span>&nbsp;
+      <span>Mana : {{ currentPlayerMana }} / {{characterDetails.stats.mana.total}}</span>
     </div>
     <div class="half enemy">
       <div class="name">{{ `${enemyDetails.name} - Level ${enemyDetails.level}` }}</div>
       <health-bar :max="enemyDetails.stats.health" :value="currentEnemyHealth" isReverse />
-      <mana-bar :max="enemyDetails.stats.mana" :value="currentEnemyStats.mana" isReverse />
+      <mana-bar :max="enemyDetails.stats.mana" :value="currentEnemyMana" isReverse />
       <span>HP : {{ currentEnemyHealth }} / {{enemyDetails.stats.health}}</span>&nbsp;
-      <span>Mana : {{ currentEnemyStats.mana }} / {{enemyDetails.stats.mana}}</span>
+      <span>Mana : {{ currentEnemyMana }} / {{enemyDetails.stats.mana}}</span>
     </div>
   </div>
 </template>
@@ -33,16 +33,26 @@ export default {
     'mana-bar': ManaBar
   },
   computed: {
+    currentPlayerHealth() {
+      return this.currentPlayerStats.health > 0
+        ? this.currentPlayerStats.health
+        : 0;
+    },
+    currentPlayerMana() {
+      return this.currentPlayerStats.mana > 0
+        ? this.currentPlayerStats.mana
+        : 0;
+    },
     currentEnemyHealth() {
       return this.currentEnemyStats.health > 0
         ? this.currentEnemyStats.health
         : 0;
+    },
+    currentEnemyMana() {
+      return this.currentEnemyStats.mana > 0 ? this.currentEnemyStats.mana : 0;
     }
   },
-  updated() {
-    console.log(this.currentPlayerStats, 'currentPlayerStats');
-    console.log(this.currentEnemyStats, 'currentEnemyStats');
-  }
+  updated() {}
 };
 </script>
 

@@ -11,14 +11,14 @@
         <player-hero :type="characterDetails.classType" />
       </div>
       <div class="enemy">
-        <enemy :enemyDetails="enemyDetails" />
+        <enemy :enemyDetails="enemyDetails" :isAttacking="isEnemyAttacking" />
       </div>
     </div>
     <div class="bottom">
       <div class="skillsDashboard">
         <skills-dashboard
           :characterDetails="characterDetails"
-          :currentPlayerMana="characterDetails.stats.mana.total"
+          :currentPlayerMana="currentPlayer.mana"
           @process-skill="processSkill"
         />
       </div>
@@ -29,6 +29,7 @@
   </div>
 </template>
 <script>
+import { EventBus } from '../main';
 import HealthManaDashboard from '../components/HealthManaDashboard.vue';
 import NotificationMessage from '../components/NotificationMessage.vue';
 import Player from '../components/Player';
@@ -54,7 +55,8 @@ export default {
       currentEnemy: {
         health: 0,
         mana: 0
-      }
+      },
+      isEnemyAttacking: false
     };
   },
   created() {
@@ -96,23 +98,48 @@ export default {
     processSkill(data) {
       console.log('received data', data);
       if (data.target === 'enemy') {
-        this.currentEnemy.health -= Math.round(
+        const damage = Math.round(
           (data.damage / 100) * this.characterDetails.stats.off.total
         );
+        this.currentEnemy.health -= damage;
+        this.currentPlayer.mana -= data.cost;
+        this.currentPlayer.mana -= data.cost;
+        this.processNotification(
+          `${this.characterDetails.name} used ${data.name}. Dealt ${damage} damage`
+        );
+      } else {
+        if (data.type === 'M') {
+          const healthPts = Math.round(
+            ((data.damage * -0.75) / 100) *
+              this.characterDetails.stats.int.total
+          );
+          this.currentPlayer.health += healthPts;
+          this.currentPlayer.mana -= data.cost;
+          this.processNotification(
+            `${this.characterDetails.name} used ${data.name}. Gained ${healthPts} health points.`
+          );
+        } else if (data.type === 'R') {
+          const manaPts = Math.round(
+            ((data.damage * 0.75) / 100) * this.characterDetails.stats.int.total
+          );
+          this.currentPlayer.mana += manaPts;
+          this.processNotification(
+            `${this.characterDetails.name} used ${data.name}. Gained ${manaPts} mana points.`
+          );
+        }
       }
-      // if (data.target === 'enemy') {
-      //   this.enemyData.health -= data.damage;
-      //   this.characterData.mana -= data.cost;
-      // } else if (data.target === 'self') {
-      //   if (data.type === 'M') {
-      //     this.characterData.health -= data.damage;
-      //     this.characterData.mana -= data.cost;
-      //   } else if (data.type === 'R') {
-      //     this.characterData.mana += data.cost;
-      //   }
-      // }
       // const enemySkill = this.selectEnemySkill();
+
       // this.processAI(enemySkill);
+    },
+    processNotification(message) {
+      EventBus.$emit('notify', message);
+    },
+    selectEnemySkill() {
+      const randomInt = Math.floor(Math.random() * Math.floor(3));
+      const skill = this.enemyDetails.skills[randomInt];
+      this.isEnemyAttacking = true;
+      return skill;
     },
     getImage() {
       const imageName = this.dungeonDetails.battlefield.dungeon.image;

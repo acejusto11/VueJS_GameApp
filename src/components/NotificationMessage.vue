@@ -60,8 +60,8 @@ export default {
   color: white;
   position: absolute;
   bottom: 20%;
-  left: 30%;
-  width: 400px;
+  left: 25%;
+  width: 430px;
   height: 150px;
 }
 </style>
