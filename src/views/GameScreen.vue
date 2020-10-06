@@ -35,8 +35,9 @@ import NotificationMessage from '../components/NotificationMessage.vue';
 import Player from '../components/Player';
 import Enemy from '../components/Enemy';
 import SkillsDashboard from '../components/SkillsDashboard.vue';
-import { ENTER_DUNGEON } from '../store/actions.type';
+import { ENTER_DUNGEON, SAVE_BATTLE } from '../store/actions.type';
 import { normalizeStats } from '../utils';
+import { setTimeout } from 'timers';
 export default {
   name: 'GameScreen',
   components: {
@@ -48,6 +49,7 @@ export default {
   },
   data() {
     return {
+      playing: true,
       currentPlayer: {
         health: 0,
         mana: 0
@@ -82,7 +84,10 @@ export default {
       return this.$store.state.dungeon;
     },
     enemyDetails() {
-      return this.$store.state.dungeon.battlefield.enemy;
+      return (
+        this.$store.state.dungeon.battlefield &&
+        this.$store.state.dungeon.battlefield.enemy
+      );
     },
     characterDetails() {
       const { stats, equipment } = this.$store.state.character.details;
@@ -95,55 +100,97 @@ export default {
     }
   },
   methods: {
-    processSkill(data) {
-      console.log('received data', data);
-      if (data.target === 'enemy') {
+    processSkill(skill) {
+      if (!this.playing) return;
+      if (skill.target === 'enemy') {
         const damage = Math.round(
-          (data.damage / 100) * this.characterDetails.stats.off.total
+          (skill.damage / 100) * this.characterDetails.stats.off.total
         );
         this.currentEnemy.health -= damage;
-        this.currentPlayer.mana -= data.cost;
-        this.currentPlayer.mana -= data.cost;
+        this.currentPlayer.mana -= skill.cost;
         this.processNotification(
-          `${this.characterDetails.name} used ${data.name}. Dealt ${damage} damage`
+          `${this.characterDetails.name} used ${skill.name}. Dealt ${damage} damage`
         );
       } else {
-        if (data.type === 'M') {
+        if (skill.type === 'M') {
           const healthPts = Math.round(
-            ((data.damage * -0.75) / 100) *
+            ((skill.damage * -0.75) / 100) *
               this.characterDetails.stats.int.total
           );
           this.currentPlayer.health += healthPts;
-          this.currentPlayer.mana -= data.cost;
+          this.currentPlayer.mana -= skill.cost;
           this.processNotification(
-            `${this.characterDetails.name} used ${data.name}. Gained ${healthPts} health points.`
+            `${this.characterDetails.name} used ${skill.name}. Gained ${healthPts} health points.`
           );
-        } else if (data.type === 'R') {
+        } else if (skill.type === 'R') {
           const manaPts = Math.round(
-            ((data.damage * 0.75) / 100) * this.characterDetails.stats.int.total
+            ((skill.damage * 0.75) / 100) *
+              this.characterDetails.stats.int.total
           );
           this.currentPlayer.mana += manaPts;
           this.processNotification(
-            `${this.characterDetails.name} used ${data.name}. Gained ${manaPts} mana points.`
+            `${this.characterDetails.name} used ${skill.name}. Gained ${manaPts} mana points.`
           );
         }
       }
-      // const enemySkill = this.selectEnemySkill();
-
-      // this.processAI(enemySkill);
+      const enemySkill = this.selectEnemySkill();
+      console.log('enemySkill', enemySkill);
+      setTimeout(() => {
+        this.processAI(enemySkill);
+      }, 2000);
+    },
+    processAI: function(skill) {
+      if (!this.playing) return;
+      if (skill.target === 'enemy') {
+        const damage = Math.round(
+          (skill.damage / 100) * 30 // Fixed offense value
+        );
+        const reducedDamage =
+          damage -
+          Math.round((this.characterDetails.stats.def.total * 10) / 100);
+        this.currentPlayer.health -= reducedDamage;
+        this.currentEnemy.mana -= skill.cost;
+        this.processNotification(
+          `${this.enemyDetails.name} used ${skill.name}. Dealt ${damage} damage`
+        );
+      }
     },
     processNotification(message) {
       EventBus.$emit('notify', message);
     },
     selectEnemySkill() {
-      const randomInt = Math.floor(Math.random() * Math.floor(3));
+      const skillLength =
+        this.enemyDetails.skills && this.enemyDetails.skills.length;
+      const randomInt = Math.floor(Math.random() * Math.floor(skillLength));
       const skill = this.enemyDetails.skills[randomInt];
       this.isEnemyAttacking = true;
       return skill;
     },
     getImage() {
-      const imageName = this.dungeonDetails.battlefield.dungeon.image;
-      return require(`../assets/dungeons/${imageName}.jpg`);
+      const imageName =
+        this.dungeonDetails.battlefield &&
+        this.dungeonDetails.battlefield.dungeon.image;
+      return imageName ? require(`../assets/dungeons/${imageName}.jpg`) : '';
+    }
+  },
+  watch: {
+    'currentEnemy.health': function(health) {
+      if (health <= 0) {
+        this.processNotification('You win');
+        const dungeonId = this.$route.params.id;
+        const characterId = this.characterDetails._id;
+        const enemyId = this.enemyDetails._id;
+        this.playing = false;
+        this.$store
+          .dispatch(SAVE_BATTLE, { characterId, dungeonId, enemyId })
+          .then(result => alert(JSON.stringify(result, null, 2)));
+      }
+    },
+    'currentPlayer.health': function(health) {
+      if (health <= 0) {
+        this.playing = false;
+        this.processNotification('You lose');
+      }
     }
   }
 };

@@ -63,5 +63,8 @@ export default {
   left: 25%;
   width: 430px;
   height: 150px;
+  text-shadow: 3px 3px 0 rgb(240, 234, 234), -1px -1px 0 rgb(240, 234, 234),
+    1px -1px 0 rgb(240, 234, 234), -1px 1px 0 rgb(240, 234, 234),
+    1px 1px 0 rgb(240, 234, 234);
 }
 </style>

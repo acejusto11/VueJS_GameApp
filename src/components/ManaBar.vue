@@ -1,6 +1,6 @@
 <template>
   <div :class="{ reverse: isReverse }">
-    <div class="manaBar" style="background-color: #3535d1; color: white;" :style="manaBar"></div>
+    <div class="manaBar barColor" :class="{reverseBarColor: isReverse  }" :style="manaBar"></div>
   </div>
 </template>
 
@@ -18,10 +18,9 @@ export default {
       const styles = {
         width: percentage + '%'
       };
-      if (this.mana <= 30) {
-        styles.backgroundColor = 'rgb(80 80 238)';
-      } else {
-        styles.backgroundColor = '#3535d1';
+      if (this.value <= 30) {
+        styles.background =
+          'linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(0,212,255,1) 0%, rgba(3,189,230,1) 2%, rgba(2,193,235,1) 80%, rgba(25,2,31,1) 99%)';
       }
       return styles;
     }
@@ -39,6 +38,31 @@ export default {
   transition: width 300ms;
   border-radius: 20px;
 }
+
+.barColor {
+  background: rgb(2, 0, 36);
+  background: linear-gradient(
+    90deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(0, 212, 255, 1) 0%,
+    rgba(3, 189, 230, 1) 2%,
+    rgba(2, 193, 235, 1) 8%,
+    rgba(25, 2, 31, 1) 34%
+  );
+}
+
+.reverseBarColor {
+  background: rgb(2, 0, 36);
+  background: linear-gradient(
+    90deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(25, 2, 31, 1) 64%,
+    rgba(2, 193, 235, 1) 96%,
+    rgba(0, 212, 255, 1) 100%,
+    rgba(3, 189, 230, 1) 100%
+  );
+}
+
 .reverse {
   display: flex;
   flex-direction: row-reverse;

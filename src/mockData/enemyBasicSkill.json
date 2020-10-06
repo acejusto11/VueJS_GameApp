@@ -1,0 +1,98 @@
+[
+  {
+    "enemy": "Killer Bunny",
+    "cost": 10,
+    "damage": 80,
+    "name": "Basic Attack",
+    "target": "enemy",
+    "type": "P"
+  },
+  {
+    "enemy": "Giant Bee",
+    "cost": 10,
+    "damage": 100,
+    "name": "Basic Attack",
+    "target": "enemy",
+    "type": "P"
+  },
+  {
+    "enemy": "Mutant Frog",
+    "cost": 15,
+    "damage": 120,
+    "name": "Basic Attack",
+    "target": "enemy",
+    "type": "P"
+  },
+  {
+    "enemy": "Monster Bunny",
+    "cost": 15,
+    "damage": 130,
+    "name": "Basic Attack",
+    "target": "enemy",
+    "type": "P"
+  },
+  {
+    "enemy": "Direwolf",
+    "cost": 20,
+    "damage": 135,
+    "name": "Basic Attack",
+    "target": "enemy",
+    "type": "P"
+  },
+  {
+    "enemy": "Fengalon",
+    "cost": 20,
+    "damage": 135,
+    "name": "Basic Attack",
+    "target": "enemy",
+    "type": "P"
+  },
+  {
+    "enemy": "Minotaur",
+    "cost": 20,
+    "damage": 140,
+    "name": "Basic Attack",
+    "target": "enemy",
+    "type": "P"
+  },
+  {
+    "enemy": "Fenrir",
+    "cost": 20,
+    "damage": 145,
+    "name": "Basic Attack",
+    "target": "enemy",
+    "type": "P"
+  },
+  {
+    "enemy": "Tower Guard",
+    "cost": 25,
+    "damage": 150,
+    "name": "Basic Attack",
+    "target": "enemy",
+    "type": "P"
+  },
+  {
+    "enemy": "Wandering Hero",
+    "cost": 25,
+    "damage": 150,
+    "name": "Basic Attack",
+    "target": "enemy",
+    "type": "P"
+  },
+  {
+    "enemy": "Vengeful Spirit",
+    "cost": 25,
+    "damage": 150,
+    "name": "Basic Attack",
+    "target": "enemy",
+    "type": "P"
+  },
+  {
+    "enemy": "Arch Mage",
+    "cost": 30,
+    "damage": 160,
+    "name": "Basic Attack",
+    "target": "enemy",
+    "type": "P"
+  }
+]

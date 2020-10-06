@@ -30,5 +30,8 @@ export const GameService = {
   },
   enterDungeon(data) {
     return Vue.http.post(`${apiUrl}/dungeons/enter`, data);
+  },
+  saveBattle(data) {
+    return Vue.http.post(`${apiUrl}/dungeons/battle`, data);
   }
 };

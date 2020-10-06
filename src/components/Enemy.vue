@@ -39,19 +39,10 @@ div {
   right: 80px;
 }
 
-.idle {
-  width: 300px;
-  height: 300px;
-}
-
-.attacking {
-  width: 350px;
-  height: 350px;
-}
-
-.message {
-  margin-right: 90px;
-  color: white;
-  font-size: 1.5rem;
+img {
+  max-width: 300px;
+  max-height: 300px;
+  min-width: 150px;
+  min-height: 150px;
 }
 </style>

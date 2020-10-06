@@ -11,16 +11,21 @@
             @click="getDungeon(dungeon._id)"
             :style="{'background-image': `url(${getImage(dungeon.image)})`}"
           >
-            <img
-              v-if="dungeon.recommendedLevel > level"
-              src="../assets/dungeons/locked-overlay.png"
-            />
+            <img v-if="isDisabled(dungeon)" src="../assets/dungeons/locked-overlay.png" />
           </div>
         </div>
         <div class="col-sm-6">
           <div v-if="selectedDungeon">
             <div class="row">
               <div class="col-sm-12 pad-1 title">{{ selectedDungeon.name }}</div>
+            </div>
+            <div class="row pad-1">
+              <div class="col-sm-12 pad">
+                <button
+                  @click="goToGameScreen"
+                  :disabled="isDisabled(selectedDungeon)"
+                >Enter Dungeon</button>
+              </div>
             </div>
             <div class="row">
               <div class="col-sm-6 bold left-text">Recommended Level:</div>
@@ -44,14 +49,6 @@
                 </div>
                 <div v-else class="col-sm-8 text-left">-----</div>
               </div>
-            </div>
-          </div>
-          <div class="row bottom" v-if="selectedDungeon">
-            <div class="col-sm-12">
-              <button
-                :disabled="selectedDungeon.recommendedLevel > level"
-                @click="goToGameScreen"
-              >Enter Dungeon</button>
             </div>
           </div>
         </div>
@@ -100,6 +97,15 @@ export default {
     },
     getImage(image) {
       return require(`../assets/dungeons/${image}.jpg`);
+    },
+    isDisabled(dungeon) {
+      const dungeonAccess = this.$store.state.character.details.dungeonAccess;
+      const matchedDungeon =
+        dungeonAccess && dungeonAccess.filter(item => item._id === dungeon._id);
+
+      return (
+        dungeon.recommendedLevel > this.level || matchedDungeon.length === 0
+      );
     },
     goToGameScreen() {
       this.$router.push({

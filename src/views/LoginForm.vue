@@ -12,6 +12,7 @@
             v-model.lazy.trim="username"
             :class="{ hasErrors: !$v.username.required }"
             @blur="$v.username.$touch()"
+            autocomplete="false"
           />
           <p
             class="error-message"

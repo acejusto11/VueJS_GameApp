@@ -8,3 +8,4 @@ export const GET_DUNGEONS = 'getDungeons';
 export const GET_INVENTORY = 'getInventory';
 export const SAVE_EQUIPMENT = 'saveEquipment';
 export const ENTER_DUNGEON = 'enterDungeon';
+export const SAVE_BATTLE = 'saveBattle';

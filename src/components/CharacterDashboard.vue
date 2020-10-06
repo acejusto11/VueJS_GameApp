@@ -61,7 +61,7 @@
           <button @click="$router.push('/character/skills')">Skills</button>
         </div>
         <div>
-          <button>Logout</button>
+          <button @click="$router.push('/')">Logout</button>
         </div>
       </div>
     </div>
