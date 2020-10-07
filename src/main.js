@@ -6,6 +6,7 @@ import store from './store';
 import Vuelidate from 'vuelidate';
 
 import vSelect from 'vue-select';
+import VueSession from 'vue-session';
 
 import './main.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -18,6 +19,8 @@ Vue.component('v-select', vSelect);
 Vue.config.productionTip = false;
 
 Vue.use(Vuelidate);
+
+Vue.use(VueSession);
 
 new Vue({
   el: '#app',

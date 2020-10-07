@@ -1,12 +1,14 @@
 <template>
-  <div class="container">
+  <div class="container text-center">
     <button @click="processAttack()">Attack</button>
     <button @click="processFocus()">Focus</button>
     <div v-for="skill in characterDetails.skills" :key="skill._id">
       <button
         @click="processSkills(skill._id)"
         :disabled="isSkillDisabled(skill.cost)"
-      >{{ skill.name }}</button>
+      >
+        {{ skill.name }}
+      </button>
     </div>
     <button @click="closeCallback && closeCallback()">Run Away</button>
   </div>

@@ -5,13 +5,15 @@
       <div class="row title flex-center">Skills</div>
       <div class="row nowrap skills-section">
         <div class="col-md-7 pad-1 border-1">
-          <div class="row">
+          <div class="row text-center">
             <div
               class="col-sm-12 skill-tile no-margin"
               v-for="skill in skills"
               :key="skill._id"
               @click="getSkill(skill._id)"
-            >{{ skill.name }}</div>
+            >
+              {{ skill.name }}
+            </div>
           </div>
         </div>
         <div class="col-md-5 pad-1">
@@ -24,11 +26,15 @@
                 </div>
                 <div class="row">
                   <div class="col-sm-4 bold">Level</div>
-                  <div class="col-sm-8 left-text">{{ currentSkill.lvlReq }}</div>
+                  <div class="col-sm-8 left-text">
+                    {{ currentSkill.lvlReq }}
+                  </div>
                 </div>
                 <div class="row">
                   <div class="col-sm-4 bold">Target</div>
-                  <div class="col-sm-8 left-text">{{ currentSkill.target }}</div>
+                  <div class="col-sm-8 left-text">
+                    {{ currentSkill.target }}
+                  </div>
                 </div>
                 <div class="row">
                   <div class="col-sm-4 bold">Type</div>
@@ -49,19 +55,26 @@
             <div class="col-sm-12">
               <div class="row title no-margin">Current Skills</div>
               <div class="row" v-for="skill in currentSkills" :key="skill._id">
-                <div class="col-sm-8">{{skill.name}}</div>
+                <div class="col-sm-8">{{ skill.name }}</div>
                 <div
                   class="col-sm-4"
                   style="cursor: pointer"
                   v-if="currentSkills.length > 1"
                   @click="removeSkill(skill._id)"
-                >X</div>
+                >
+                  X
+                </div>
               </div>
             </div>
           </div>
           <div class="row action-tile">
             <div class="col-sm-6 pad-1">
-              <button :disabled="isSkillEquipped(currentSkill)" @click="addCurrentSkill()">Equip</button>
+              <button
+                :disabled="isSkillEquipped(currentSkill)"
+                @click="addCurrentSkill()"
+              >
+                Equip
+              </button>
             </div>
             <div class="col-sm-6 pad-1">
               <button :disabled="!hasChanges" @click="save">Save</button>
@@ -90,7 +103,11 @@ export default {
     };
   },
   created() {
-    const characterId = this.$store.state.character.details._id;
+    //TODO: move to mixin
+    const accountId = this.$session.get('accountId');
+    if (!accountId) this.$router.push('/');
+
+    const characterId = this.$session.get('characterId');
     if (characterId) {
       this.$store.dispatch(GET_SKILLS, characterId);
     }

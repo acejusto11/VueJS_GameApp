@@ -11,7 +11,9 @@
               v-for="inventory in inventoryItems"
               :key="inventory._id"
               @click="getItem(inventory._id)"
-            >{{inventory.item.name}}</div>
+            >
+              {{ inventory.item.name }}
+            </div>
           </div>
         </div>
         <div class="col-md-5 pad-1">
@@ -20,35 +22,51 @@
               <div class="row title no-margin">Details</div>
               <div v-if="selectedInventory">
                 <div class="row">
-                  <div class="col-sm-12 uppercase">{{ selectedInventory.item.name}}</div>
+                  <div class="col-sm-12 uppercase">
+                    {{ selectedInventory.item.name }}
+                  </div>
                 </div>
                 <div class="row">
                   <div class="col-sm-8 uppercase">Health</div>
-                  <div class="col-sm-4 left-text">{{ selectedInventory.item.bonus.health }}</div>
+                  <div class="col-sm-4 left-text">
+                    {{ selectedInventory.item.bonus.health }}
+                  </div>
                 </div>
                 <div class="row">
                   <div class="col-sm-8 uppercase">Mana</div>
-                  <div class="col-sm-4 left-text">{{ selectedInventory.item.bonus.mana }}</div>
+                  <div class="col-sm-4 left-text">
+                    {{ selectedInventory.item.bonus.mana }}
+                  </div>
                 </div>
                 <div class="row">
                   <div class="col-sm-8 uppercase">Off</div>
-                  <div class="col-sm-4 left-text">{{ selectedInventory.item.bonus.off }}</div>
+                  <div class="col-sm-4 left-text">
+                    {{ selectedInventory.item.bonus.off }}
+                  </div>
                 </div>
                 <div class="row">
                   <div class="col-sm-8 uppercase">Def</div>
-                  <div class="col-sm-4 left-text">{{ selectedInventory.item.bonus.def }}</div>
+                  <div class="col-sm-4 left-text">
+                    {{ selectedInventory.item.bonus.def }}
+                  </div>
                 </div>
                 <div class="row">
                   <div class="col-sm-8 uppercase">Agi</div>
-                  <div class="col-sm-4 left-text">{{ selectedInventory.item.bonus.agi }}</div>
+                  <div class="col-sm-4 left-text">
+                    {{ selectedInventory.item.bonus.agi }}
+                  </div>
                 </div>
                 <div class="row">
                   <div class="col-sm-8 uppercase">Int</div>
-                  <div class="col-sm-4 left-text">{{ selectedInventory.item.bonus.int }}</div>
+                  <div class="col-sm-4 left-text">
+                    {{ selectedInventory.item.bonus.int }}
+                  </div>
                 </div>
                 <div class="row">
                   <div class="col-sm-8 uppercase">Luk</div>
-                  <div class="col-sm-4 left-text">{{ selectedInventory.item.bonus.luk }}</div>
+                  <div class="col-sm-4 left-text">
+                    {{ selectedInventory.item.bonus.luk }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -59,18 +77,27 @@
               <div v-if="characterItems">
                 <div class="row">
                   <div class="col-sm-6 uppercase">Weapon</div>
-                  <div class="col-sm-6 left-text">{{ characterItems.weapon.name}}</div>
+                  <div class="col-sm-6 left-text">
+                    {{ characterItems.weapon.name }}
+                  </div>
                 </div>
                 <div class="row">
                   <div class="col-sm-6 uppercase">Armor</div>
-                  <div class="col-sm-6 left-text">{{ characterItems.armor.name }}</div>
+                  <div class="col-sm-6 left-text">
+                    {{ characterItems.armor.name }}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
           <div class="row action-tile">
             <div class="col-sm-6 pad-1">
-              <button :disabled="isItemNotAllowed || isItemAlreadyEquipped" @click="equipItem">Equip</button>
+              <button
+                :disabled="isItemNotAllowed || isItemAlreadyEquipped"
+                @click="equipItem"
+              >
+                Equip
+              </button>
             </div>
             <div class="col-sm-6 pad-1">
               <button :disabled="isSaveDisabled" @click="save">Save</button>
@@ -98,6 +125,9 @@ export default {
     };
   },
   created() {
+    //TODO: move to mixin
+    const accountId = this.$session.get('accountId');
+    if (!accountId) this.$router.push('/');
     const characterId = this.$store.state.character.details._id;
     this.characterItems = this.$store.state.character.details.equipment;
     if (characterId) {

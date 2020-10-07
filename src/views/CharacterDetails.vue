@@ -10,15 +10,17 @@ import CharacterDashboard from '../components/CharacterDashboard.vue';
 import { normalizeStats } from '../utils';
 export default {
   name: 'CharacterDetails',
-
   components: {
     'character-dashboard': CharacterDashboard
   },
   created() {
-    const accountId = this.$store.state.authentication.accountId;
-    if (accountId) {
-      this.$store.dispatch(GET_CHARACTER, accountId);
-    }
+    //TODO: move to mixin
+    const accountId = this.$session.get('accountId');
+    if (!accountId) this.$router.push('/');
+
+    this.$store
+      .dispatch(GET_CHARACTER, accountId)
+      .then(response => this.$session.set('characterId', response._id));
   },
   computed: {
     details() {

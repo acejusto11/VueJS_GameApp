@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <form @submit.prevent="submitForm" class="formContainer">
+    <form @submit.prevent="submitForm" class="formContainer" autocomplete="off">
       <div class="container" v-if="!showNext">
         <h1>Register</h1>
         <!-- TODO: Create custom components for inputs  -->

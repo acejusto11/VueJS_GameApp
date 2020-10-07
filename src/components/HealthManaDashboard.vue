@@ -1,18 +1,44 @@
 <template>
   <div class="containerRow">
-    <div class="half player" v-if="characterDetails">
-      <div class="name">{{ `${characterDetails.name} - Level ${characterDetails.level}` }}</div>
-      <health-bar :max="characterDetails.stats.health.total" :value="currentPlayerHealth" />
-      <mana-bar :max="characterDetails.stats.mana.total" :value="currentPlayerMana" />
-      <span>HP : {{ currentPlayerHealth }} / {{characterDetails.stats.health.total}}</span>&nbsp;
-      <span>Mana : {{ currentPlayerMana }} / {{characterDetails.stats.mana.total}}</span>
+    <div class="half player text-center title" v-if="characterDetails">
+      <div class="name">
+        {{ `${characterDetails.name} - Level ${characterDetails.level}` }}
+      </div>
+      <health-bar
+        :max="characterDetails.stats.health.total"
+        :value="currentPlayerHealth"
+      />
+      <mana-bar
+        :max="characterDetails.stats.mana.total"
+        :value="currentPlayerMana"
+      />
+      <span
+        >HP : {{ currentPlayerHealth }} /
+        {{ characterDetails.stats.health.total }}</span
+      >&nbsp;
+      <span
+        >Mana : {{ currentPlayerMana }} /
+        {{ characterDetails.stats.mana.total }}</span
+      >
     </div>
-    <div class="half enemy" v-if="enemyDetails">
-      <div class="name">{{ `${enemyDetails.name} - Level ${enemyDetails.level}` }}</div>
-      <health-bar :max="enemyDetails.stats.health" :value="currentEnemyHealth" isReverse />
-      <mana-bar :max="enemyDetails.stats.mana" :value="currentEnemyMana" isReverse />
-      <span>HP : {{ currentEnemyHealth }} / {{enemyDetails.stats.health}}</span>&nbsp;
-      <span>Mana : {{ currentEnemyMana }} / {{enemyDetails.stats.mana}}</span>
+    <div class="half enemy text-center title" v-if="enemyDetails">
+      <div class="name">
+        {{ `${enemyDetails.name} - Level ${enemyDetails.level}` }}
+      </div>
+      <health-bar
+        :max="enemyDetails.stats.health"
+        :value="currentEnemyHealth"
+        isReverse
+      />
+      <mana-bar
+        :max="enemyDetails.stats.mana"
+        :value="currentEnemyMana"
+        isReverse
+      />
+      <span
+        >HP : {{ currentEnemyHealth }} / {{ enemyDetails.stats.health }}</span
+      >&nbsp;
+      <span>Mana : {{ currentEnemyMana }} / {{ enemyDetails.stats.mana }}</span>
     </div>
   </div>
 </template>

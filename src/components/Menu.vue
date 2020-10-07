@@ -4,16 +4,22 @@
       <button @click="$router.push('/character')">Go to Character</button>
     </div>
     <div class="text-left">
-      <button @click="$router.push('/')">Logout</button>
+      <button @click="logout">Logout</button>
     </div>
   </div>
 </template>
 <script>
 export default {
-  name: 'Menu'
+  name: 'Menu',
+  methods: {
+    logout() {
+      this.$session.destroy();
+      this.$router.push('/');
+    }
+  }
 };
 </script>
-<style >
+<style>
 .menu {
   position: absolute;
   margin: 1rem;

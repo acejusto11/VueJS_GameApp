@@ -1,6 +1,6 @@
 <template>
   <div class="main flex">
-    <form @submit.prevent="submitForm" class="formContainer">
+    <form @submit.prevent="submitForm" class="formContainer" autocomplete="off">
       <h1>Login</h1>
       <div class="container">
         <div>
@@ -12,18 +12,21 @@
             v-model.lazy.trim="username"
             :class="{ hasErrors: !$v.username.required }"
             @blur="$v.username.$touch()"
-            autocomplete="false"
+            autocomplete="off"
           />
           <p
             class="error-message"
             v-if="!$v.username.required && $v.username.$error"
-          >* Username is required</p>
+          >
+            * Username is required
+          </p>
 
           <input
             type="password"
             name="password"
             id="password"
             placeholder="Password"
+            autocomplete="off"
             v-model.lazy.trim="password"
             :class="{ hasErrors: !$v.password.required }"
             @blur="$v.password.$touch()"
@@ -31,12 +34,16 @@
           <p
             class="error-message"
             v-if="!$v.password.required && $v.password.$error"
-          >* Password is required</p>
+          >
+            * Password is required
+          </p>
         </div>
         <span>{{ error }}</span>
         <button type="submit" class="button" @click="submitForm">Login</button>
         <span>OR</span>
-        <button type="buttton" class="button" @click="goToAccountCreation">Register New Account</button>
+        <button type="buttton" class="button" @click="goToAccountCreation">
+          Register New Account
+        </button>
       </div>
     </form>
   </div>
@@ -67,11 +74,13 @@ export default {
           username: this.username,
           password: this.password
         };
-        this.$store
-          .dispatch(LOGIN, loginData)
-          .then(
-            response => response && this.$router.push({ name: 'character' })
-          );
+        this.$store.dispatch(LOGIN, loginData).then(response => {
+          this.$session.start();
+          this.$session.set('accountId', response.accountId);
+          this.$http.headers.common['Authorization'] =
+            'Bearer ' + response.accountId;
+          this.$router.push({ name: 'character' });
+        });
       }
     },
     goToAccountCreation() {

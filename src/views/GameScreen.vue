@@ -1,5 +1,5 @@
 <template>
-  <div class="dungeon" :style="{'background-image': `url(${getImage()})`}">
+  <div class="dungeon" :style="{ 'background-image': `url(${getImage()})` }">
     <health-mana-dashboard
       :characterDetails="characterDetails"
       :enemyDetails="enemyDetails"
@@ -81,7 +81,7 @@ export default {
   },
   created() {
     const dungeonId = this.$route.params.id;
-    const characterId = this.$store.state.character.details._id;
+    const characterId = this.$session.get('characterId');
     if (characterId && dungeonId) {
       this.$store
         .dispatch(ENTER_DUNGEON, { characterId, dungeonId })
@@ -222,6 +222,7 @@ export default {
       if (health <= 0) {
         this.playing = false;
         this.processNotification('You lose');
+        this.closeBattleResults();
       }
     }
   }

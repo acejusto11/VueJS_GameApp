@@ -71,3 +71,7 @@
   z-index: 9;
   overflow: auto;
 }
+
+.text-center {
+  text-align: center;
+}

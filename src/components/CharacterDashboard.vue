@@ -5,7 +5,7 @@
       <div class="col-md-3 title">Record</div>
       <div class="col-md-4"></div>
     </div>
-    <div class="row nowrap container-1">
+    <div class="row nowrap container-1 text-center">
       <div class="col-md-5 pad-1">
         <span class="title">Character Stats</span>
         <div class="row nowrap">
@@ -15,39 +15,55 @@
           <div class="col-sm-3 bold">Total</div>
         </div>
 
-        <div class="row nowrap" v-for="stat in Object.keys(details.stats)" :key="stat">
-          <div class="col-sm-3 bold uppercase">{{stat}}</div>
-          <div class="col-sm-3">{{details.stats[stat]["base"]}}</div>
-          <div class="col-sm-3">{{details.stats[stat]["bonus"]}}</div>
-          <div class="col-sm-3">{{details.stats[stat]["total"]}}</div>
+        <div
+          class="row nowrap"
+          v-for="stat in Object.keys(details.stats)"
+          :key="stat"
+        >
+          <div class="col-sm-3 bold uppercase">{{ stat }}</div>
+          <div class="col-sm-3">{{ details.stats[stat]['base'] }}</div>
+          <div class="col-sm-3">{{ details.stats[stat]['bonus'] }}</div>
+          <div class="col-sm-3">{{ details.stats[stat]['total'] }}</div>
         </div>
       </div>
       <div class="col-md-3 container-3 bold">
         <img class="imgCharacter" :src="getImage(details.classType, 'idle')" />
-        <div class="title bold">{{details.name}}</div>
-        <div>Level: {{details.level}}</div>
-        <div>Type: {{getType(details.classType)}}</div>
-        <div>Exp: {{details.totalExp}}</div>
+        <div class="title bold">{{ details.name }}</div>
+        <div>Level: {{ details.level }}</div>
+        <div>Type: {{ getType(details.classType) }}</div>
+        <div>Exp: {{ details.totalExp }}</div>
       </div>
       <div class="col-md-4 pad-1">
         <div class="row title no-margin">Skills</div>
         <div class="row">
-          <div class="col-sm-4" v-for="skill in details.skills" :key="skill._id">{{ skill.name }}</div>
+          <div
+            class="col-sm-4"
+            v-for="skill in details.skills"
+            :key="skill._id"
+          >
+            {{ skill.name }}
+          </div>
         </div>
         <div class="row title no-margin">Weapon</div>
         <div class="row">
-          <div class="col-sm-6" v-if="details.equipment">{{ details.equipment.weapon.name}}</div>
+          <div class="col-sm-6" v-if="details.equipment">
+            {{ details.equipment.weapon.name }}
+          </div>
         </div>
         <div class="row title no-margin">Armor</div>
         <div class="row">
-          <div class="col-sm-6" v-if="details.equipment">{{ details.equipment.armor.name}}</div>
+          <div class="col-sm-6" v-if="details.equipment">
+            {{ details.equipment.armor.name }}
+          </div>
         </div>
       </div>
     </div>
-    <div class="row nowrap container-2">
+    <div class="row nowrap container-2 text-center">
       <div class="col-md-5 pad-1">
         <span class="title">Dungeon Access</span>
-        <div v-for="dungeon in details.dungeonAccess" :key="dungeon._id">{{ dungeon.name }}</div>
+        <div v-for="dungeon in details.dungeonAccess" :key="dungeon._id">
+          {{ dungeon.name }}
+        </div>
       </div>
       <div class="col-md-3"></div>
       <div class="col-md-4 pad-1">
@@ -55,13 +71,15 @@
           <button @click="$router.push('/character/dungeons')">Dungeons</button>
         </div>
         <div>
-          <button @click="$router.push('/character/inventory')">Inventory</button>
+          <button @click="$router.push('/character/inventory')">
+            Inventory
+          </button>
         </div>
         <div>
           <button @click="$router.push('/character/skills')">Skills</button>
         </div>
         <div>
-          <button @click="$router.push('/')">Logout</button>
+          <button @click="logout">Logout</button>
         </div>
       </div>
     </div>
@@ -90,12 +108,16 @@ export default {
         return item.code === type;
       });
       return charClass ? charClass.title : '';
+    },
+    logout() {
+      this.$session.destroy();
+      this.$router.push('/');
     }
   }
 };
 </script>
 
-<style  scoped>
+<style scoped>
 * {
   font-family: Rubik;
 }
