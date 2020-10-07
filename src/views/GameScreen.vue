@@ -19,12 +19,23 @@
         <skills-dashboard
           :characterDetails="characterDetails"
           :currentPlayerMana="currentPlayer.mana"
+          :closeCallback="closeBattleResults"
           @process-skill="processSkill"
         />
       </div>
       <div class="notification">
         <notication-message />
       </div>
+      <battle-results
+        v-if="showBattleresults"
+        :battleResults="battleResults"
+        :closeCallback="closeBattleResults"
+      />
+      <reenter-dungeon
+        v-if="showReenterDungeon"
+        :yesCallback="reEnterDungeon"
+        :noCallback="exitDungeon"
+      />
     </div>
   </div>
 </template>
@@ -35,6 +46,8 @@ import NotificationMessage from '../components/NotificationMessage.vue';
 import Player from '../components/Player';
 import Enemy from '../components/Enemy';
 import SkillsDashboard from '../components/SkillsDashboard.vue';
+import BattleResults from '../components/BattleResults.vue';
+import ReenterDungeon from '../components/ReenterDungeon.vue';
 import { ENTER_DUNGEON, SAVE_BATTLE } from '../store/actions.type';
 import { normalizeStats } from '../utils';
 import { setTimeout } from 'timers';
@@ -45,7 +58,9 @@ export default {
     'player-hero': Player,
     enemy: Enemy,
     'skills-dashboard': SkillsDashboard,
-    'notication-message': NotificationMessage
+    'notication-message': NotificationMessage,
+    'battle-results': BattleResults,
+    'reenter-dungeon': ReenterDungeon
   },
   data() {
     return {
@@ -58,7 +73,10 @@ export default {
         health: 0,
         mana: 0
       },
-      isEnemyAttacking: false
+      isEnemyAttacking: false,
+      showBattleresults: false,
+      showReenterDungeon: false,
+      battleResults: {}
     };
   },
   created() {
@@ -134,7 +152,6 @@ export default {
         }
       }
       const enemySkill = this.selectEnemySkill();
-      console.log('enemySkill', enemySkill);
       setTimeout(() => {
         this.processAI(enemySkill);
       }, 2000);
@@ -171,6 +188,18 @@ export default {
         this.dungeonDetails.battlefield &&
         this.dungeonDetails.battlefield.dungeon.image;
       return imageName ? require(`../assets/dungeons/${imageName}.jpg`) : '';
+    },
+    closeBattleResults() {
+      this.showBattleresults = false;
+      this.showReenterDungeon = true;
+    },
+    reEnterDungeon() {
+      this.$router.go(0);
+    },
+    exitDungeon() {
+      this.$router.push({
+        name: 'dungeons'
+      });
     }
   },
   watch: {
@@ -183,7 +212,10 @@ export default {
         this.playing = false;
         this.$store
           .dispatch(SAVE_BATTLE, { characterId, dungeonId, enemyId })
-          .then(result => alert(JSON.stringify(result, null, 2)));
+          .then(result => {
+            this.showBattleresults = true;
+            this.battleResults = result;
+          });
       }
     },
     'currentPlayer.health': function(health) {

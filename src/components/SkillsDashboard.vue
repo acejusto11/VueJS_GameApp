@@ -8,7 +8,7 @@
         :disabled="isSkillDisabled(skill.cost)"
       >{{ skill.name }}</button>
     </div>
-    <button>Run Away</button>
+    <button @click="closeCallback && closeCallback()">Run Away</button>
   </div>
 </template>
 <script>
@@ -23,7 +23,8 @@ export default {
   props: {
     skills: Array,
     characterDetails: Object,
-    currentPlayerMana: Number
+    currentPlayerMana: Number,
+    closeCallback: Function
   },
   computed: {},
   methods: {

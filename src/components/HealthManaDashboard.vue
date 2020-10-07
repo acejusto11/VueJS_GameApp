@@ -1,13 +1,13 @@
 <template>
   <div class="containerRow">
-    <div class="half player">
+    <div class="half player" v-if="characterDetails">
       <div class="name">{{ `${characterDetails.name} - Level ${characterDetails.level}` }}</div>
       <health-bar :max="characterDetails.stats.health.total" :value="currentPlayerHealth" />
       <mana-bar :max="characterDetails.stats.mana.total" :value="currentPlayerMana" />
       <span>HP : {{ currentPlayerHealth }} / {{characterDetails.stats.health.total}}</span>&nbsp;
       <span>Mana : {{ currentPlayerMana }} / {{characterDetails.stats.mana.total}}</span>
     </div>
-    <div class="half enemy">
+    <div class="half enemy" v-if="enemyDetails">
       <div class="name">{{ `${enemyDetails.name} - Level ${enemyDetails.level}` }}</div>
       <health-bar :max="enemyDetails.stats.health" :value="currentEnemyHealth" isReverse />
       <mana-bar :max="enemyDetails.stats.mana" :value="currentEnemyMana" isReverse />
