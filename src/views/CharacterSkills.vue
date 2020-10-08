@@ -11,30 +11,24 @@
               v-for="skill in skills"
               :key="skill._id"
               @click="getSkill(skill._id)"
-            >
-              {{ skill.name }}
-            </div>
+            >{{ skill.name }}</div>
           </div>
         </div>
         <div class="col-md-5 pad-1">
           <div class="row details-tile">
             <div class="col-sm-12">
               <div class="row title no-margin">Details</div>
-              <div v-if="currentSkill">
+              <div class="text-center" v-if="currentSkill">
                 <div class="row">
-                  <div class="col-sm-12">{{ currentSkill.name }}</div>
+                  <div class="col-sm-12 bold">{{ currentSkill.name }}</div>
                 </div>
                 <div class="row">
                   <div class="col-sm-4 bold">Level</div>
-                  <div class="col-sm-8 left-text">
-                    {{ currentSkill.lvlReq }}
-                  </div>
+                  <div class="col-sm-8 left-text">{{ currentSkill.lvlReq }}</div>
                 </div>
                 <div class="row">
                   <div class="col-sm-4 bold">Target</div>
-                  <div class="col-sm-8 left-text">
-                    {{ currentSkill.target }}
-                  </div>
+                  <div class="col-sm-8 left-text">{{ currentSkill.target }}</div>
                 </div>
                 <div class="row">
                   <div class="col-sm-4 bold">Type</div>
@@ -55,30 +49,26 @@
             <div class="col-sm-12">
               <div class="row title no-margin">Current Skills</div>
               <div class="row" v-for="skill in currentSkills" :key="skill._id">
-                <div class="col-sm-8">{{ skill.name }}</div>
+                <div class="col-sm-8 text-center">{{ skill.name }}</div>
                 <div
-                  class="col-sm-4"
+                  class="col-sm-4 text-center"
                   style="cursor: pointer"
                   v-if="currentSkills.length > 1"
                   @click="removeSkill(skill._id)"
-                >
-                  X
-                </div>
+                >X</div>
               </div>
             </div>
           </div>
           <div class="row action-tile">
             <div class="col-sm-6 pad-1">
-              <button
-                :disabled="isSkillEquipped(currentSkill)"
-                @click="addCurrentSkill()"
-              >
-                Equip
-              </button>
+              <button :disabled="isSkillEquipped(currentSkill)" @click="addCurrentSkill()">Equip</button>
             </div>
             <div class="col-sm-6 pad-1">
               <button :disabled="!hasChanges" @click="save">Save</button>
             </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">{{message}}</div>
           </div>
         </div>
       </div>
@@ -87,7 +77,7 @@
 </template>
 
 <script>
-import { GET_SKILLS, SAVE_SKILLS } from '../store/actions.type';
+import { GET_SKILLS, GET_CHARACTER, SAVE_SKILLS } from '../store/actions.type';
 import Menu from '../components/Menu';
 export default {
   name: 'CharacterSkills',
@@ -109,12 +99,16 @@ export default {
 
     const characterId = this.$session.get('characterId');
     if (characterId) {
-      this.$store.dispatch(GET_SKILLS, characterId);
+      this.$store.dispatch(GET_SKILLS, characterId).then(() => {
+        this.$store.dispatch(GET_CHARACTER, accountId).then(response => {
+          console.log('character response', response);
+          this.currentSkills = this.$store.state.character.details && [
+            ...this.$store.state.character.details.skills
+          ];
+          this.previousSkills = this.currentSkills;
+        });
+      });
     }
-    this.currentSkills = this.$store.state.character.details && [
-      ...this.$store.state.character.details.skills
-    ];
-    this.previousSkills = this.currentSkills;
   },
   methods: {
     getSkill(id) {
@@ -142,7 +136,8 @@ export default {
       isEquipped = !!this.currentSkills.find(function(skill) {
         return skill._id === currentSkill._id;
       });
-      return isEquipped;
+      const isMaxSkill = this.currentSkills.length === 4;
+      return isEquipped || isMaxSkill;
     },
     save() {
       const ids = this.currentSkills.map(function(item) {
@@ -189,6 +184,11 @@ export default {
         }
       }
       return '';
+    },
+    message() {
+      return this.currentSkills && this.currentSkills.length === 4
+        ? 'You can only equip up to max of 4 skills.'
+        : '';
     }
   }
 };

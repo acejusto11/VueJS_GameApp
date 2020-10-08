@@ -17,9 +17,7 @@
           <p
             class="error-message"
             v-if="!$v.username.required && $v.username.$error"
-          >
-            * Username is required
-          </p>
+          >* Username is required</p>
 
           <input
             type="password"
@@ -34,16 +32,12 @@
           <p
             class="error-message"
             v-if="!$v.password.required && $v.password.$error"
-          >
-            * Password is required
-          </p>
+          >* Password is required</p>
         </div>
         <span>{{ error }}</span>
         <button type="submit" class="button" @click="submitForm">Login</button>
         <span>OR</span>
-        <button type="buttton" class="button" @click="goToAccountCreation">
-          Register New Account
-        </button>
+        <button type="buttton" class="button" @click="goToAccountCreation">Register New Account</button>
       </div>
     </form>
   </div>
@@ -79,7 +73,7 @@ export default {
           this.$session.set('accountId', response.accountId);
           this.$http.headers.common['Authorization'] =
             'Bearer ' + response.accountId;
-          this.$router.push({ name: 'character' });
+          this.$router.push({ name: 'character' }, () => {});
         });
       }
     },

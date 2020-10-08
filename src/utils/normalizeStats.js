@@ -8,9 +8,9 @@ export function normalizeStats(statistics = {}, equipment = {}) {
       acc[cur] = weapon[cur] + armor[cur];
       return acc;
     }, {});
-  console.log('statBonus', statBonus);
   const stats =
-    statistics && statBonus && 
+    statistics &&
+    statBonus &&
     Object.keys(statistics).reduce(function(acc, cur) {
       const total = statistics[cur] + statBonus[cur];
       acc[cur] = { base: statistics[cur], bonus: statBonus[cur], total };

@@ -1,43 +1,23 @@
 <template>
   <div class="containerRow">
     <div class="half player text-center title" v-if="characterDetails">
-      <div class="name">
-        {{ `${characterDetails.name} - Level ${characterDetails.level}` }}
-      </div>
-      <health-bar
-        :max="characterDetails.stats.health.total"
-        :value="currentPlayerHealth"
-      />
-      <mana-bar
-        :max="characterDetails.stats.mana.total"
-        :value="currentPlayerMana"
-      />
-      <span
-        >HP : {{ currentPlayerHealth }} /
-        {{ characterDetails.stats.health.total }}</span
-      >&nbsp;
-      <span
-        >Mana : {{ currentPlayerMana }} /
-        {{ characterDetails.stats.mana.total }}</span
-      >
+      <div class="name">{{ `${characterDetails.name} - Level ${characterDetails.level}` }}</div>
+      <health-bar :max="characterDetails.stats.health.total" :value="currentPlayerHealth" />
+      <mana-bar :max="characterDetails.stats.mana.total" :value="currentPlayerMana" />
+      <span>
+        HP : {{ currentPlayerHealth }} /
+        {{ characterDetails.stats.health.total }}
+      </span>&nbsp;
+      <span>
+        Mana : {{ currentPlayerMana }} /
+        {{ characterDetails.stats.mana.total }}
+      </span>
     </div>
     <div class="half enemy text-center title" v-if="enemyDetails">
-      <div class="name">
-        {{ `${enemyDetails.name} - Level ${enemyDetails.level}` }}
-      </div>
-      <health-bar
-        :max="enemyDetails.stats.health"
-        :value="currentEnemyHealth"
-        isReverse
-      />
-      <mana-bar
-        :max="enemyDetails.stats.mana"
-        :value="currentEnemyMana"
-        isReverse
-      />
-      <span
-        >HP : {{ currentEnemyHealth }} / {{ enemyDetails.stats.health }}</span
-      >&nbsp;
+      <div class="name">{{ `${enemyDetails.name} - Level ${enemyDetails.level}` }}</div>
+      <health-bar :max="enemyDetails.stats.health" :value="currentEnemyHealth" isReverse />
+      <mana-bar :max="enemyDetails.stats.mana" :value="currentEnemyMana" isReverse />
+      <span>HP : {{ currentEnemyHealth }} / {{ enemyDetails.stats.health }}</span>&nbsp;
       <span>Mana : {{ currentEnemyMana }} / {{ enemyDetails.stats.mana }}</span>
     </div>
   </div>
@@ -84,6 +64,12 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+span {
+  color: black;
+  text-shadow: 3px 3px 0 rgb(240, 234, 234), -1px -1px 0 rgb(240, 234, 234),
+    1px -1px 0 rgb(240, 234, 234), -1px 1px 0 rgb(240, 234, 234),
+    1px 1px 0 rgb(240, 234, 234);
+}
 .containerRow {
   display: flex;
   justify-content: space-around;
@@ -110,6 +96,10 @@ export default {
 
 .name {
   min-height: 48px;
+  color: black;
+  text-shadow: 3px 3px 0 rgb(240, 234, 234), -1px -1px 0 rgb(240, 234, 234),
+    1px -1px 0 rgb(240, 234, 234), -1px 1px 0 rgb(240, 234, 234),
+    1px 1px 0 rgb(240, 234, 234);
 }
 
 .iconContainer {

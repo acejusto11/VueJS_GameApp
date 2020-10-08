@@ -19,6 +19,7 @@ const actions = {
       GameService.enterDungeon(data)
         .then(({ body }) => {
           const basicSkill = getEnemyBasicSkill(body.enemy.name);
+          console.log(basicSkill, 'basicSkill');
           if (basicSkill) body.enemy.skills.push(basicSkill);
           context.commit(SET_BATTLEFIELD, body);
           resolve(body);

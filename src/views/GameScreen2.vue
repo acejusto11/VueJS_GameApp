@@ -90,7 +90,6 @@ export default {
   created() {
     this.getAccountCharacter(this.accountId)
       .then(accountCharacterResp => {
-        console.log(accountCharacterResp, 'accountCharacterResp');
         const {
           classType,
           name,

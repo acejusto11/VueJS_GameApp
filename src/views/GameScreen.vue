@@ -48,7 +48,11 @@ import Enemy from '../components/Enemy';
 import SkillsDashboard from '../components/SkillsDashboard.vue';
 import BattleResults from '../components/BattleResults.vue';
 import ReenterDungeon from '../components/ReenterDungeon.vue';
-import { ENTER_DUNGEON, SAVE_BATTLE } from '../store/actions.type';
+import {
+  ENTER_DUNGEON,
+  GET_CHARACTER,
+  SAVE_BATTLE
+} from '../store/actions.type';
 import { normalizeStats } from '../utils';
 import { setTimeout } from 'timers';
 export default {
@@ -82,18 +86,21 @@ export default {
   created() {
     const dungeonId = this.$route.params.id;
     const characterId = this.$session.get('characterId');
+    const accountId = this.$session.get('accountId');
     if (characterId && dungeonId) {
       this.$store
         .dispatch(ENTER_DUNGEON, { characterId, dungeonId })
         .then(() => {
-          this.currentPlayer = {
-            health: this.characterDetails.stats.health.total,
-            mana: this.characterDetails.stats.mana.total
-          };
-          this.currentEnemy = {
-            health: this.enemyDetails.stats.health,
-            mana: this.enemyDetails.stats.mana
-          };
+          this.$store.dispatch(GET_CHARACTER, accountId).then(() => {
+            this.currentPlayer = {
+              health: this.characterDetails.stats.health.total,
+              mana: this.characterDetails.stats.mana.total
+            };
+            this.currentEnemy = {
+              health: this.enemyDetails.stats.health,
+              mana: this.enemyDetails.stats.mana
+            };
+          });
         });
     }
   },
@@ -157,6 +164,7 @@ export default {
       }, 2000);
     },
     processAI: function(skill) {
+      console.log(skill, 'enemySkill');
       if (!this.playing) return;
       if (skill.target === 'enemy') {
         const damage = Math.round(
@@ -176,6 +184,7 @@ export default {
       EventBus.$emit('notify', message);
     },
     selectEnemySkill() {
+      console.log(this.enemyDetails.skills, 'this.enemyDetails.skills');
       const skillLength =
         this.enemyDetails.skills && this.enemyDetails.skills.length;
       const randomInt = Math.floor(Math.random() * Math.floor(skillLength));
