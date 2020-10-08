@@ -23,6 +23,8 @@ export default {
 .menu {
   position: absolute;
   margin: 1rem;
+  top: 0px;
+  left: 0px;
 }
 button {
   box-shadow: 0px 5px 9px -7px #3e7327;

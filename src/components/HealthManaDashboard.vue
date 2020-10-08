@@ -6,7 +6,7 @@
       <mana-bar :max="characterDetails.stats.mana.total" :value="currentPlayerMana" />
       <span>
         HP : {{ currentPlayerHealth }} /
-        {{ characterDetails.stats.health.total }}
+        {{ characterDetails.stats.health.total }}{{' '}}
       </span>&nbsp;
       <span>
         Mana : {{ currentPlayerMana }} /

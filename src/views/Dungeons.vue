@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="main flex">
     <game-menu />
     <div class="container">
       <div class="row nowrap dungeons-section">
@@ -11,34 +11,25 @@
             @click="getDungeon(dungeon._id)"
             :style="{ 'background-image': `url(${getImage(dungeon.image)})` }"
           >
-            <img
-              v-if="isDisabled(dungeon)"
-              src="../assets/dungeons/locked-overlay.png"
-            />
+            <img v-if="isDisabled(dungeon)" src="../assets/dungeons/locked-overlay.png" />
           </div>
         </div>
         <div class="col-sm-6">
           <div v-if="selectedDungeon">
             <div class="row">
-              <div class="col-sm-12 pad-1 title">
-                {{ selectedDungeon.name }}
-              </div>
+              <div class="col-sm-12 pad-1 title">{{ selectedDungeon.name }}</div>
             </div>
             <div class="row pad-1">
               <div class="col-sm-12 pad">
                 <button
                   @click="goToGameScreen"
                   :disabled="isDisabled(selectedDungeon)"
-                >
-                  Enter Dungeon
-                </button>
+                >Enter Dungeon</button>
               </div>
             </div>
             <div class="row">
               <div class="col-sm-6 bold left-text">Recommended Level:</div>
-              <div class="col-sm-4 left-text">
-                {{ selectedDungeon.recommendedLevel }}
-              </div>
+              <div class="col-sm-4 left-text">{{ selectedDungeon.recommendedLevel }}</div>
             </div>
             <div class="row">
               <div class="col-sm-12 bold left-text">Enemies/Drops</div>
@@ -48,26 +39,17 @@
                 <div
                   class="col-sm-6 bold left-text padding-1"
                   v-if="enemy.boss"
-                >
-                  {{ enemy.name }} (boss)
-                </div>
-                <div class="col-sm-6 bold left-text padding-1" v-else>
-                  {{ enemy.name }}
-                </div>
+                >{{ enemy.name }} (boss)</div>
+                <div class="col-sm-6 bold left-text padding-1" v-else>{{ enemy.name }}</div>
               </div>
               <div class="row">
                 <div class="col-sm-4"></div>
-                <div
-                  class="col-sm-8 text-left"
-                  v-if="enemy.drops && enemy.drops.length"
-                >
+                <div class="col-sm-8 text-left" v-if="enemy.drops && enemy.drops.length">
                   <div
                     class="col-sm-8"
                     v-for="drop in enemy.drops"
                     :key="drop._id"
-                  >
-                    * {{ drop.name }}
-                  </div>
+                  >* {{ drop.name }}</div>
                 </div>
                 <div v-else class="col-sm-8 text-left">-----</div>
               </div>

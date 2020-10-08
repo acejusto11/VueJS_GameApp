@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="main flex">
     <game-menu />
     <div class="container">
       <div class="row title flex-center">Skills</div>
@@ -205,7 +205,6 @@ export default {
   color: white;
   background-color: rgb(3 0 0 / 85%);
   border: 20px solid rgb(3 2 2 / 50%);
-  padding: 1em;
 }
 
 .skills-section {

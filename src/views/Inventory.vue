@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="main flex">
     <game-menu />
     <div class="container">
       <div class="row title flex-center">Inventory</div>

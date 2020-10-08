@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="main flex">
     <character-dashboard :details="details" />
   </div>
 </template>

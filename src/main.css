@@ -75,3 +75,10 @@
 .text-center {
   text-align: center;
 }
+
+.flex {
+  margin: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
