@@ -34,7 +34,7 @@ export default {
   },
   methods: {
     getImage: function(type, action) {
-      return require(`../assets/${type}/${action}.png`);
+      return type ? require(`../assets/${type}/${action}.png`) : '';
     }
   }
 };

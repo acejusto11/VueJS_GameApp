@@ -1,6 +1,6 @@
 <template>
   <div class="containerRow">
-    <div class="half player text-center title" v-if="characterDetails">
+    <div class="half player text-center title" v-if="characterDetails.stats">
       <div class="name">{{ `${characterDetails.name} - Level ${characterDetails.level}` }}</div>
       <health-bar :max="characterDetails.stats.health.total" :value="currentPlayerHealth" />
       <mana-bar :max="characterDetails.stats.mana.total" :value="currentPlayerMana" />

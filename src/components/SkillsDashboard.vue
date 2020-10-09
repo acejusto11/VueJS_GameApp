@@ -6,9 +6,7 @@
       <button
         @click="processSkills(skill._id)"
         :disabled="isSkillDisabled(skill.cost)"
-      >
-        {{ skill.name }}
-      </button>
+      >{{ skill.name }}</button>
     </div>
     <button @click="closeCallback && closeCallback()">Run Away</button>
   </div>
@@ -103,5 +101,7 @@ button:disabled {
   background-color: rgb(3 0 0 / 70%);
   border: 10px solid rgb(3 2 2 / 50%);
   padding: 1rem;
+  min-height: 292px;
+  min-width: 420px;
 }
 </style>

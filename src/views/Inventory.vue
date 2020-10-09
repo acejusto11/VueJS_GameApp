@@ -181,7 +181,6 @@ export default {
   color: white;
   background-color: rgb(3 0 0 / 85%);
   border: 20px solid rgb(3 2 2 / 50%);
-  padding: 1em;
 }
 
 .inventory-section {

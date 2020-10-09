@@ -16,7 +16,7 @@
         </div>
         <div class="col-sm-6">
           <div v-if="selectedDungeon">
-            <div class="row">
+            <div class="row text-center">
               <div class="col-sm-12 pad-1 title">{{ selectedDungeon.name }}</div>
             </div>
             <div class="row pad-1">

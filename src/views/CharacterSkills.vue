@@ -100,8 +100,7 @@ export default {
     const characterId = this.$session.get('characterId');
     if (characterId) {
       this.$store.dispatch(GET_SKILLS, characterId).then(() => {
-        this.$store.dispatch(GET_CHARACTER, accountId).then(response => {
-          console.log('character response', response);
+        this.$store.dispatch(GET_CHARACTER, accountId).then(() => {
           this.currentSkills = this.$store.state.character.details && [
             ...this.$store.state.character.details.skills
           ];

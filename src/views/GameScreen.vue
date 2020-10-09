@@ -101,6 +101,9 @@ export default {
               mana: this.enemyDetails.stats.mana
             };
           });
+        })
+        .catch(error => {
+          if (error) this.exitDungeon();
         });
     }
   },
@@ -127,45 +130,68 @@ export default {
   methods: {
     processSkill(skill) {
       if (!this.playing) return;
-      if (skill.target === 'enemy') {
-        const damage = Math.round(
-          (skill.damage / 100) * this.characterDetails.stats.off.total
-        );
-        this.currentEnemy.health -= damage;
-        this.currentPlayer.mana -= skill.cost;
-        this.processNotification(
-          `${this.characterDetails.name} used ${skill.name}. Dealt ${damage} damage`
-        );
+
+      const result = this.hitOrMiss(
+        this.enemyDetails.stats.agi,
+        skill.target,
+        this.characterDetails.name
+      );
+      if (result === 'miss') {
+        setTimeout(() => {
+          const enemySkill = this.selectEnemySkill();
+          this.processAI(enemySkill);
+        }, 2000);
       } else {
-        if (skill.type === 'M') {
-          const healthPts = Math.round(
-            ((skill.damage * -0.75) / 100) *
-              this.characterDetails.stats.int.total
+        if (skill.target === 'enemy') {
+          const damage = Math.round(
+            (skill.damage / 100) * this.characterDetails.stats.off.total
           );
-          this.currentPlayer.health += healthPts;
+          const reducedDamage =
+            damage - Math.round((this.enemyDetails.stats.def * 10) / 100);
+          this.currentEnemy.health -= damage;
           this.currentPlayer.mana -= skill.cost;
           this.processNotification(
-            `${this.characterDetails.name} used ${skill.name}. Gained ${healthPts} health points.`
+            `${this.characterDetails.name} used ${skill.name}. Dealt ${reducedDamage} damage`
           );
-        } else if (skill.type === 'R') {
-          const manaPts = Math.round(
-            ((skill.damage * 0.75) / 100) *
-              this.characterDetails.stats.int.total
-          );
-          this.currentPlayer.mana += manaPts;
-          this.processNotification(
-            `${this.characterDetails.name} used ${skill.name}. Gained ${manaPts} mana points.`
-          );
+        } else {
+          if (skill.type === 'M') {
+            const healthPts = Math.round(
+              ((skill.damage * -0.75) / 100) *
+                this.characterDetails.stats.int.total
+            );
+            this.currentPlayer.health += healthPts;
+            this.currentPlayer.mana -= skill.cost;
+            this.processNotification(
+              `${this.characterDetails.name} used ${skill.name}. Gained ${healthPts} health points.`
+            );
+          } else if (skill.type === 'R') {
+            const manaPts = Math.round(
+              ((skill.damage * 0.75) / 100) *
+                this.characterDetails.stats.int.total
+            );
+            this.currentPlayer.mana += manaPts;
+            this.processNotification(
+              `${this.characterDetails.name} used ${skill.name}. Gained ${manaPts} mana points.`
+            );
+          }
         }
+
+        const enemySkill = this.selectEnemySkill();
+        setTimeout(() => {
+          this.processAI(enemySkill);
+        }, 2000);
       }
-      const enemySkill = this.selectEnemySkill();
-      setTimeout(() => {
-        this.processAI(enemySkill);
-      }, 2000);
     },
     processAI: function(skill) {
-      console.log(skill, 'enemySkill');
       if (!this.playing) return;
+
+      const result = this.hitOrMiss(
+        this.characterDetails.stats.agi.total,
+        skill.target,
+        this.enemyDetails.name
+      );
+      if (result === 'miss') return;
+
       if (skill.target === 'enemy') {
         const damage = Math.round(
           (skill.damage / 100) * 30 // Fixed offense value
@@ -184,13 +210,27 @@ export default {
       EventBus.$emit('notify', message);
     },
     selectEnemySkill() {
-      console.log(this.enemyDetails.skills, 'this.enemyDetails.skills');
       const skillLength =
         this.enemyDetails.skills && this.enemyDetails.skills.length;
-      const randomInt = Math.floor(Math.random() * Math.floor(skillLength));
+      const randomInt = Math.floor(Math.random() * Math.floor(skillLength - 1));
       const skill = this.enemyDetails.skills[randomInt];
       this.isEnemyAttacking = true;
       return skill;
+    },
+    hitOrMiss(agility, target, name) {
+      if (target !== 'enemy') return;
+      const actions = ['hit', 'miss', 'hit'];
+      const chance = Math.round(agility / 100);
+      for (var x = 0; x < chance; x++) {
+        actions.push('miss');
+      }
+
+      const randomInt = Math.floor(Math.random() * Math.floor(actions.length));
+
+      if (actions[randomInt] === actions[1]) {
+        this.processNotification(`${name} attacked. Missed!`);
+        return actions[1];
+      }
     },
     getImage() {
       const imageName =
