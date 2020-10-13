@@ -107,14 +107,21 @@ export default {
     const accountId = this.$session.get('accountId');
     if (!accountId) this.$router.push('/');
     const characterId = this.$session.get('characterId');
+     let loader = this.$loading.show({ loader: 'bars', width: 800, height: 200});
     this.characterItems = this.$store.state.character.details.equipment;
     if (characterId) {
       this.$store.dispatch(GET_INVENTORY, characterId).then(() => {
         this.$store
           .dispatch(GET_CHARACTER, accountId)
-          .then(
-            (this.currentEquipment = this.$store.state.character.details.equipment)
-          );
+          .then(() =>  {
+            this.currentEquipment = this.$store.state.character.details.equipment;
+            setTimeout(() => {
+                loader.hide()
+             },3000)   
+            }
+          ).catch(
+            loader.hide()
+          );  
       });
     }
   },

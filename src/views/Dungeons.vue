@@ -74,11 +74,15 @@ export default {
     };
   },
   created() {
+    let loader = this.$loading.show({ loader: 'bars', width: 800, height: 200});
     this.$store
       .dispatch(GET_DUNGEONS, this.$session.get('characterId'))
       .then(response => {
+         setTimeout(() => loader.hide(), 1000);
         if (response && response.length) this.selectedDungeon = response[0];
-      });
+      }).catch(
+          setTimeout(() => loader.hide(), 1000)
+      );
   },
   computed: {
     characterId() {

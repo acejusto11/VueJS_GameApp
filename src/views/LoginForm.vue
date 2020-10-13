@@ -46,6 +46,7 @@
 <script>
 import { required } from 'vuelidate/lib/validators';
 import { LOGIN } from '../store/actions.type';
+import { setTimeout } from 'timers';
 
 export default {
   name: 'LoginForm',
@@ -62,6 +63,7 @@ export default {
   },
   methods: {
     submitForm() {
+      let loader = this.$loading.show({ loader: 'bars', width: 800, height: 200}); //TODO: move to mixin
       if (!this.$v.$invalid) {
         this.$v.$touch();
         const loginData = {
@@ -69,12 +71,16 @@ export default {
           password: this.password
         };
         this.$store.dispatch(LOGIN, loginData).then(response => {
+          setTimeout(() => loader.hide(), 1000);
+          
           this.$session.start();
           this.$session.set('accountId', response.accountId);
           this.$http.headers.common['Authorization'] =
             'Bearer ' + response.accountId;
           this.$router.push({ name: 'character' }, () => {});
-        });
+        }).catch(
+           setTimeout(() => loader.hide(), 1000)
+        );
       }
     },
     goToAccountCreation() {

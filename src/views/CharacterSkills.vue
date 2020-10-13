@@ -96,17 +96,23 @@ export default {
     //TODO: move to mixin
     const accountId = this.$session.get('accountId');
     if (!accountId) this.$router.push('/');
+    let loader = this.$loading.show({ loader: 'bars', width: 800, height: 200});
 
     const characterId = this.$session.get('characterId');
     if (characterId) {
       this.$store.dispatch(GET_SKILLS, characterId).then(() => {
         this.$store.dispatch(GET_CHARACTER, accountId).then(() => {
+          setTimeout(() => loader.hide(), 1000);
           this.currentSkills = this.$store.state.character.details && [
             ...this.$store.state.character.details.skills
           ];
           this.previousSkills = this.currentSkills;
-        });
-      });
+        }).catch(
+          setTimeout(() => loader.hide(), 1000)
+        );
+      }).catch(
+        setTimeout(() => loader.hide(), 1000)
+      );
     }
   },
   methods: {

@@ -87,10 +87,14 @@ export default {
     const dungeonId = this.$route.params.id;
     const characterId = this.$session.get('characterId');
     const accountId = this.$session.get('accountId');
+
+     let loader = this.$loading.show({ loader: 'bars', width: 800, height: 200});
+              
     if (characterId && dungeonId) {
       this.$store
         .dispatch(ENTER_DUNGEON, { characterId, dungeonId })
         .then(() => {
+          loader.hide();
           this.$store.dispatch(GET_CHARACTER, accountId).then(() => {
             this.currentPlayer = {
               health: this.characterDetails.stats.health.total,
@@ -103,6 +107,7 @@ export default {
           });
         })
         .catch(error => {
+          loader.hide();
           if (error) this.exitDungeon();
         });
     }

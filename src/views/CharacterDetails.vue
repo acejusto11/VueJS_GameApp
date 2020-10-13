@@ -18,9 +18,16 @@ export default {
     const accountId = this.$session.get('accountId');
     if (!accountId) this.$router.push('/');
 
+    let loader = this.$loading.show({ loader: 'bars', width: 800, height: 200});
+
     this.$store
       .dispatch(GET_CHARACTER, accountId)
-      .then(response => this.$session.set('characterId', response._id));
+      .then(response => {
+        this.$session.set('characterId', response._id); 
+        setTimeout(() => loader.hide(), 1000);}
+      ).catch(
+          setTimeout(() => loader.hide(), 1000)
+      );
   },
   computed: {
     details() {
