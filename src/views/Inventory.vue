@@ -88,9 +88,11 @@ import {
   GET_CHARACTER,
   SAVE_EQUIPMENT
 } from '../store/actions.type';
+import LoaderMixin from '../shared/mixins/LoaderMixin';
 import Menu from '../components/Menu';
 export default {
   name: 'Inventory',
+  mixins: [LoaderMixin],
   components: {
     'game-menu': Menu
   },
@@ -107,7 +109,8 @@ export default {
     const accountId = this.$session.get('accountId');
     if (!accountId) this.$router.push('/');
     const characterId = this.$session.get('characterId');
-     let loader = this.$loading.show({ loader: 'bars', width: 800, height: 200});
+    
+    this.showLoader();
     this.characterItems = this.$store.state.character.details.equipment;
     if (characterId) {
       this.$store.dispatch(GET_INVENTORY, characterId).then(() => {
@@ -115,15 +118,16 @@ export default {
           .dispatch(GET_CHARACTER, accountId)
           .then(() =>  {
             this.currentEquipment = this.$store.state.character.details.equipment;
-            setTimeout(() => {
-                loader.hide()
-             },3000)   
+             this.hideLoader(); 
             }
           ).catch(
-            loader.hide()
+             this.hideLoader()
           );  
       });
     }
+  },
+  beforeDestroy() {
+     this.hideLoader();
   },
   computed: {
     inventoryItems() {

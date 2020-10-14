@@ -40,6 +40,7 @@
   </div>
 </template>
 <script>
+import LoaderMixin from '../shared/mixins/LoaderMixin';
 import { EventBus } from '../main';
 import HealthManaDashboard from '../components/HealthManaDashboard.vue';
 import NotificationMessage from '../components/NotificationMessage.vue';
@@ -57,6 +58,7 @@ import { normalizeStats } from '../utils';
 import { setTimeout } from 'timers';
 export default {
   name: 'GameScreen',
+  mixins: [LoaderMixin],
   components: {
     'health-mana-dashboard': HealthManaDashboard,
     'player-hero': Player,
@@ -87,14 +89,15 @@ export default {
     const dungeonId = this.$route.params.id;
     const characterId = this.$session.get('characterId');
     const accountId = this.$session.get('accountId');
+    if (!accountId) this.$router.push('/');
 
-     let loader = this.$loading.show({ loader: 'bars', width: 800, height: 200});
+    this.showLoader();
               
     if (characterId && dungeonId) {
       this.$store
         .dispatch(ENTER_DUNGEON, { characterId, dungeonId })
         .then(() => {
-          loader.hide();
+          this.hideLoader();
           this.$store.dispatch(GET_CHARACTER, accountId).then(() => {
             this.currentPlayer = {
               health: this.characterDetails.stats.health.total,
@@ -107,10 +110,13 @@ export default {
           });
         })
         .catch(error => {
-          loader.hide();
+          this.hideLoader();
           if (error) this.exitDungeon();
         });
     }
+  },
+  beforeDestroy() {
+    this.hideLoader();
   },
   computed: {
     dungeonDetails() {
@@ -148,18 +154,30 @@ export default {
         }, 2000);
       } else {
         if (skill.target === 'enemy') {
+          const isCritical =  this.isCriticalHit(this.characterDetails.stats.luk.total,skill.target);
           const damage = Math.round(
             (skill.damage / 100) * this.characterDetails.stats.off.total
           );
           const reducedDamage =
             damage - Math.round((this.enemyDetails.stats.def * 10) / 100);
-          this.currentEnemy.health -= damage;
+          const totalDamage =  isCritical ? Math.round(reducedDamage * 1.5) : reducedDamage;
+          this.currentEnemy.health -= (totalDamage);
           this.currentPlayer.mana -= skill.cost;
-          this.processNotification(
-            `${this.characterDetails.name} used ${skill.name}. Dealt ${reducedDamage} damage`
-          );
+
+          if (isCritical) {
+            this.processNotification(
+              `${this.characterDetails.name} used ${skill.name}. Dealt CRITICAL ${totalDamage} damage`
+            );
+          }
+          else {
+             this.processNotification(
+              `${this.characterDetails.name} used ${skill.name}. Dealt ${totalDamage} damage`
+            );
+          }
+         
         } else {
           if (skill.type === 'M') {
+            if (this.currentPlayer.health >= this.characterDetails.stats.health.total) return;
             const healthPts = Math.round(
               ((skill.damage * -0.75) / 100) *
                 this.characterDetails.stats.int.total
@@ -170,6 +188,7 @@ export default {
               `${this.characterDetails.name} used ${skill.name}. Gained ${healthPts} health points.`
             );
           } else if (skill.type === 'R') {
+            if (this.currentPlayer.mana === this.characterDetails.stats.mana.total) return;
             const manaPts = Math.round(
               ((skill.damage * 0.75) / 100) *
                 this.characterDetails.stats.int.total
@@ -198,16 +217,19 @@ export default {
       if (result === 'miss') return;
 
       if (skill.target === 'enemy') {
+        const isCritical =  this.isCriticalHit(this.enemyDetails.stats.luk, skill.target);
         const damage = Math.round(
           (skill.damage / 100) * 30 // Fixed offense value
         );
         const reducedDamage =
           damage -
           Math.round((this.characterDetails.stats.def.total * 10) / 100);
-        this.currentPlayer.health -= reducedDamage;
+
+        const totalDamage =  isCritical ? Math.round(reducedDamage * 1.5) : reducedDamage;
+        this.currentPlayer.health -= totalDamage;
         this.currentEnemy.mana -= skill.cost;
         this.processNotification(
-          `${this.enemyDetails.name} used ${skill.name}. Dealt ${damage} damage`
+          `${this.enemyDetails.name} used ${skill.name}. Dealt ${totalDamage} damage`
         );
       }
     },
@@ -236,6 +258,19 @@ export default {
         this.processNotification(`${name} attacked. Missed!`);
         return actions[1];
       }
+    },
+    isCriticalHit(luk, target) {
+      if (target !== 'enemy') return;
+        const actions = ['basic', 'critical', 'basic'];
+        const chance = Math.round(luk);
+
+        for (var x = 0; x < chance; x++) {
+          actions.push('critical');
+      }
+
+      const randomInt = Math.floor(Math.random() * Math.floor(actions.length));
+
+      return actions[randomInt] === 'critical';
     },
     getImage() {
       const imageName =

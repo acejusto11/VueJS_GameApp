@@ -60,29 +60,38 @@
     </div>
   </div>
 </template>
+
 <script>
 import { GET_DUNGEONS } from '../store/actions.type';
+import LoaderMixin from '../shared/mixins/LoaderMixin';
 import Menu from '../components/Menu';
 export default {
   name: 'Dungeons',
   components: {
     'game-menu': Menu
   },
+  mixins: [LoaderMixin],
   data() {
     return {
       selectedDungeon: undefined
     };
   },
   created() {
-    let loader = this.$loading.show({ loader: 'bars', width: 800, height: 200});
+    const accountId = this.$session.get('accountId');
+    if (!accountId) this.$router.push('/');
+
+    this.showLoader();
     this.$store
       .dispatch(GET_DUNGEONS, this.$session.get('characterId'))
       .then(response => {
-         setTimeout(() => loader.hide(), 1000);
+         this.hideLoader();
         if (response && response.length) this.selectedDungeon = response[0];
       }).catch(
-          setTimeout(() => loader.hide(), 1000)
+         this.hideLoader()
       );
+  },
+  beforeDestroy() {
+    this.hideLoader();
   },
   computed: {
     characterId() {

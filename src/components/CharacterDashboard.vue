@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row nowrap">
       <div class="col-md-5"></div>
-      <div class="col-md-3 title">Record</div>
+      <div class="col-md-3 title text-center">Record</div>
       <div class="col-md-4"></div>
     </div>
     <div class="row nowrap container-1 text-center">

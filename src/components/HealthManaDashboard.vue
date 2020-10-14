@@ -38,28 +38,33 @@ export default {
     'health-bar': HealthBar,
     'mana-bar': ManaBar
   },
+  methods:  {
+    normalize(current, base) {
+      if (current <= 0)
+      {
+        return 0;
+      }
+      if (current > base) {
+        return base;
+      }
+      return current;
+    },
+  },
   computed: {
     currentPlayerHealth() {
-      return this.currentPlayerStats.health > 0
-        ? this.currentPlayerStats.health
-        : 0;
+      return this.normalize(this.currentPlayerStats.health, this.characterDetails.stats.health.total);
     },
     currentPlayerMana() {
-      return this.currentPlayerStats.mana > 0
-        ? this.currentPlayerStats.mana
-        : 0;
+       return this.normalize(this.currentPlayerStats.mana, this.characterDetails.stats.mana.total);
     },
     currentEnemyHealth() {
-      return this.currentEnemyStats.health > 0
-        ? this.currentEnemyStats.health
-        : 0;
+      return this.normalize(this.currentEnemyStats.health, this.enemyDetails.stats.health);
     },
     currentEnemyMana() {
-      return this.currentEnemyStats.mana > 0 ? this.currentEnemyStats.mana : 0;
+        return this.normalize(this.currentEnemyStats.mana, this.enemyDetails.stats.mana);
     }
-  },
-  updated() {}
-};
+  }
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

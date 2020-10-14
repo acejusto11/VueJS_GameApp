@@ -6,6 +6,7 @@
 
 <script>
 import { GET_CHARACTER } from '../store/actions.type';
+import LoaderMixin from '../shared/mixins/LoaderMixin';
 import CharacterDashboard from '../components/CharacterDashboard.vue';
 import { normalizeStats } from '../utils';
 export default {
@@ -13,21 +14,26 @@ export default {
   components: {
     'character-dashboard': CharacterDashboard
   },
+  mixins: [LoaderMixin],
   created() {
     //TODO: move to mixin
     const accountId = this.$session.get('accountId');
     if (!accountId) this.$router.push('/');
 
-    let loader = this.$loading.show({ loader: 'bars', width: 800, height: 200});
+    this.showLoader();
 
     this.$store
       .dispatch(GET_CHARACTER, accountId)
       .then(response => {
         this.$session.set('characterId', response._id); 
-        setTimeout(() => loader.hide(), 1000);}
+        this.hideLoader();
+      }
       ).catch(
-          setTimeout(() => loader.hide(), 1000)
+          this.hideLoader()
       );
+  },
+  beforeDestroy() {
+    this.hideLoader();
   },
   computed: {
     details() {
